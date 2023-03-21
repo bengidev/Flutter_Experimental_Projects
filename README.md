@@ -115,13 +115,13 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/syndicate017/Flutter_Experimental_Projects.svg?style=for-the-badge
+[contributors-url]: https://github.com/syndicate017/Flutter_Experimental_Projects/graphs/contributors
 [Dart.dev]: https://img.shields.io/badge/-Dart-0088cc?style=for-the-badge&logo=Dart&logoColor=white
 [Dart-url]: https://dart.dev
 [Flutter.dev]: https://img.shields.io/badge/-Flutter-0088cc?style=for-the-badge&logo=Flutter&logoColor=white
 [Flutter-url]: https://flutter.dev
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/syndicate017/Flutter_Experimental_Projects.svg?style=for-the-badge
 [license-url]: https://github.com/syndicate017/Flutter_Experimental_Projects/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/syndicate017
