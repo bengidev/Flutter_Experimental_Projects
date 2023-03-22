@@ -1,0 +1,18 @@
+lcov --remove coverage/lcov.info
+'lib/application.dart'
+'lib/application_bloc_observer.dart'
+'lib/dependency_injection.dart'
+'lib/main.dart'
+'lib/core/*'
+'lib/generated/*'
+'lib/features/home/presentation/blocs/random_generated_trivia_event.dart'
+'lib/features/home/presentation/blocs/random_generated_trivia_state.dart'
+'lib/features/home/presentation/screens/*'
+'lib/features/home/presentation/widgets/*'
+'lib/features/number_trivia/presentation/blocs/number_trivia_event.dart'
+'lib/features/number_trivia/presentation/blocs/number_trivia_state.dart'
+'lib/features/number_trivia/presentation/screens/*'
+'lib/features/number_trivia/presentation/widgets/*'
+'lib/features/onboarding/presentation/screens/*'
+'lib/features/profile/presentation/screens/*'
+-o coverage/new_lcov.info
