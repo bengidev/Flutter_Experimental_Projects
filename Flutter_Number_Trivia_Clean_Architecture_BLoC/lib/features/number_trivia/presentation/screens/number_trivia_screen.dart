@@ -65,9 +65,11 @@ class NumberTriviaScreen extends HookWidget {
                                 context: context,
                                 numberString: numberStringValue.value,
                               );
+                              _dispatchCollectRecordsEvent(context: context);
                             },
                             onRandomCallback: () {
                               _dispatchRandomEvent(context: context);
+                              _dispatchCollectRecordsEvent(context: context);
                             },
                           ),
                         ),
@@ -87,26 +89,25 @@ class NumberTriviaScreen extends HookWidget {
     required BuildContext context,
     required NumberTriviaState state,
   }) {
-    if (state is NumberTriviaEmptyState) {
-      return const HeaderWidget(
-        imageString: ConstantAssets.videoParkImage,
-        message: "Let's search the meaning of your favorite numbers",
-      );
-    } else if (state is NumberTriviaErrorState) {
-      return HeaderWidget(
-        imageString: ConstantAssets.callWaitingImage,
-        message: state.message,
-      );
-    } else if (state is NumberTriviaLoadingState) {
-      return const AppLoadingIndicator();
-    } else if (state is NumberTriviaLoadedState) {
-      return HeaderWidget(
-        imageString: ConstantAssets.dogCallImage,
-        message: "The number of ${state.trivia.number} mean is "
-            "${state.trivia.text}",
-      );
-    } else {
-      return const AppText(text: "Unexpected Error");
+    switch (state.status) {
+      case NumberTriviaStatus.initial:
+        return const HeaderWidget(
+          imageString: ConstantAssets.videoParkImage,
+          message: "Let's search the meaning of your favorite numbers",
+        );
+      case NumberTriviaStatus.loading:
+        return const AppLoadingIndicator();
+      case NumberTriviaStatus.success:
+        return HeaderWidget(
+          imageString: ConstantAssets.dogCallImage,
+          message: "The number of ${state.trivia?.number} mean is "
+              "${state.trivia?.text}",
+        );
+      case NumberTriviaStatus.failure:
+        return HeaderWidget(
+          imageString: ConstantAssets.callWaitingImage,
+          message: state.failureMessage,
+        );
     }
   }
 
@@ -121,5 +122,9 @@ class NumberTriviaScreen extends HookWidget {
 
   void _dispatchRandomEvent({required BuildContext context}) {
     context.read<NumberTriviaBloc>().add(GetTriviaForRandomNumberEvent());
+  }
+
+  void _dispatchCollectRecordsEvent({required BuildContext context}) {
+    context.read<NumberTriviaBloc>().add(CollectNumberTriviaRecordsEvent());
   }
 }

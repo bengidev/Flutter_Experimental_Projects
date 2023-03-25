@@ -4,7 +4,7 @@ abstract class NumberTriviaEvent extends Equatable {
   const NumberTriviaEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 
   @override
   bool get stringify => true;
@@ -18,10 +18,15 @@ class GetTriviaForConcreteNumberEvent extends NumberTriviaEvent {
   });
 
   @override
-  List<Object> get props => [numberString];
+  List<Object?> get props => [numberString];
 }
 
 class GetTriviaForRandomNumberEvent extends NumberTriviaEvent {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
+}
+
+class CollectNumberTriviaRecordsEvent extends NumberTriviaEvent {
+  @override
+  List<Object?> get props => [];
 }

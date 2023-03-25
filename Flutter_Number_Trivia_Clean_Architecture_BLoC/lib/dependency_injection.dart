@@ -21,6 +21,7 @@ import 'package:number_trivia_project/features/number_trivia/data/datasources/nu
 import 'package:number_trivia_project/features/number_trivia/data/datasources/number_trivia_remote_data_source_impl.dart';
 import 'package:number_trivia_project/features/number_trivia/data/repositories/number_trivia_repository_impl.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/repositories/i_number_trivia_repository.dart';
+import 'package:number_trivia_project/features/number_trivia/domain/usecases/collect_number_trivia_records_case.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/usecases/get_concrete_number_trivia_case.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/usecases/get_random_number_trivia_case.dart';
 import 'package:number_trivia_project/features/number_trivia/presentation/blocs/number_trivia_bloc.dart';
@@ -61,6 +62,7 @@ Future<void> initializeServiceLocator() async {
     () => NumberTriviaBloc(
       concreteTrivia: $serviceLocator(),
       randomTrivia: $serviceLocator(),
+      collectTriviaRecords: $serviceLocator(),
       inputConverter: $serviceLocator(),
     ),
   );
@@ -75,6 +77,9 @@ Future<void> initializeServiceLocator() async {
     () => GetRandomNumberTriviaCase(
       repository: $serviceLocator(),
     ),
+  );
+  $serviceLocator.registerLazySingleton<CollectNumberTriviaRecordsCase>(
+    () => CollectNumberTriviaRecordsCase(repository: $serviceLocator()),
   );
 
   // Repository
@@ -101,7 +106,7 @@ Future<void> initializeServiceLocator() async {
   // Features - Home
   // BLoC
   $serviceLocator.registerFactory<RandomGeneratedTriviaBloc>(
-    () => RandomGeneratedTriviaBloc(useCase: $serviceLocator()),
+    () => RandomGeneratedTriviaBloc(randomGeneratedTrivia: $serviceLocator()),
   );
 
   // Use Cases

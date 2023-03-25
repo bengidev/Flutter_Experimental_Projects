@@ -26,7 +26,9 @@ class DetailFeaturedCard extends HookWidget {
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadiusDirectional.circular($styles.corners.xs),
+                side: BorderSide(color: $styles.colors.offBlack),
               ),
+              elevation: 5,
               color: $styles.colors.offWhite,
               child: Padding(
                 padding: EdgeInsets.all($styles.insets.xs),
@@ -36,7 +38,7 @@ class DetailFeaturedCard extends HookWidget {
                     Container(
                       padding: EdgeInsets.all($styles.insets.xs),
                       child: AppText(
-                        text: "Your Generated Number: $number",
+                        text: "The Meaning of Your Number: $number",
                         textAlign: TextAlign.justify,
                         textStyle: $styles.textStyle.h4Bold,
                         maxLines: 1,

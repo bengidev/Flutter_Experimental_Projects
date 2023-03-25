@@ -10,11 +10,11 @@ part 'random_generated_trivia_state.dart';
 
 class RandomGeneratedTriviaBloc
     extends Bloc<RandomGeneratedTriviaEvent, RandomGeneratedTriviaState> {
-  final GetRandomGeneratedTriviaCase _useCase;
+  final GetRandomGeneratedTriviaCase getRandomGeneratedTriviaCase;
 
   RandomGeneratedTriviaBloc({
-    required GetRandomGeneratedTriviaCase useCase,
-  })  : _useCase = useCase,
+    required GetRandomGeneratedTriviaCase randomGeneratedTrivia,
+  })  : getRandomGeneratedTriviaCase = randomGeneratedTrivia,
         super(const RandomGeneratedTriviaState()) {
     on<GetRandomGeneratedTriviaEvent>(_onGetRandomGeneratedTrivia);
   }
@@ -24,7 +24,8 @@ class RandomGeneratedTriviaBloc
     Emitter<RandomGeneratedTriviaState> emit,
   ) async {
     emit(state.copyWith(status: RandomGeneratedTriviaStatus.loading));
-    final randomGeneratedTrivia = await _useCase.call(EmptyParams());
+    final randomGeneratedTrivia =
+        await getRandomGeneratedTriviaCase.call(EmptyParams());
     randomGeneratedTrivia.fold(
       (failure) => emit(
         state.copyWith(

@@ -35,7 +35,7 @@ class SearchHistoryItem extends HookWidget {
           onTap: onTap,
           child: Container(
             width: context.widthPx,
-            height: context.heightPx * 0.08,
+            height: context.heightPx * 0.085,
             decoration: BoxDecoration(
               border: Border.all(color: $styles.colors.offBlack),
               borderRadius: BorderRadius.circular($styles.corners.sm),
@@ -47,7 +47,7 @@ class SearchHistoryItem extends HookWidget {
                   width: context.widthPx * 0.1,
                   child: AppText(
                     text: number ?? "17",
-                    textStyle: $styles.textStyle.quote1,
+                    textStyle: $styles.textStyle.body1Bold,
                   ),
                 ),
                 SizedBox(
@@ -56,7 +56,7 @@ class SearchHistoryItem extends HookWidget {
                     text: description ?? "Default Description",
                     textStyle: $styles.textStyle.body5,
                     textAlign: TextAlign.justify,
-                    maxLines: 3,
+                    maxLines: 5,
                   ),
                 ),
                 const Icon(FluentIcons.arrow_step_in_right_28_regular),

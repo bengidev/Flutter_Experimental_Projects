@@ -26,7 +26,7 @@ void main() {
 
   RandomGeneratedTriviaBloc buildRandomGeneratedTriviaBloc() {
     return RandomGeneratedTriviaBloc(
-      useCase: mockGetRandomGeneratedTriviaUseCase,
+      randomGeneratedTrivia: mockGetRandomGeneratedTriviaUseCase,
     );
   }
 

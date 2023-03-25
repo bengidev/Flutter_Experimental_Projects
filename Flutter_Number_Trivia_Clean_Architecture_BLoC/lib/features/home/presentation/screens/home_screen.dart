@@ -5,8 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:number_trivia_project/core/core_barrel.dart';
 import 'package:number_trivia_project/dependency_injection.dart';
 import 'package:number_trivia_project/features/home/presentation/blocs/random_generated_trivia_bloc.dart';
-import 'package:number_trivia_project/features/home/presentation/widgets/detail_featured_trivia.dart';
 import 'package:number_trivia_project/features/home/presentation/widgets/home_barrel.dart';
+import 'package:number_trivia_project/features/number_trivia/data/models/number_trivia_model.dart';
+import 'package:number_trivia_project/features/number_trivia/domain/entities/number_trivia.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class HomeScreen extends HookWidget {
@@ -17,6 +19,8 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<List<NumberTrivia>>? futureTriviaRecords;
+
     return BlocProvider(
       create: (_) => $serviceLocator<RandomGeneratedTriviaBloc>(),
       child: BlocBuilder<RandomGeneratedTriviaBloc, RandomGeneratedTriviaState>(
@@ -31,6 +35,14 @@ class HomeScreen extends HookWidget {
               context
                   .read<RandomGeneratedTriviaBloc>()
                   .add(const GetRandomGeneratedTriviaEvent());
+
+              final sharedPreferences = $serviceLocator<SharedPreferences>();
+              futureTriviaRecords = _loadNumberTriviaRecords(
+                sharedPreferences: sharedPreferences,
+              );
+              useLogger(
+                object: "Trivia Records Value: $futureTriviaRecords",
+              );
             },
             child: ScaffoldWithSafeArea(
               child: Column(
@@ -42,12 +54,9 @@ class HomeScreen extends HookWidget {
                   HomeFeaturedTrivia(
                     onPressed: (state.status.isSuccess)
                         ? () {
-                            Navigator.of(context).pushNamed(
-                              DetailFeaturedTrivia.routeName,
-                              arguments: {
-                                'number': state.trivia?.number,
-                                'triviaDescription': state.trivia?.text,
-                              },
+                            _navigateToDetailFeaturedTrivia(
+                              context: context,
+                              state: state,
                             );
                           }
                         : null,
@@ -55,8 +64,19 @@ class HomeScreen extends HookWidget {
                         "Please Wait...",
                   ),
                   Gap($styles.insets.xs),
-                  const Expanded(
-                    child: HomeSearchHistory(),
+                  FutureBuilder<List<NumberTrivia>>(
+                    future: futureTriviaRecords,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Expanded(
+                          child: HomeSearchHistory(
+                            triviaRecords: snapshot.data,
+                          ),
+                        );
+                      } else {
+                        return const EmptySearchHistory();
+                      }
+                    },
                   ),
                 ],
               ),
@@ -67,16 +87,35 @@ class HomeScreen extends HookWidget {
     );
   }
 
+  Future<List<NumberTrivia>> _loadNumberTriviaRecords({
+    required SharedPreferences sharedPreferences,
+  }) {
+    var triviaRecords = <NumberTrivia>[];
+
+    if (sharedPreferences.containsKey("NUMBER_TRIVIA_STORE_CODE")) {
+      final sharedPreferencesValue =
+          sharedPreferences.getString("NUMBER_TRIVIA_STORE_CODE");
+      if (sharedPreferencesValue != null) {
+        triviaRecords = NumberTriviaModel.decodeToList(sharedPreferencesValue);
+      }
+    }
+
+    return Future.delayed(
+      const Duration(seconds: 1),
+      () => Future<List<NumberTrivia>>.value(triviaRecords),
+    );
+  }
+
   void _navigateToDetailFeaturedTrivia({
     required BuildContext context,
     required RandomGeneratedTriviaState state,
   }) {
     Navigator.of(context).pushNamed(
       DetailFeaturedTrivia.routeName,
-      // arguments: <String, dynamic>{
-      //   'number': state.trivia?.number.toString(),
-      //   'triviaDescription': state.trivia?.text,
-      // },
+      arguments: {
+        'number': state.trivia?.number,
+        'triviaDescription': state.trivia?.text,
+      },
     );
   }
 

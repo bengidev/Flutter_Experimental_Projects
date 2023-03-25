@@ -5,6 +5,7 @@ import 'package:number_trivia_project/core/errors/failure.dart';
 import 'package:number_trivia_project/core/usecases/usecase.dart';
 import 'package:number_trivia_project/core/utilities/input_converter.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/entities/number_trivia.dart';
+import 'package:number_trivia_project/features/number_trivia/domain/usecases/collect_number_trivia_records_case.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/usecases/get_concrete_number_trivia_case.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/usecases/get_random_number_trivia_case.dart';
 
@@ -19,38 +20,65 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
 
   final GetConcreteNumberTriviaCase getConcreteNumberTrivia;
   final GetRandomNumberTriviaCase getRandomNumberTrivia;
+  final CollectNumberTriviaRecordsCase collectNumberTriviaRecordsCase;
   final InputConverter inputConverter;
 
   NumberTriviaBloc({
     required GetConcreteNumberTriviaCase concreteTrivia,
     required GetRandomNumberTriviaCase randomTrivia,
+    required CollectNumberTriviaRecordsCase collectTriviaRecords,
     required this.inputConverter,
   })  : getConcreteNumberTrivia = concreteTrivia,
         getRandomNumberTrivia = randomTrivia,
-        super(NumberTriviaEmptyState()) {
-    on<GetTriviaForConcreteNumberEvent>((event, emit) async {
-      final inputEither = inputConverter.stringToUnsignedInteger(
-        str: event.numberString,
-      );
-      await inputEither.fold((failure) async {
-        emit(const NumberTriviaErrorState(
-            message: NumberTriviaBloc.invalidInputFailureMessage));
-      }, (parsedNumber) async {
-        emit(NumberTriviaLoadingState());
-        final params = ConcreteParams(number: parsedNumber);
-        final failureOrTrivia = await getConcreteNumberTrivia.call(params);
-        _eitherFailureOrSuccessfulState(failureOrTrivia, emit);
-      });
-    });
+        collectNumberTriviaRecordsCase = collectTriviaRecords,
+        super(const NumberTriviaState()) {
+    on<GetTriviaForConcreteNumberEvent>(_onGetTriviaForConcreteNumber);
 
-    on<GetTriviaForRandomNumberEvent>(
-      (event, emit) async {
-        emit(NumberTriviaLoadingState());
-        final params = EmptyParams();
-        final failureOrTrivia = await getRandomNumberTrivia.call(params);
-        _eitherFailureOrSuccessfulState(failureOrTrivia, emit);
-      },
+    on<GetTriviaForRandomNumberEvent>(_onGetTriviaForRandomNumber);
+
+    on<CollectNumberTriviaRecordsEvent>(_onCollectNumberTriviaRecords);
+  }
+
+  Future<void> _onGetTriviaForConcreteNumber(
+    GetTriviaForConcreteNumberEvent event,
+    Emitter<NumberTriviaState> emit,
+  ) async {
+    final inputEither = inputConverter.stringToUnsignedInteger(
+      string: event.numberString,
     );
+    inputEither.fold((failure) {
+      emit(
+        state.copyWith(
+          status: NumberTriviaStatus.failure,
+          failureMessage: NumberTriviaBloc.invalidInputFailureMessage,
+        ),
+      );
+    }, (parsedNumber) async {
+      emit(state.copyWith(status: NumberTriviaStatus.loading));
+      final params = ConcreteParams(number: parsedNumber);
+      final failureOrTrivia = await getConcreteNumberTrivia(params);
+      _eitherFailureOrSuccessfulState(failureOrTrivia, emit);
+    });
+  }
+
+  Future<void> _onGetTriviaForRandomNumber(
+    GetTriviaForRandomNumberEvent event,
+    Emitter<NumberTriviaState> emit,
+  ) async {
+    emit(state.copyWith(status: NumberTriviaStatus.loading));
+    final params = EmptyParams();
+    final failureOrTrivia = await getRandomNumberTrivia(params);
+    _eitherFailureOrSuccessfulState(failureOrTrivia, emit);
+  }
+
+  Future<void> _onCollectNumberTriviaRecords(
+    CollectNumberTriviaRecordsEvent event,
+    Emitter<NumberTriviaState> emit,
+  ) async {
+    emit(state.copyWith(status: NumberTriviaStatus.loading));
+    final params = EmptyParams();
+    final failureOrTrivia = await collectNumberTriviaRecordsCase(params);
+    _eitherFailureOrSuccessfulRecordsState(failureOrTrivia, emit);
   }
 
   Future<void> _eitherFailureOrSuccessfulState(
@@ -58,10 +86,40 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     Emitter<NumberTriviaState> emit,
   ) async {
     failureOrTrivia.fold((failure) {
-      emit(NumberTriviaErrorState(
-          message: _convertFailureToMessage(failure: failure)));
+      emit(
+        state.copyWith(
+          status: NumberTriviaStatus.failure,
+          failureMessage: _convertFailureToMessage(failure: failure),
+        ),
+      );
     }, (trivia) {
-      emit(NumberTriviaLoadedState(trivia: trivia));
+      emit(
+        state.copyWith(
+          status: NumberTriviaStatus.success,
+          trivia: trivia,
+        ),
+      );
+    });
+  }
+
+  Future<void> _eitherFailureOrSuccessfulRecordsState(
+    Either<Failure, List<NumberTrivia>> failureOrTrivia,
+    Emitter<NumberTriviaState> emit,
+  ) async {
+    failureOrTrivia.fold((failure) {
+      emit(
+        state.copyWith(
+          status: NumberTriviaStatus.failure,
+          failureMessage: _convertFailureToMessage(failure: failure),
+        ),
+      );
+    }, (triviaRecords) {
+      emit(
+        state.copyWith(
+          status: NumberTriviaStatus.success,
+          triviaRecords: triviaRecords,
+        ),
+      );
     });
   }
 

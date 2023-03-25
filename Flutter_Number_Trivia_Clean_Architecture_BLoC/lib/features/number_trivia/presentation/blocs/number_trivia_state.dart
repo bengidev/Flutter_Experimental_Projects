@@ -1,55 +1,41 @@
 part of 'number_trivia_bloc.dart';
 
-abstract class NumberTriviaState extends Equatable {
-  const NumberTriviaState();
+enum NumberTriviaStatus { initial, loading, success, failure }
 
-  @override
-  List<Object> get props => [];
-
-  @override
-  bool get stringify => true;
+extension NumberTriviaStatusX on NumberTriviaStatus {
+  bool get isInitial => this == NumberTriviaStatus.initial;
+  bool get isLoading => this == NumberTriviaStatus.loading;
+  bool get isSuccess => this == NumberTriviaStatus.success;
+  bool get isFailure => this == NumberTriviaStatus.failure;
 }
 
-class NumberTriviaEmptyState extends NumberTriviaState {
-  @override
-  List<Object> get props => [];
+class NumberTriviaState extends Equatable {
+  final NumberTriviaStatus status;
+  final NumberTrivia? trivia;
+  final List<NumberTrivia>? triviaRecords;
+  final String? failureMessage;
 
-  @override
-  bool get stringify => true;
-}
-
-class NumberTriviaErrorState extends NumberTriviaState {
-  final String message;
-
-  const NumberTriviaErrorState({
-    required this.message,
+  const NumberTriviaState({
+    this.status = NumberTriviaStatus.initial,
+    this.trivia,
+    this.triviaRecords,
+    this.failureMessage,
   });
 
-  @override
-  List<Object> get props => [message];
+  NumberTriviaState copyWith({
+    NumberTriviaStatus? status,
+    NumberTrivia? trivia,
+    List<NumberTrivia>? triviaRecords,
+    String? failureMessage,
+  }) {
+    return NumberTriviaState(
+      status: status ?? this.status,
+      trivia: trivia ?? this.trivia,
+      triviaRecords: triviaRecords ?? this.triviaRecords,
+      failureMessage: failureMessage ?? this.failureMessage,
+    );
+  }
 
   @override
-  bool get stringify => true;
-}
-
-class NumberTriviaLoadingState extends NumberTriviaState {
-  @override
-  List<Object> get props => [];
-
-  @override
-  bool get stringify => true;
-}
-
-class NumberTriviaLoadedState extends NumberTriviaState {
-  final NumberTrivia trivia;
-
-  const NumberTriviaLoadedState({
-    required this.trivia,
-  });
-
-  @override
-  List<Object> get props => [trivia];
-
-  @override
-  bool get stringify => true;
+  List<Object?> get props => [status, trivia, triviaRecords, failureMessage];
 }

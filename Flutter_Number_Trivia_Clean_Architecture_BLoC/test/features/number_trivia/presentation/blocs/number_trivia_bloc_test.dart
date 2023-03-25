@@ -1,245 +1,422 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:number_trivia_project/core/errors/failure.dart';
-import 'package:number_trivia_project/core/usecases/usecase.dart';
-import 'package:number_trivia_project/core/utilities/input_converter.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:number_trivia_project/core/core_barrel.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/entities/number_trivia.dart';
+import 'package:number_trivia_project/features/number_trivia/domain/usecases/collect_number_trivia_records_case.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/usecases/get_concrete_number_trivia_case.dart';
 import 'package:number_trivia_project/features/number_trivia/domain/usecases/get_random_number_trivia_case.dart';
 import 'package:number_trivia_project/features/number_trivia/presentation/blocs/number_trivia_bloc.dart';
 
-import 'number_trivia_bloc_test.mocks.dart';
+class MockGetConcreteNumberTriviaCase extends Mock
+    implements GetConcreteNumberTriviaCase {}
 
-@GenerateNiceMocks([MockSpec<GetConcreteNumberTriviaCase>()])
-@GenerateNiceMocks([MockSpec<GetRandomNumberTriviaCase>()])
-@GenerateNiceMocks([MockSpec<InputConverter>()])
+class MockGetRandomNumberTriviaCase extends Mock
+    implements GetRandomNumberTriviaCase {}
+
+class MockCollectNumberTriviaRecordsCase extends Mock
+    implements CollectNumberTriviaRecordsCase {}
+
+class MockInputConverter extends Mock implements InputConverter {}
+
+const tNumberString = "1";
+const tParsedNumber = 1;
+const tNumberTrivia = NumberTrivia(text: "test description", number: 1);
+const tNumberTriviaRecords = <NumberTrivia>[
+  tNumberTrivia,
+  tNumberTrivia,
+  tNumberTrivia,
+];
+
 void main() {
-  late MockGetConcreteNumberTrivia mockGetConcreteNumberTrivia;
-  late MockGetRandomNumberTrivia mockGetRandomNumberTrivia;
+  late MockGetConcreteNumberTriviaCase mockGetConcreteNumberTriviaCase;
+  late MockGetRandomNumberTriviaCase mockGetRandomNumberTriviaCase;
+  late MockCollectNumberTriviaRecordsCase mockCollectNumberTriviaRecordsCase;
   late MockInputConverter mockInputConverter;
-  late NumberTriviaBloc numberTriviaBloc;
 
   setUp(() {
-    mockGetConcreteNumberTrivia = MockGetConcreteNumberTrivia();
-    mockGetRandomNumberTrivia = MockGetRandomNumberTrivia();
+    mockGetConcreteNumberTriviaCase = MockGetConcreteNumberTriviaCase();
+    mockGetRandomNumberTriviaCase = MockGetRandomNumberTriviaCase();
+    mockCollectNumberTriviaRecordsCase = MockCollectNumberTriviaRecordsCase();
     mockInputConverter = MockInputConverter();
-    numberTriviaBloc = NumberTriviaBloc(
-        concreteTrivia: mockGetConcreteNumberTrivia,
-        randomTrivia: mockGetRandomNumberTrivia,
-        inputConverter: mockInputConverter);
   });
 
-  const tNumberString = "1";
-  const tNumberParsed = 1;
-  const tNumberTrivia = NumberTrivia(text: "test trivia", number: 1);
-
-  void setUpMockInputConverterSuccess() {
-    when(mockInputConverter.stringToUnsignedInteger(str: anyNamed("str")))
-        .thenReturn(const Right(tNumberParsed));
+  void setUpRightMockInputConverter() {
+    when(
+      () => mockInputConverter.stringToUnsignedInteger(
+        string: tNumberString,
+      ),
+    ).thenReturn(const Right(tParsedNumber));
   }
 
-  void setUpMockGetConcreteNumberTriviaSuccess() {
-    when(mockGetConcreteNumberTrivia.call(any))
-        .thenAnswer((realInvocation) async => const Right(tNumberTrivia));
+  void setUpLeftMockInputConverter() {
+    when(
+      () => mockInputConverter.stringToUnsignedInteger(
+        string: tNumberString,
+      ),
+    ).thenReturn(Left(InvalidInputFailure()));
   }
 
-  void setUpMockGetRandomNumberTriviaSuccess() {
-    when(mockGetRandomNumberTrivia.call(any))
-        .thenAnswer((realInvocation) async => const Right(tNumberTrivia));
+  void setUpRightMockGetConcreteNumberTrivia() {
+    when(
+      () => mockGetConcreteNumberTriviaCase(
+        const ConcreteParams(number: tParsedNumber),
+      ),
+    ).thenAnswer((_) async => const Right(tNumberTrivia));
   }
 
-  test(
-    "Should check when initialState of NumberTriviaBloc is NumberTriviaEmpty",
-    () async {
-      expect(numberTriviaBloc.state, equals(NumberTriviaEmptyState()));
-      // Assert
-    },
-  );
+  void setUpLeftServerFailureMockGetConcreteNumberTrivia() {
+    when(
+      () => mockGetConcreteNumberTriviaCase(
+        const ConcreteParams(number: tParsedNumber),
+      ),
+    ).thenAnswer((_) async => Left(ServerFailure()));
+  }
 
-  group("GetTriviaForConcreteNumberEvent", () {
+  void setUpLeftCacheFailureMockGetConcreteNumberTrivia() {
+    when(
+      () => mockGetConcreteNumberTriviaCase(
+        const ConcreteParams(number: tParsedNumber),
+      ),
+    ).thenAnswer((_) async => Left(CacheFailure()));
+  }
+
+  void setUpRightMockGetRandomNumberTrivia() {
+    when(() => mockGetRandomNumberTriviaCase(EmptyParams()))
+        .thenAnswer((_) async => const Right(tNumberTrivia));
+  }
+
+  void setUpLeftServerFailureMockGetRandomNumberTrivia() {
+    when(() => mockGetRandomNumberTriviaCase(EmptyParams()))
+        .thenAnswer((_) async => Left(ServerFailure()));
+  }
+
+  void setUpLeftCacheFailureMockGetRandomNumberTrivia() {
+    when(() => mockGetRandomNumberTriviaCase(EmptyParams()))
+        .thenAnswer((_) async => Left(CacheFailure()));
+  }
+
+  void setUpRightCollectNumberTriviaRecords() {
+    when(() => mockCollectNumberTriviaRecordsCase(EmptyParams()))
+        .thenAnswer((_) async => const Right(tNumberTriviaRecords));
+  }
+
+  void setUpLeftCollectNumberTriviaRecords() {
+    when(() => mockCollectNumberTriviaRecordsCase(EmptyParams()))
+        .thenAnswer((_) async => Left(CacheFailure()));
+  }
+
+  NumberTriviaBloc buildBloc() {
+    return NumberTriviaBloc(
+      concreteTrivia: mockGetConcreteNumberTriviaCase,
+      randomTrivia: mockGetRandomNumberTriviaCase,
+      collectTriviaRecords: mockCollectNumberTriviaRecordsCase,
+      inputConverter: mockInputConverter,
+    );
+  }
+
+  group('Testing NumberTriviaBloc constructor', () {
     test(
-      "Should call the InputConverter to validate and convert "
-      "the string to an unsigned integer",
-      () async {
-        // Arrange
-        setUpMockInputConverterSuccess();
-        setUpMockGetConcreteNumberTriviaSuccess();
-        // Act
-        numberTriviaBloc.add(
-            const GetTriviaForConcreteNumberEvent(numberString: tNumberString));
-        await untilCalled(
-            mockInputConverter.stringToUnsignedInteger(str: anyNamed("str")));
-        // Assert
-        verify(mockInputConverter.stringToUnsignedInteger(str: tNumberString));
+        'Given NumberTriviaBloc constructor, '
+        'When its constructor has no errors, '
+        'Then it should works properly.', () async {
+      // ARRANGE
+
+      // ACT
+
+      // ASSERT
+      expect(buildBloc, returnsNormally);
+    });
+
+    test(
+        'Given NumberTriviaBloc constructor, '
+        'When its constructor has no errors, '
+        'Then its initial state should correct.', () async {
+      // ARRANGE
+
+      // ACT
+
+      // ASSERT
+      expect(
+        buildBloc().state,
+        equals(const NumberTriviaState()),
+      );
+    });
+  });
+
+  group("Testing GetTriviaForConcreteNumberEvent", () {
+    test(
+        'Given the input number of string, '
+        'When it was successfully converted into integer type, '
+        'Then it should return the right of integer type.', () async {
+      // ARRANGE
+      setUpRightMockInputConverter();
+      setUpRightMockGetConcreteNumberTrivia();
+
+      // ACT
+      buildBloc().add(
+        const GetTriviaForConcreteNumberEvent(numberString: tNumberString),
+      );
+      final convertedResult =
+          mockInputConverter.stringToUnsignedInteger(string: tNumberString);
+
+      // ASSERT
+      expect(convertedResult, const Right(tParsedNumber));
+      verify(
+        () => mockInputConverter.stringToUnsignedInteger(
+          string: tNumberString,
+        ),
+      ).called(1);
+    });
+
+    test(
+        'Given the input number of string, '
+        'When it was failed to converted the input number into integer type, '
+        'Then it should return the left of InvalidInputFailure.', () async {
+      // ARRANGE
+      setUpLeftMockInputConverter();
+      setUpLeftServerFailureMockGetConcreteNumberTrivia();
+
+      // ACT
+      buildBloc().add(
+        const GetTriviaForConcreteNumberEvent(numberString: tNumberString),
+      );
+      final convertedResult =
+          mockInputConverter.stringToUnsignedInteger(string: tNumberString);
+
+      // ASSERT
+      expect(convertedResult, Left(InvalidInputFailure()));
+      verify(
+        () => mockInputConverter.stringToUnsignedInteger(
+          string: tNumberString,
+        ),
+      ).called(1);
+    });
+
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'Given the input number of string, '
+      'When the GetTriviaForConcreteNumberEvent was added, '
+      'Then it should return the right of NumberTriviaState with success status.',
+      build: buildBloc,
+      setUp: () {
+        setUpRightMockInputConverter();
+        setUpRightMockGetConcreteNumberTrivia();
+      },
+      act: (bloc) {
+        bloc.add(
+          const GetTriviaForConcreteNumberEvent(numberString: tNumberString),
+        );
+      },
+      expect: () => [
+        const NumberTriviaState(status: NumberTriviaStatus.loading),
+        const NumberTriviaState(
+          status: NumberTriviaStatus.success,
+          trivia: tNumberTrivia,
+        ),
+      ],
+      verify: (bloc) {
+        verify(
+          () => mockGetConcreteNumberTriviaCase(
+            const ConcreteParams(number: tParsedNumber),
+          ),
+        ).called(1);
+        verifyZeroInteractions(mockGetRandomNumberTriviaCase);
+        verifyZeroInteractions(mockCollectNumberTriviaRecordsCase);
       },
     );
 
-    test(
-      "Should emit [NumberTriviaErrorState] when the input is invalid",
-      () async {
-        // Arrange
-        when(mockInputConverter.stringToUnsignedInteger(str: anyNamed("str")))
-            .thenReturn(Left(InvalidInputFailure()));
-        // Act
-        numberTriviaBloc.add(
-            const GetTriviaForConcreteNumberEvent(numberString: tNumberString));
-        // Assert
-        final expected = [
-          const NumberTriviaErrorState(
-              message: NumberTriviaBloc.invalidInputFailureMessage)
-        ];
-        expectLater(numberTriviaBloc.stream, emitsInOrder(expected));
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'Given the input number of string, '
+      'When the GetTriviaForConcreteNumberEvent was added, '
+      'Then it should return the left of NumberTriviaState with server failure status.',
+      build: buildBloc,
+      setUp: () {
+        setUpRightMockInputConverter();
+        setUpLeftServerFailureMockGetConcreteNumberTrivia();
+      },
+      act: (bloc) {
+        bloc.add(
+          const GetTriviaForConcreteNumberEvent(numberString: tNumberString),
+        );
+      },
+      expect: () => [
+        const NumberTriviaState(status: NumberTriviaStatus.loading),
+        const NumberTriviaState(
+          status: NumberTriviaStatus.failure,
+          failureMessage: NumberTriviaBloc.serverFailureMessage,
+        ),
+      ],
+      verify: (bloc) {
+        verify(
+          () => mockGetConcreteNumberTriviaCase(
+            const ConcreteParams(number: tParsedNumber),
+          ),
+        ).called(1);
+        verifyZeroInteractions(mockGetRandomNumberTriviaCase);
+        verifyZeroInteractions(mockCollectNumberTriviaRecordsCase);
       },
     );
 
-    test(
-      "Should get the data from the concrete use case",
-      () async {
-        // Arrange
-        setUpMockInputConverterSuccess();
-        setUpMockGetConcreteNumberTriviaSuccess();
-        // Act
-        numberTriviaBloc.add(
-            const GetTriviaForConcreteNumberEvent(numberString: tNumberString));
-        await untilCalled(mockGetConcreteNumberTrivia.call(any));
-        // Assert
-        verify(mockGetConcreteNumberTrivia
-            .call(const ConcreteParams(number: tNumberParsed)));
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'Given the input number of string, '
+      'When the GetTriviaForConcreteNumberEvent was added, '
+      'Then it should return the left of NumberTriviaState with cache failure status.',
+      build: buildBloc,
+      setUp: () {
+        setUpRightMockInputConverter();
+        setUpLeftCacheFailureMockGetConcreteNumberTrivia();
       },
-    );
-
-    test(
-      "Should emit [NumberTriviaLoadingState, NumberTriviaLoadedState] "
-      "when the data is gotten successfully",
-      () async {
-        // Arrange
-        setUpMockInputConverterSuccess();
-        setUpMockGetConcreteNumberTriviaSuccess();
-        // Act
-        numberTriviaBloc.add(
-            const GetTriviaForConcreteNumberEvent(numberString: tNumberString));
-        // Assert
-        final expected = [
-          NumberTriviaLoadingState(),
-          const NumberTriviaLoadedState(trivia: tNumberTrivia),
-        ];
-        expectLater(numberTriviaBloc.stream, emitsInOrder(expected));
+      act: (bloc) {
+        bloc.add(
+          const GetTriviaForConcreteNumberEvent(numberString: tNumberString),
+        );
       },
-    );
-
-    test(
-      "Should emit [NumberTriviaLoadingState, NumberTriviaErrorState] "
-      "when getting data fails",
-      () async {
-        // Arrange
-        setUpMockInputConverterSuccess();
-        when(mockGetConcreteNumberTrivia.call(any))
-            .thenAnswer((realInvocation) async => Left(ServerFailure()));
-        // Act
-        numberTriviaBloc.add(
-            const GetTriviaForConcreteNumberEvent(numberString: tNumberString));
-        // Assert
-        final expected = [
-          NumberTriviaLoadingState(),
-          const NumberTriviaErrorState(
-              message: NumberTriviaBloc.serverFailureMessage)
-        ];
-        expectLater(numberTriviaBloc.stream, emitsInOrder(expected));
-      },
-    );
-
-    test(
-      "Should emit [NumberTriviaLoadingState, NumberTriviaErrorState] "
-      "with a proper message for the error when getting data fails",
-      () async {
-        // Arrange
-        setUpMockInputConverterSuccess();
-        when(mockGetConcreteNumberTrivia.call(any))
-            .thenAnswer((realInvocation) async => Left(CacheFailure()));
-        // Act
-        numberTriviaBloc.add(
-            const GetTriviaForConcreteNumberEvent(numberString: tNumberString));
-        // Assert
-        final expected = [
-          NumberTriviaLoadingState(),
-          const NumberTriviaErrorState(
-              message: NumberTriviaBloc.cacheFailureMessage)
-        ];
-        expectLater(numberTriviaBloc.stream, emitsInOrder(expected));
+      expect: () => [
+        const NumberTriviaState(status: NumberTriviaStatus.loading),
+        const NumberTriviaState(
+          status: NumberTriviaStatus.failure,
+          failureMessage: NumberTriviaBloc.cacheFailureMessage,
+        ),
+      ],
+      verify: (bloc) {
+        verify(
+          () => mockGetConcreteNumberTriviaCase(
+            const ConcreteParams(number: tParsedNumber),
+          ),
+        ).called(1);
+        verifyZeroInteractions(mockGetRandomNumberTriviaCase);
+        verifyZeroInteractions(mockCollectNumberTriviaRecordsCase);
       },
     );
   });
 
-  group("GetTriviaForRandomNumberEvent", () {
-    test(
-      "Should get the data from the random use case",
-      () async {
-        // Arrange
-        setUpMockGetRandomNumberTriviaSuccess();
-        // Act
-        numberTriviaBloc.add(GetTriviaForRandomNumberEvent());
-        await untilCalled(mockGetRandomNumberTrivia.call(any));
-        // Assert
-        verify(mockGetRandomNumberTrivia.call(EmptyParams()));
+  group("Testing GetTriviaForRandomNumberEvent", () {
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'Given the input of random number, '
+      'When the GetTriviaForRandomNumberEvent was added, '
+      'Then it should return the right of NumberTriviaState with success status.',
+      build: buildBloc,
+      setUp: () {
+        setUpRightMockGetRandomNumberTrivia();
+      },
+      act: (bloc) {
+        bloc.add(GetTriviaForRandomNumberEvent());
+      },
+      expect: () => [
+        const NumberTriviaState(status: NumberTriviaStatus.loading),
+        const NumberTriviaState(
+          status: NumberTriviaStatus.success,
+          trivia: tNumberTrivia,
+        ),
+      ],
+      verify: (bloc) {
+        verify(() => mockGetRandomNumberTriviaCase(EmptyParams())).called(1);
+        verifyZeroInteractions(mockGetConcreteNumberTriviaCase);
+        verifyZeroInteractions(mockCollectNumberTriviaRecordsCase);
       },
     );
 
-    test(
-      "Should emit [NumberTriviaLoadingState, NumberTriviaLoadedState] "
-      "when the data is gotten successfully",
-      () async {
-        // Arrange
-        setUpMockGetRandomNumberTriviaSuccess();
-        // Act
-        numberTriviaBloc.add(GetTriviaForRandomNumberEvent());
-        // Assert
-        final expected = [
-          NumberTriviaLoadingState(),
-          const NumberTriviaLoadedState(trivia: tNumberTrivia),
-        ];
-        expectLater(numberTriviaBloc.stream, emitsInOrder(expected));
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'Given the input of random number, '
+      'When the GetTriviaForRandomNumberEvent was added, '
+      'Then it should return the left of NumberTriviaState with server failure status.',
+      build: buildBloc,
+      setUp: () {
+        setUpLeftServerFailureMockGetRandomNumberTrivia();
+      },
+      act: (bloc) {
+        bloc.add(GetTriviaForRandomNumberEvent());
+      },
+      expect: () => [
+        const NumberTriviaState(status: NumberTriviaStatus.loading),
+        const NumberTriviaState(
+          status: NumberTriviaStatus.failure,
+          failureMessage: NumberTriviaBloc.serverFailureMessage,
+        ),
+      ],
+      verify: (bloc) {
+        verify(() => mockGetRandomNumberTriviaCase(EmptyParams())).called(1);
+        verifyZeroInteractions(mockGetConcreteNumberTriviaCase);
+        verifyZeroInteractions(mockCollectNumberTriviaRecordsCase);
       },
     );
 
-    test(
-      "Should emit [NumberTriviaLoadingState, NumberTriviaErrorState] "
-      "when getting data fails",
-      () async {
-        // Arrange
-        setUpMockGetRandomNumberTriviaSuccess();
-        when(mockGetRandomNumberTrivia.call(any))
-            .thenAnswer((realInvocation) async => Left(ServerFailure()));
-        // Act
-        numberTriviaBloc.add(GetTriviaForRandomNumberEvent());
-        // Assert
-        final expected = [
-          NumberTriviaLoadingState(),
-          const NumberTriviaErrorState(
-              message: NumberTriviaBloc.serverFailureMessage)
-        ];
-        expectLater(numberTriviaBloc.stream, emitsInOrder(expected));
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'Given the input of random number, '
+      'When the GetTriviaForRandomNumberEvent was added, '
+      'Then it should return the left of NumberTriviaState with cache failure status.',
+      build: buildBloc,
+      setUp: () {
+        setUpLeftCacheFailureMockGetRandomNumberTrivia();
+      },
+      act: (bloc) {
+        bloc.add(GetTriviaForRandomNumberEvent());
+      },
+      expect: () => [
+        const NumberTriviaState(status: NumberTriviaStatus.loading),
+        const NumberTriviaState(
+          status: NumberTriviaStatus.failure,
+          failureMessage: NumberTriviaBloc.cacheFailureMessage,
+        ),
+      ],
+      verify: (bloc) {
+        verify(() => mockGetRandomNumberTriviaCase(EmptyParams())).called(1);
+        verifyZeroInteractions(mockGetConcreteNumberTriviaCase);
+        verifyZeroInteractions(mockCollectNumberTriviaRecordsCase);
       },
     );
+  });
 
-    test(
-      "Should emit [NumberTriviaLoadingState, NumberTriviaErrorState] "
-      "with a proper message for the error when getting data fails",
-      () async {
-        // Arrange
-        setUpMockGetRandomNumberTriviaSuccess();
-        when(mockGetRandomNumberTrivia.call(any))
-            .thenAnswer((realInvocation) async => Left(CacheFailure()));
-        // Act
-        numberTriviaBloc.add(GetTriviaForRandomNumberEvent());
-        // Assert
-        final expected = [
-          NumberTriviaLoadingState(),
-          const NumberTriviaErrorState(
-              message: NumberTriviaBloc.cacheFailureMessage)
-        ];
-        expectLater(numberTriviaBloc.stream, emitsInOrder(expected));
+  group("Testing CollectNumberTriviaRecordsEvent", () {
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'Given the trigger of user input, '
+      'When the CollectNumberTriviaRecordsEvent was added, '
+      'Then it should return the right of NumberTriviaState records with success status.',
+      build: buildBloc,
+      setUp: () {
+        setUpRightCollectNumberTriviaRecords();
+      },
+      act: (bloc) {
+        bloc.add(CollectNumberTriviaRecordsEvent());
+      },
+      expect: () => [
+        const NumberTriviaState(status: NumberTriviaStatus.loading),
+        const NumberTriviaState(
+          status: NumberTriviaStatus.success,
+          triviaRecords: tNumberTriviaRecords,
+        ),
+      ],
+      verify: (bloc) {
+        verify(() => mockCollectNumberTriviaRecordsCase(EmptyParams()))
+            .called(1);
+        verifyZeroInteractions(mockGetConcreteNumberTriviaCase);
+        verifyZeroInteractions(mockGetRandomNumberTriviaCase);
+      },
+    );
+    blocTest<NumberTriviaBloc, NumberTriviaState>(
+      'Given the trigger of user input, '
+      'When the CollectNumberTriviaRecordsEvent was added, '
+      'Then it should return the left of NumberTriviaState with cache failure status.',
+      build: buildBloc,
+      setUp: () {
+        setUpLeftCollectNumberTriviaRecords();
+      },
+      act: (bloc) {
+        bloc.add(CollectNumberTriviaRecordsEvent());
+      },
+      expect: () => [
+        const NumberTriviaState(status: NumberTriviaStatus.loading),
+        const NumberTriviaState(
+          status: NumberTriviaStatus.failure,
+          failureMessage: NumberTriviaBloc.cacheFailureMessage,
+        ),
+      ],
+      verify: (bloc) {
+        verify(() => mockCollectNumberTriviaRecordsCase(EmptyParams()))
+            .called(1);
+        verifyZeroInteractions(mockGetConcreteNumberTriviaCase);
+        verifyZeroInteractions(mockGetRandomNumberTriviaCase);
       },
     );
   });
