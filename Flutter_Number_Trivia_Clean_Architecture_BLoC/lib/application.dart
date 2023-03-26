@@ -10,7 +10,6 @@ import 'package:number_trivia_project/features/home/presentation/screens/home_sc
 import 'package:number_trivia_project/features/home/presentation/widgets/detail_featured_trivia.dart';
 import 'package:number_trivia_project/features/number_trivia/presentation/screens/number_trivia_screen.dart';
 import 'package:number_trivia_project/features/onboarding/presentation/screens/onboarding_screen.dart';
-import 'package:number_trivia_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:sized_context/sized_context.dart';
 
 class Application extends HookWidget {
@@ -34,7 +33,7 @@ class Application extends HookWidget {
       darkTheme: ThemeData.from(colorScheme: $styles.colors.flexSchemeDark),
       // Use dark or light theme based on system setting.
       themeMode: ThemeMode.system,
-      initialRoute: AppNavigationBar.routeName,
+      initialRoute: OnboardingScreen.routeName,
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case AppNavigationBar.routeName:
@@ -73,12 +72,6 @@ class Application extends HookWidget {
               settings: settings,
               context: context,
               child: () => const NumberTriviaScreen(),
-            );
-          case ProfileScreen.routeName:
-            return AppRouteBuilder.buildWithSlideTransition(
-              settings: settings,
-              context: context,
-              child: () => const ProfileScreen(),
             );
         }
         return null;

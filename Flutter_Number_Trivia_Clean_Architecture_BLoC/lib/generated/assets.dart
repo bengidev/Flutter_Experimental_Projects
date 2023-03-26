@@ -12,6 +12,8 @@ class Assets {
   static const String imagesCatShot = 'assets/images/cat_shot.png';
   static const String imagesCoffeeCall = 'assets/images/coffee_call.png';
   static const String imagesDogCall = 'assets/images/dog_call.png';
+  static const String imagesDrawkitEcologyAndEnvironment =
+      'assets/images/drawkit_ecology_and_environment.png';
   static const String imagesDrawkitLarry14 =
       'assets/images/drawkit_larry_14.png';
   static const String imagesDrawkitLarry3 = 'assets/images/drawkit_larry_3.png';

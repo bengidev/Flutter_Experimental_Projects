@@ -13,4 +13,6 @@ class ConstantAssets {
   static const drawKitLarry14 = "assets/images/drawkit_larry_14.png";
   static const mentalHealthPsychologyNight =
       "assets/images/mental_health_psychology_night.png";
+  static const drawKitEcologyAndEnvironment =
+      "assets/images/drawkit_ecology_and_environment.png";
 }

@@ -6,20 +6,20 @@ import 'package:number_trivia_project/core/core_barrel.dart';
 import 'package:number_trivia_project/dependency_injection.dart';
 import 'package:sized_context/sized_context.dart';
 
-class HeaderWidget extends HookWidget {
+class NumberTriviaHeaderWidget extends HookWidget {
   final String? imageString;
   final String? message;
 
-  const HeaderWidget({
-    Key? key,
+  const NumberTriviaHeaderWidget({
+    super.key,
     this.imageString,
     this.message,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    var firstGeneratedColor = Random().nextInt(Colors.accents.length);
-    var secondGeneratedColor = Random().nextInt(Colors.accents.length);
+    final firstGeneratedColor = Random().nextInt(Colors.accents.length);
+    final secondGeneratedColor = Random().nextInt(Colors.accents.length);
 
     return Card(
       elevation: 5,

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
+import 'package:number_trivia_project/core/core_barrel.dart';
 import 'package:number_trivia_project/dependency_injection.dart';
 import 'package:number_trivia_project/features/number_trivia/presentation/blocs/number_trivia_bloc.dart';
-import 'package:number_trivia_project/features/number_trivia/presentation/widgets/widgets_barrel.dart';
+import 'package:number_trivia_project/features/number_trivia/presentation/widgets/number_trivia_widgets_barrel.dart';
 import 'package:sized_context/sized_context.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -13,7 +14,7 @@ class NumberTriviaScreen extends HookWidget {
   static const routeName = '/numberTrivia';
   static const _numberTriviaKey = Key('numberTriviaKey');
 
-  const NumberTriviaScreen({Key? key}) : super(key: key);
+  const NumberTriviaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,36 +43,28 @@ class NumberTriviaScreen extends HookWidget {
                         SizedBox(
                           width: context.widthPx,
                           height: context.heightPx * 0.45,
-                          child: _checkReturnedResultNumberTriviaWidget(
+                          child: ReturnedResultNumberTriviaWidget(
                             context: context,
                             state: state,
                           ),
                         ),
                         Gap($styles.insets.sm),
-                        SizedBox(
-                          width: context.widthPx,
-                          height: context.heightPx * 0.18,
-                          child: BodyWidget(
-                            onStringCallback: (string) =>
-                                numberStringValue.value = string,
-                          ),
+                        NumberTriviaBodyWidget(
+                          onStringCallback: (string) =>
+                              numberStringValue.value = string,
                         ),
-                        SizedBox(
-                          width: context.widthPx,
-                          height: context.heightPx * 0.14,
-                          child: FooterWidget(
-                            onSearchCallback: () {
-                              _dispatchConcreteEvent(
-                                context: context,
-                                numberString: numberStringValue.value,
-                              );
-                              _dispatchCollectRecordsEvent(context: context);
-                            },
-                            onRandomCallback: () {
-                              _dispatchRandomEvent(context: context);
-                              _dispatchCollectRecordsEvent(context: context);
-                            },
-                          ),
+                        NumberTriviaFooterWidget(
+                          onSearchCallback: () {
+                            _dispatchConcreteEvent(
+                              context: context,
+                              numberString: numberStringValue.value,
+                            );
+                            _dispatchCollectRecordsEvent(context: context);
+                          },
+                          onRandomCallback: () {
+                            _dispatchRandomEvent(context: context);
+                            _dispatchCollectRecordsEvent(context: context);
+                          },
                         ),
                       ],
                     ),
@@ -83,32 +76,6 @@ class NumberTriviaScreen extends HookWidget {
         ),
       ),
     );
-  }
-
-  Widget _checkReturnedResultNumberTriviaWidget({
-    required BuildContext context,
-    required NumberTriviaState state,
-  }) {
-    switch (state.status) {
-      case NumberTriviaStatus.initial:
-        return const HeaderWidget(
-          imageString: ConstantAssets.videoParkImage,
-          message: "Let's search the meaning of your favorite numbers",
-        );
-      case NumberTriviaStatus.loading:
-        return const AppLoadingIndicator();
-      case NumberTriviaStatus.success:
-        return HeaderWidget(
-          imageString: ConstantAssets.dogCallImage,
-          message: "The number of ${state.trivia?.number} mean is "
-              "${state.trivia?.text}",
-        );
-      case NumberTriviaStatus.failure:
-        return HeaderWidget(
-          imageString: ConstantAssets.callWaitingImage,
-          message: state.failureMessage,
-        );
-    }
   }
 
   void _dispatchConcreteEvent({

@@ -50,12 +50,11 @@ import 'package:number_trivia_project/features/number_trivia/domain/usecases/get
 import 'package:number_trivia_project/features/number_trivia/domain/usecases/get_random_number_trivia_case.dart';
 import 'package:number_trivia_project/features/number_trivia/presentation/blocs/number_trivia_bloc.dart';
 import 'package:number_trivia_project/features/number_trivia/presentation/screens/number_trivia_screen.dart';
-import 'package:number_trivia_project/features/number_trivia/presentation/widgets/body_widget.dart';
-import 'package:number_trivia_project/features/number_trivia/presentation/widgets/footer_widget.dart';
-import 'package:number_trivia_project/features/number_trivia/presentation/widgets/header_widget.dart';
-import 'package:number_trivia_project/features/number_trivia/presentation/widgets/widgets_barrel.dart';
+import 'package:number_trivia_project/features/number_trivia/presentation/widgets/number_trivia_body_widget.dart';
+import 'package:number_trivia_project/features/number_trivia/presentation/widgets/number_trivia_footer_widget.dart';
+import 'package:number_trivia_project/features/number_trivia/presentation/widgets/number_trivia_header_widget.dart';
+import 'package:number_trivia_project/features/number_trivia/presentation/widgets/number_trivia_widgets_barrel.dart';
 import 'package:number_trivia_project/features/onboarding/presentation/screens/onboarding_screen.dart';
-import 'package:number_trivia_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:number_trivia_project/generated/assets.dart';
 import 'package:number_trivia_project/main.dart';
 

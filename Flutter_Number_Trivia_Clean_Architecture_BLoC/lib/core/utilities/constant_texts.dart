@@ -8,4 +8,7 @@ class ConstantTexts {
   static const yourSearchHistory = "Your Search History";
   static const findOutTrueMeaning =
       "Find out about the true meaning of the number that was previously generated automatically just for you";
+  static const weAreVeryLucky =
+      "We're very lucky to find you. Let's find out about the meaning of your unique number.";
+  static const everyNumber = "Every number have the meaning.";
 }

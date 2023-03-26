@@ -7,7 +7,6 @@ import 'package:number_trivia_project/features/home/presentation/screens/home_sc
 import 'package:number_trivia_project/features/home/presentation/widgets/detail_featured_trivia.dart';
 import 'package:number_trivia_project/features/number_trivia/presentation/screens/number_trivia_screen.dart';
 import 'package:number_trivia_project/features/onboarding/presentation/screens/onboarding_screen.dart';
-import 'package:number_trivia_project/features/profile/presentation/screens/profile_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class AppNavigationBar extends HookWidget {
@@ -71,7 +70,6 @@ class AppNavigationBar extends HookWidget {
     return [
       const HomeScreen(),
       const NumberTriviaScreen(),
-      const ProfileScreen(),
     ];
   }
 
@@ -91,15 +89,6 @@ class AppNavigationBar extends HookWidget {
       PersistentBottomNavBarItem(
         icon: const Icon(FluentIcons.book_number_20_regular),
         title: "Trivia",
-        activeColorPrimary: $styles.colors.offWhite,
-        inactiveColorPrimary: $styles.colors.greyMedium,
-        routeAndNavigatorSettings: _buildRouteAndNavigatorSettings(
-          context: context,
-        ),
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(FluentIcons.person_available_20_regular),
-        title: "Profile",
         activeColorPrimary: $styles.colors.offWhite,
         inactiveColorPrimary: $styles.colors.greyMedium,
         routeAndNavigatorSettings: _buildRouteAndNavigatorSettings(
@@ -152,12 +141,6 @@ class AppNavigationBar extends HookWidget {
               settings: settings,
               context: context,
               child: () => const NumberTriviaScreen(),
-            );
-          case ProfileScreen.routeName:
-            return AppRouteBuilder.buildWithSlideTransition(
-              settings: settings,
-              context: context,
-              child: () => const ProfileScreen(),
             );
         }
         return null;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:number_trivia_project/core/core_barrel.dart';
 import 'package:number_trivia_project/dependency_injection.dart';
-import 'package:number_trivia_project/features/number_trivia/presentation/widgets/widgets_barrel.dart';
 import 'package:sized_context/sized_context.dart';
 
 class EmptySearchHistory extends HookWidget {
