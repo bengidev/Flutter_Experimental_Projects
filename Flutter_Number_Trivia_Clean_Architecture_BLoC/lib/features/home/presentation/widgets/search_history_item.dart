@@ -56,7 +56,7 @@ class SearchHistoryItem extends HookWidget {
                     text: description ?? "Default Description",
                     textStyle: $styles.textStyle.body5,
                     textAlign: TextAlign.justify,
-                    maxLines: 5,
+                    maxLines: 3,
                   ),
                 ),
                 const Icon(FluentIcons.arrow_step_in_right_28_regular),

@@ -10,6 +10,7 @@ import 'package:number_trivia_project/features/home/presentation/screens/home_sc
 import 'package:number_trivia_project/features/home/presentation/widgets/detail_featured_trivia.dart';
 import 'package:number_trivia_project/features/number_trivia/presentation/screens/number_trivia_screen.dart';
 import 'package:number_trivia_project/features/onboarding/presentation/screens/onboarding_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sized_context/sized_context.dart';
 
 class Application extends HookWidget {
@@ -19,6 +20,18 @@ class Application extends HookWidget {
   static AppStyles get style => _style;
 
   const Application({super.key});
+
+  bool _hasShowedOnboardingScreen() {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final operationResult =
+        sharedPreferences.getBool(OnboardingScreen.onboardingValue);
+
+    if (operationResult != null) {
+      return operationResult;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +46,9 @@ class Application extends HookWidget {
       darkTheme: ThemeData.from(colorScheme: $styles.colors.flexSchemeDark),
       // Use dark or light theme based on system setting.
       themeMode: ThemeMode.system,
-      initialRoute: OnboardingScreen.routeName,
+      initialRoute: _hasShowedOnboardingScreen()
+          ? AppNavigationBar.routeName
+          : OnboardingScreen.routeName,
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case AppNavigationBar.routeName:
