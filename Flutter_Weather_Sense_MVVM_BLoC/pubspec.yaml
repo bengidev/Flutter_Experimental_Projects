@@ -36,6 +36,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # A flutter implementation of React hooks. It adds a new kind of widget with enhanced code reuse.
+  flutter_hooks: ^0.18.6
+
   # Simple direct Service Locator that allows to decouple the interface from a concrete implementation and
   # to access the concrete implementation from everywhere in your App
   get_it: ^7.2.0
