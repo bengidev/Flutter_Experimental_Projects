@@ -47,6 +47,9 @@ dependencies:
   # Supports HTTP fetching, caching, and asset bundling.
   google_fonts: ^4.0.3
 
+  # Access MediaQuery sizing info directly on the context, also adds some helper methods for sizing and layout.
+  sized_context: ^1.0.0+4
+
 dev_dependencies:
   # Core dependencies for using Flutter Test.
   flutter_test:

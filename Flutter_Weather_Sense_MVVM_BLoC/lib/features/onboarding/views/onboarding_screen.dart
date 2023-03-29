@@ -6,7 +6,7 @@ class OnboardingScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final counter = useState(0);
+    final counter = useState<int>(0);
 
     return Scaffold(
       appBar: AppBar(
