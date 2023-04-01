@@ -20,6 +20,7 @@ class Application extends HookWidget {
         // before the application start.
         _initializeAppStyles(context: context);
 
+        // Return an empty Container when child Widget was empty.
         return child ?? Container();
       },
       title: 'Flutter Demo',
