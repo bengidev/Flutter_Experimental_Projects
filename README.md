@@ -39,6 +39,16 @@ Welcome to our project! This is the repositories of various kinds project apps m
 
 * [![Dart][Dart.dev]][Dart-url]
 * [![Flutter][Flutter.dev]][Flutter-url]
+* [![pub.dev][pub.dev]][pub-url]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+### Other Resources
+
+* [![Dribbble][Dribbble.com]][Dribbble-url]
+* [![Storyset][Storyset.com]][Storyset-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -65,11 +75,13 @@ samples, guidance on mobile development, and a full API reference._
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
 - [x] Number Trivia App
+    - [x] Show the Onboarding Feature on the first launch
     - [x] Show the meaning of numbers using concrete input numbers
     - [x] Show the meaning of numbers using random generated numbers
     - [x] Show the latest data of numbers when the internet connection was unavailable
+- [x] Weather Sense App
+    - [x] Show the Onboarding Feature on the first launch
     
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -119,9 +131,15 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [contributors-url]: https://github.com/syndicate017/Flutter_Experimental_Projects/graphs/contributors
 [Dart.dev]: https://img.shields.io/badge/-Dart-0088cc?style=for-the-badge&logo=Dart&logoColor=white
 [Dart-url]: https://dart.dev
+[Dribbble.com]: https://img.shields.io/badge/-Dribble-red?style=for-the-badge&logo=dribbble&logoColor=white
+[Dribbble-url]: https://dribbble.com
 [Flutter.dev]: https://img.shields.io/badge/-Flutter-0088cc?style=for-the-badge&logo=Flutter&logoColor=white
 [Flutter-url]: https://flutter.dev
 [license-shield]: https://img.shields.io/github/license/syndicate017/Flutter_Experimental_Projects.svg?style=for-the-badge
 [license-url]: https://github.com/syndicate017/Flutter_Experimental_Projects/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/syndicate017
+[pub.dev]: https://img.shields.io/badge/-pub.dev-0088cc?style=for-the-badge&logo=Dart&logoColor=white
+[pub-url]: https://pub.dev
+[Storyset.com]: https://img.shields.io/badge/-Storyset-3174E3?style=for-the-badge&logo=storybook&logoColor=white
+[Storyset-url]: https://storyset.com
