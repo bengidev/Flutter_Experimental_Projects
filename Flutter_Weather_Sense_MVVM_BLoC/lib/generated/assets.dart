@@ -9,4 +9,9 @@ class Assets {
       'assets/images/app_text_icon_color.png';
   static const String imagesAppTextIconTransparent =
       'assets/images/app_text_icon_transparent.png';
+  static const String imagesPlanetEarth = 'assets/images/planet_earth.svg';
+  static const String imagesSeasonChangePana =
+      'assets/images/season_change_pana.svg';
+  static const String imagesUmbrellaPana = 'assets/images/umbrella_pana.svg';
+  static const String imagesWeatherPana = 'assets/images/weather_pana.svg';
 }
