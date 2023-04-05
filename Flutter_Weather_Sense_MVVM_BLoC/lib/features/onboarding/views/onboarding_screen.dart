@@ -10,12 +10,15 @@ import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboar
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_image.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_logo.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sized_context/sized_context.dart';
 
 class OnboardingScreen extends HookWidget {
   static const _imageSize = 250.0;
   static const _logoHeight = 125.0;
   static const _dataExamples = OnboardingData.examples;
+  static const onboardingCompletedKey = "ONBOARDING_COMPLETED_KEY";
 
   const OnboardingScreen({super.key});
 
@@ -24,10 +27,12 @@ class OnboardingScreen extends HookWidget {
     final pageController = usePageController();
     final currentPage = useValueNotifier<int>(0);
     final pages = _dataExamples
-        .map<Widget>((data) => OnboardingDescription(
-              key: ValueKey(data.title),
-              data: data,
-            ))
+        .map<Widget>(
+          (data) => OnboardingDescription(
+            key: ValueKey(data.title),
+            data: data,
+          ),
+        )
         .toList();
 
     return Scaffold(
@@ -110,7 +115,10 @@ class OnboardingScreen extends HookWidget {
                   valueListenable: currentPage,
                   data: _dataExamples,
                   onPressed: () {
-                    _handleIntroCompletePressed(pageController: pageController);
+                    _handleIntroCompletePressed(
+                      context: context,
+                      pageController: pageController,
+                    );
                   },
                 ),
               ),
@@ -246,15 +254,24 @@ class OnboardingScreen extends HookWidget {
   }
 
   void _handleIntroCompletePressed({
+    required BuildContext context,
     required PageController pageController,
   }) {
     final current = pageController.page?.round() ?? 0;
 
     if (current == _dataExamples.length - 1) {
-      // context.go(ScreenPaths.home);
-      // settingsLogic.hasCompletedOnboarding.value = true;
+      final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+      sharedPreferences.setBool(OnboardingScreen.onboardingCompletedKey, true);
 
-      debugPrint("Intro Complete Pressed");
+      if (sharedPreferences
+          .containsKey(OnboardingScreen.onboardingCompletedKey)) {
+        debugPrint("Intro Complete Pressed");
+        debugPrint(
+          "Shared Preferences Status -> ${sharedPreferences.runtimeType}",
+        );
+
+        context.goNamed(AppRouter.appNavigationPath);
+      }
     }
   }
 }

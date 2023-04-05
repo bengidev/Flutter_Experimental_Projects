@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_screen.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/config/routes/app_router.dart';
 import 'package:sized_context/sized_context.dart';
 
 class Application extends HookWidget {
@@ -14,7 +14,12 @@ class Application extends HookWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routeInformationProvider:
+          AppRouter.routerInstance.routeInformationProvider,
+      routeInformationParser: AppRouter.routerInstance.routeInformationParser,
+      debugShowCheckedModeBanner: false,
+      routerDelegate: AppRouter.routerInstance.routerDelegate,
       builder: (context, child) {
         // Initializing the AppStyles inside the Application
         // before the application start.
@@ -26,7 +31,6 @@ class Application extends HookWidget {
       title: 'Flutter Demo',
       theme: ThemeData.from(colorScheme: AppColors.lightColorScheme),
       darkTheme: ThemeData.from(colorScheme: AppColors.darkColorScheme),
-      home: const OnboardingScreen(),
     );
   }
 
