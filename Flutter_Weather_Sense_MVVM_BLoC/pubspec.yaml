@@ -21,6 +21,8 @@ version: 1.0.0+1
 environment:
   sdk: '>=2.19.4 <3.0.0'
 
+
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -70,16 +72,13 @@ dependencies:
   # to access the concrete implementation from everywhere in your App
   get_it: ^7.2.0
 
+  # A declarative router for Flutter based on Navigation 2.
+  # Supporting deep linking, data-driven routes and more.
+  go_router: ^6.5.5
+
   # A Flutter package to use fonts from fonts.google.com.
   # Supports HTTP fetching, caching, and asset bundling.
   google_fonts: ^4.0.3
-
-  # A declarative router for Flutter based on Navigation 2.
-  # Supporting deep linking, data-driven routes and more.
-  go_router: ^6.5.3
-
-  # Customizable animated page indicator with a set of built-in effects.
-  smooth_page_indicator: ^1.0.1
 
   # Flutter plugin for reading and writing simple key-value pairs.
   # Wraps NSUserDefaults on iOS and SharedPreferences on Android.
@@ -87,6 +86,9 @@ dependencies:
 
   # Access MediaQuery sizing info directly on the context, also adds some helper methods for sizing and layout.
   sized_context: ^1.0.0+4
+
+  # Customizable animated page indicator with a set of built-in effects.
+  smooth_page_indicator: ^1.0.1
 
 
 
@@ -98,6 +100,10 @@ dev_dependencies:
   # An opinionated, community-driven set of lint rules for Dart and Flutter projects.
   # Like pedantic but stricter.
   lint: ^2.0.1
+
+  # A Dart mock library which simplifies mocking with null safety support and
+  # no manual mocks or code generation.
+  mocktail: ^0.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

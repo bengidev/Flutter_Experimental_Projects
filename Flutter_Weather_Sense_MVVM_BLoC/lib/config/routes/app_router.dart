@@ -19,6 +19,8 @@ class AppRouter {
   static final GlobalKey<NavigatorState> _shellNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'shell');
 
+  /// The instance builder for initializing [GoRouter]'s settings
+  /// such as [initialLocation], [routes], [redirect], etc.
   static GoRouter _buildAppRouter() {
     final appRouter = GoRouter(
       navigatorKey: _rootNavigatorKey,

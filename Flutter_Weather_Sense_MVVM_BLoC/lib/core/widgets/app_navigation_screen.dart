@@ -28,6 +28,9 @@ class AppNavigationScreen extends HookWidget {
     );
   }
 
+  /// Initialize [BottomNavigationBarItem] into [ScaffoldWithNavigationBar].
+  /// It requires minimum item for at least two [BottomNavigationBarItem]
+  /// to be able to interchange each other.
   List<BottomNavigationBarItem> _buildNavigationBarItems({
     required int index,
   }) {
@@ -48,6 +51,9 @@ class AppNavigationScreen extends HookWidget {
     return navigationBarItems;
   }
 
+  /// Initialize [Widget] to be displayed on top of [ScaffoldWithNavigationBar].
+  /// It requires minimum item for at least two [Widget]
+  /// to be able to interchange each other.
   List<Widget> _buildNavigationScreens() {
     const screens = <Widget>[
       HomeScreen(),
