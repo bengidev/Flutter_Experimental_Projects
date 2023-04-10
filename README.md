@@ -49,6 +49,7 @@ Welcome to our project! This is the repositories of various kinds project apps m
 
 * [![Dribbble][Dribbble.com]][Dribbble-url]
 * [![Storyset][Storyset.com]][Storyset-url]
+* [![WeatherIcons][WeatherIcons.com]][WeatherIcons-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -135,6 +136,8 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [Dribbble-url]: https://dribbble.com
 [Flutter.dev]: https://img.shields.io/badge/-Flutter-0088cc?style=for-the-badge&logo=Flutter&logoColor=white
 [Flutter-url]: https://flutter.dev
+[WeatherIcons.com]: https://img.shields.io/badge/-WeatherIcons-272625?style=for-the-badge&logo=Github&logoColor=white
+[WeatherIcons-url]: https://github.com/basmilius/weather-icons
 [license-shield]: https://img.shields.io/github/license/syndicate017/Flutter_Experimental_Projects.svg?style=for-the-badge
 [license-url]: https://github.com/syndicate017/Flutter_Experimental_Projects/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
