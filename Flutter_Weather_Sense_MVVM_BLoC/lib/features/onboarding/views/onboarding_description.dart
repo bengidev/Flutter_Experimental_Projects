@@ -60,7 +60,7 @@ class OnboardingDescription extends HookWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: $appStyles.insets.md,
+        horizontal: $styles.insets.md,
       ),
       child: Column(
         children: [
@@ -75,18 +75,18 @@ class OnboardingDescription extends HookWidget {
                 AppAutoResizeText(
                   width: context.widthPx * 0.9,
                   text: data.title,
-                  textStyle: $appStyles.textStyle.wonderTitle.copyWith(
-                    fontSize: 24 * $appStyles.scale,
+                  textStyle: $styles.textStyle.wonderTitle.copyWith(
+                    fontSize: 24 * $styles.scale,
                   ),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                 ),
-                Gap($appStyles.insets.sm),
+                Gap($styles.insets.sm),
                 AppAutoResizeText(
                   width: context.widthPx * 0.9,
                   height: context.heightPx * 0.07,
                   text: data.description,
-                  textStyle: $appStyles.textStyle.body5,
+                  textStyle: $styles.textStyle.body5,
                   textAlign: TextAlign.center,
                   maxLines: 4,
                 ),

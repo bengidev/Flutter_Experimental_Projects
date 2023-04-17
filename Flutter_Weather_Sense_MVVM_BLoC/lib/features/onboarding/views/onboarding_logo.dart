@@ -18,12 +18,12 @@ class OnboardingLogo extends HookWidget {
           Assets.imagesPlanetEarth,
           height: 50,
         ),
-        Gap($appStyles.insets.md),
+        Gap($styles.insets.md),
         StaticTextScale(
           child: Text(
             "Weather Sense",
-            style: $appStyles.textStyle.wonderTitle.copyWith(
-              fontSize: 32 * $appStyles.scale,
+            style: $styles.textStyle.wonderTitle.copyWith(
+              fontSize: 32 * $styles.scale,
             ),
           ),
         ),

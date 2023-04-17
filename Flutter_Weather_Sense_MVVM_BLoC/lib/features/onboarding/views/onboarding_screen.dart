@@ -36,7 +36,7 @@ class OnboardingScreen extends HookWidget {
         .toList();
 
     return Scaffold(
-      backgroundColor: $appStyles.colors.tertiary,
+      backgroundColor: $styles.colors.tertiary,
       body: SafeArea(
         child: Animate(
           delay: const Duration(milliseconds: 500),
@@ -72,7 +72,7 @@ class OnboardingScreen extends HookWidget {
                       valueListenable: currentPage,
                       builder: (context, value, child) {
                         return AnimatedSwitcher(
-                          duration: $appStyles.times.slow,
+                          duration: $styles.times.slow,
                           child: KeyedSubtree(
                             key: ValueKey(value),
                             child: OnboardingImage(
@@ -108,7 +108,7 @@ class OnboardingScreen extends HookWidget {
 
               // Finish Button
               Positioned(
-                right: $appStyles.insets.lg,
+                right: $styles.insets.lg,
                 bottom: 10,
                 child: _buildFinishButton(
                   context: context,
@@ -126,7 +126,7 @@ class OnboardingScreen extends HookWidget {
               // Navigation Helper Text
               BottomCenter(
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: $appStyles.insets.lg),
+                  padding: EdgeInsets.only(bottom: $styles.insets.lg),
                   child: _buildNavigationText(
                     context: context,
                     valueListenable: currentPage,
@@ -160,8 +160,8 @@ class OnboardingScreen extends HookWidget {
             scaleX: left ? -1 : 1,
             child: HorizontalGradientContainer(
               colors: [
-                $appStyles.colors.tertiary.withOpacity(0),
-                $appStyles.colors.tertiary,
+                $styles.colors.tertiary.withOpacity(0),
+                $styles.colors.tertiary,
               ],
               stops: const [0, 0.2],
             ),
@@ -182,7 +182,7 @@ class OnboardingScreen extends HookWidget {
       builder: (_, pageIndex, __) {
         return AnimatedOpacity(
           opacity: pageIndex == data.length - 1 ? 1 : 0,
-          duration: $appStyles.times.fast,
+          duration: $styles.times.fast,
           child: AppCircleButton(
             onPressed: onPressed ?? () {},
             child: const Icon(Icons.arrow_forward_rounded),
@@ -203,15 +203,15 @@ class OnboardingScreen extends HookWidget {
       builder: (_, pageIndex, __) {
         return AnimatedOpacity(
           opacity: pageIndex == data.length - 1 ? 0 : 1,
-          duration: $appStyles.times.fast,
+          duration: $styles.times.fast,
           child: AppButton(
             backgroundColor: Colors.transparent,
-            foregroundColor: $appStyles.colors.primary,
+            foregroundColor: $styles.colors.primary,
             onPressed: onPressed ?? () {},
             child: AppAutoResizeText(
               text: "Swipe left to continue",
               textAlign: TextAlign.center,
-              textStyle: $appStyles.textStyle.bodySmall,
+              textStyle: $styles.textStyle.bodySmall,
             ),
           ),
         );

@@ -41,8 +41,8 @@ class AppPageIndicator extends HookWidget {
         count: totalPages,
         onDotClicked: onDotPressed,
         effect: WormEffect(
-          dotColor: baseDotColor ?? $appStyles.colors.greyMedium,
-          activeDotColor: activeDotColor ?? $appStyles.colors.primary,
+          dotColor: baseDotColor ?? $styles.colors.greyMedium,
+          activeDotColor: activeDotColor ?? $styles.colors.primary,
           dotWidth: dotSize ?? 10,
           dotHeight: dotSize ?? 8,
           strokeWidth: (dotSize ?? 10) / 2,

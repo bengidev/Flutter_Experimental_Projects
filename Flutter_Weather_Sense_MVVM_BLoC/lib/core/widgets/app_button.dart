@@ -43,21 +43,21 @@ class AppButton extends HookWidget {
         ? CircleBorder(side: side)
         : RoundedRectangleBorder(
             side: side,
-            borderRadius: BorderRadius.circular($appStyles.corners.sm),
+            borderRadius: BorderRadius.circular($styles.corners.sm),
           );
 
     final style = ButtonStyle(
       minimumSize: ButtonStyleButton.allOrNull<Size>(minimumSize ?? Size.zero),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(
-        padding ?? EdgeInsets.all($appStyles.insets.md),
+        padding ?? EdgeInsets.all($styles.insets.md),
       ),
       shape: ButtonStyleButton.allOrNull<OutlinedBorder>(shape),
       backgroundColor: ButtonStyleButton.allOrNull<Color>(
-        backgroundColor ?? $appStyles.colors.primary,
+        backgroundColor ?? $styles.colors.primary,
       ),
       foregroundColor: ButtonStyleButton.allOrNull<Color>(
-        foregroundColor ?? $appStyles.colors.offBlack,
+        foregroundColor ?? $styles.colors.offBlack,
       ),
       overlayColor: ButtonStyleButton.allOrNull<Color>(Colors.transparent),
       splashFactory: NoSplash.splashFactory,
@@ -78,9 +78,8 @@ class AppButton extends HookWidget {
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
-                    border:
-                        Border.all(color: $appStyles.colors.primary, width: 3),
-                    borderRadius: BorderRadius.circular($appStyles.corners.md),
+                    border: Border.all(color: $styles.colors.primary, width: 3),
+                    borderRadius: BorderRadius.circular($styles.corners.md),
                   ),
                 ),
               ),
