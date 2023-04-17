@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Global helpers for the ease of readability
 GetIt get $serviceLocator => GetIt.instance;
 
-AppStyles get $appStyles => Application.styles;
+AppStyles get $styles => Application.styles;
 
 /// Create singletons (logic and services) that can be shared across the app.
 ///
