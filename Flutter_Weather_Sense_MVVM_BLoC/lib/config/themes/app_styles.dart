@@ -82,6 +82,15 @@ class _TextStyles {
     spacingPc: 5,
     weight: FontWeight.w600,
   );
+  late final TextStyle h5 =
+      _createFont(titleFont, sizePx: 18, heightPx: 10, spacingPc: 5);
+  late final TextStyle h5Bold = _createFont(
+    titleFont,
+    sizePx: 18,
+    heightPx: 10,
+    spacingPc: 5,
+    weight: FontWeight.w600,
+  );
 
   late final TextStyle title1 =
       _createFont(titleFont, sizePx: 16, heightPx: 26, spacingPc: 5);
