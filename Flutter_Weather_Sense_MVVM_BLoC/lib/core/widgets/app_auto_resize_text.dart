@@ -5,6 +5,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class AppAutoResizeText extends HookWidget {
   final double? width;
   final double? height;
+  final EdgeInsets? padding;
+  final Alignment? alignment;
   final String? text;
   final TextAlign? textAlign;
   final TextStyle? textStyle;
@@ -16,6 +18,8 @@ class AppAutoResizeText extends HookWidget {
     super.key,
     this.width,
     this.height,
+    this.padding,
+    this.alignment,
     this.text,
     this.textAlign,
     this.textStyle,
@@ -26,9 +30,11 @@ class AppAutoResizeText extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: width,
       height: height,
+      padding: padding,
+      alignment: alignment,
       child: AutoSizeText(
         text ?? "Default Text",
         textKey: ValueKey(text),
