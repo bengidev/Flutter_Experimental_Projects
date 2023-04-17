@@ -37,12 +37,19 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
 
+  # Functional Programming in Dart.
+  # Purify your Dart code using efficient immutable data structures, monads, lenses and other FP tools.
+  dartz: ^0.10.1
+
   # A Dart package that helps to implement value based equality without needing to
   # explicitly override == and hashCode.
   equatable: ^2.0.5
 
   # Additional alignments to help make your layouts more readable (TopLeft, TopRight, etc).
   extra_alignments: ^1.0.0+1
+
+  # A collection of Flex widgets (Columns and Rows) with additional functionality.
+  flextras: ^1.0.0
 
   # Core dependencies for using Flutter.
   flutter:
@@ -55,7 +62,7 @@ dependencies:
   flutter_hooks: ^0.18.6
 
   # A package which simplifies the task of updating your Flutter app's launcher icon.
-  flutter_launcher_icons: ^0.12.0
+  flutter_launcher_icons: ^0.13.0
 
   # Customize Flutter's default white native splash screen with background color and splash image.
   # Supports dark mode, full screen, and more.
@@ -63,7 +70,7 @@ dependencies:
 
   # An SVG rendering and widget library for Flutter, which allows painting and
   # displaying Scalable Vector Graphics 1.1 files.
-  flutter_svg: ^2.0.4
+  flutter_svg: ^2.0.5
 
   # Flutter widgets for easily adding gaps inside Flex widgets such as Columns and Rows or scrolling views.
   gap: ^2.0.1
