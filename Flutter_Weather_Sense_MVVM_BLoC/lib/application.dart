@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/config/routes/app_router.dart';
-import 'package:sized_context/sized_context.dart';
 
 class Application extends HookWidget {
   static AppStyles _styles = AppStyles();
@@ -28,7 +26,6 @@ class Application extends HookWidget {
         // Return an empty Container when child Widget was empty.
         return child ?? Container();
       },
-      title: 'Flutter Demo',
       theme: ThemeData.from(colorScheme: AppColors.lightColorScheme),
       darkTheme: ThemeData.from(colorScheme: AppColors.darkColorScheme),
     );
