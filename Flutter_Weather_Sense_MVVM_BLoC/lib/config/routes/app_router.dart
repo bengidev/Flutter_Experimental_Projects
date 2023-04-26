@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/core/utilities/shared_preferences_storage/shared_preferences_storage.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/search_weather/views/search_weather_screen.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppRouter {
   static const String appNavigationPath = '/appNavigation';
@@ -78,17 +77,7 @@ class AppRouter {
 
   /// Decide the [initialLocation] section of [GoRouter] with conditional statements.
   static bool _hasOnboardingCompleted() {
-    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
-    final hasCompletedOnboarding =
-        sharedPreferences.getBool(OnboardingScreen.onboardingCompletedKey);
-
-    if (hasCompletedOnboarding == null) return false;
-
-    if (hasCompletedOnboarding) {
-      return true;
-    } else {
-      return false;
-    }
+    return SharedPreferencesStorage.getHasOnboardingCompleted();
   }
 
   /// Handling the redirect section of [GoRouter] with additional requirement.
@@ -97,12 +86,8 @@ class AppRouter {
   static Future<String?> _handleRedirect({
     required GoRouterState state,
   }) async {
-    final sharedPreferences =
-        await $serviceLocator.getAsync<SharedPreferences>();
     final hasCompletedOnboarding =
-        sharedPreferences.getBool(OnboardingScreen.onboardingCompletedKey);
-
-    if (hasCompletedOnboarding == null) return null;
+        SharedPreferencesStorage.getHasOnboardingCompleted();
 
     if (!hasCompletedOnboarding && state.location != AppRouter.onboardingPath) {
       return AppRouter.onboardingPath;
