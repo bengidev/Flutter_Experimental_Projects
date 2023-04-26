@@ -1,24 +1,20 @@
-import 'package:extra_alignments/extra_alignments.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/core/utilities/shared_preferences_storage/shared_preferences_storage.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/widgets/gradient_container.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_description.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_image.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_logo.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sized_context/sized_context.dart';
 
 class OnboardingScreen extends HookWidget {
   static const _imageSize = 250.0;
   static const _logoHeight = 125.0;
   static const _dataExamples = OnboardingData.examples;
-  static const onboardingCompletedKey = "ONBOARDING_COMPLETED_KEY";
 
   const OnboardingScreen({super.key});
 
@@ -114,8 +110,8 @@ class OnboardingScreen extends HookWidget {
                   context: context,
                   valueListenable: currentPage,
                   data: _dataExamples,
-                  onPressed: () {
-                    _handleIntroCompletePressed(
+                  onPressed: () async {
+                    await _handleIntroCompletePressed(
                       context: context,
                       pageController: pageController,
                     );
@@ -253,24 +249,24 @@ class OnboardingScreen extends HookWidget {
     }
   }
 
-  void _handleIntroCompletePressed({
+  Future<void> _handleIntroCompletePressed({
     required BuildContext context,
     required PageController pageController,
-  }) {
+  }) async {
     final current = pageController.page?.round() ?? 0;
 
     if (current == _dataExamples.length - 1) {
-      final sharedPreferences = $serviceLocator.get<SharedPreferences>();
-      sharedPreferences.setBool(OnboardingScreen.onboardingCompletedKey, true);
+      final hasOperationCompleted =
+          await SharedPreferencesStorage.setHasOnboardingCompleted(
+        wasCompleted: true,
+      );
 
-      if (sharedPreferences
-          .containsKey(OnboardingScreen.onboardingCompletedKey)) {
+      if (hasOperationCompleted) {
         debugPrint("Intro Complete Pressed");
-        debugPrint(
-          "Shared Preferences Status -> ${sharedPreferences.runtimeType}",
-        );
 
-        context.goNamed(AppRouter.appNavigationPath);
+        if (context.mounted) {
+          context.goNamed(AppRouter.appNavigationPath);
+        }
       }
     }
   }
