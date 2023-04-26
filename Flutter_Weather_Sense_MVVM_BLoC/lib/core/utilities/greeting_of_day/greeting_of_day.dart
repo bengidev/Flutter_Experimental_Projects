@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 
+@immutable
 class GreetingOfDay {
   /// Generate [String] of [TimeOfDay] status from [DateTime].
   /// [getGreetingFromTime] will throw [UnexpectedException]
