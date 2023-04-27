@@ -1,24 +1,15 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockGreetingOfDay extends Mock implements GreetingOfDay {}
 
-class FakeBuildContext extends Fake implements BuildContext {}
-
 void main() {
   late MockGreetingOfDay greetingOfDay;
-  late FakeBuildContext buildContext;
 
   setUp(() {
     greetingOfDay = MockGreetingOfDay();
-    buildContext = FakeBuildContext();
-  });
-
-  setUpAll(() {
-    registerFallbackValue(FakeBuildContext());
   });
 
   group("Test greeting of day's class", () {
@@ -28,23 +19,21 @@ void main() {
         'Then it should return the String of TimeOfDay.', () async {
       // ARRANGE
       when(
-        () => greetingOfDay.getFromTime(
-          context: any(named: 'context', that: isA<BuildContext>()),
+        () => greetingOfDay.testGetFromTime(
           time: any(named: 'time', that: isA<DateTime>()),
         ),
-      ).thenReturn(const Right('3:00pm'));
+      ).thenReturn(const Right("Good Morning"));
 
       // ACT
-      final results = greetingOfDay.getFromTime(
-        context: buildContext,
+      final results = greetingOfDay.testGetFromTime(
         time: DateTime.now(),
       );
 
       // ASSERT
       expect(results, isA<Right<Failure, String>>());
+      expect(results, equals(const Right("Good Morning")));
       verify(
-        () => greetingOfDay.getFromTime(
-          context: any(named: 'context', that: isA<BuildContext>()),
+        () => greetingOfDay.testGetFromTime(
           time: any(
             named: 'time',
             that: isA<DateTime>(),
@@ -59,27 +48,52 @@ void main() {
         'Then it should throw UnexpectedException.', () async {
       // ARRANGE
       when(
-        () => greetingOfDay.getFromTime(
-          context: any(named: 'context', that: isA<BuildContext>()),
+        () => greetingOfDay.testGetFromTime(
           time: any(named: 'time', that: isA<DateTime>()),
         ),
       ).thenReturn(Left(UnexpectedFailure()));
 
       // ACT
-      final results = greetingOfDay.getFromTime(
-        context: buildContext,
+      final results = greetingOfDay.testGetFromTime(
         time: DateTime.now(),
       );
 
       // ASSERT
       expect(results, equals(Left(UnexpectedFailure())));
       verify(
-        () => greetingOfDay.getFromTime(
-          context: any(named: 'context', that: isA<BuildContext>()),
+        () => greetingOfDay.testGetFromTime(
           time: any(
             named: 'time',
             that: isA<DateTime>(),
           ),
+        ),
+      ).called(1);
+    });
+
+    test(
+        'Given the instance of GreetingOfDay, '
+        'When the clock time was correct, '
+        'Then it should return the Greeting Type description.', () async {
+      // ARRANGE
+      when(
+        () => greetingOfDay.testDecideGreetingWithinClockRange(
+          clockTime: any(named: 'clockTime', that: isA<int>()),
+        ),
+      ).thenReturn(
+        "Good Morning",
+      );
+
+      // ACT
+      final results = greetingOfDay.testDecideGreetingWithinClockRange(
+        clockTime: 11,
+      );
+
+      // ASSERT
+      expect(results, isA<String>());
+      expect(results, equals("Good Morning"));
+      verify(
+        () => greetingOfDay.testDecideGreetingWithinClockRange(
+          clockTime: any(named: 'clockTime', that: isA<int>()),
         ),
       ).called(1);
     });
