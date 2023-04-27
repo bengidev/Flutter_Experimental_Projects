@@ -12,18 +12,16 @@ class AppNavigationScreen extends HookWidget {
     final currentIndexState = useState<int>(0);
 
     return ScaffoldWithNavigationBar(
-      navigationBarItems:
-          _buildNavigationBarItems(index: currentIndexState.value),
+      navigationBarItems: _buildNavigationBarItems(
+        index: currentIndexState.value,
+      ),
       currentIndex: currentIndexState.value,
       onItemPressed: (index) {
         currentIndexState.value = index;
         debugPrint("onItemPressed at index -> ${currentIndexState.value}");
       },
       child: SafeArea(
-        child: IndexedStack(
-          index: currentIndexState.value,
-          children: _buildNavigationScreens(),
-        ),
+        child: _buildNavigationScreens().elementAt(currentIndexState.value),
       ),
     );
   }
