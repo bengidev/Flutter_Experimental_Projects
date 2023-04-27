@@ -65,10 +65,11 @@ class ScaffoldWithNavigationBar extends HookWidget {
         backgroundColor: navigationBarBackgroundColor,
         elevation: elevation,
         iconSize: iconSize ?? 24.0,
-        showSelectedLabels: false, // Hide selected label and center its icon.
+        showSelectedLabels: false,
+        // Hide selected label and center its icon.
         selectedItemColor: selectedItemColor,
-        showUnselectedLabels:
-            false, // Hide unselected label and center its icon.
+        showUnselectedLabels: false,
+        // Hide unselected label and center its icon.
         unselectedItemColor: unselectedItemColor,
         items: navigationBarItems,
         onTap: onItemPressed,
