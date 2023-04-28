@@ -14,7 +14,7 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final greetingDescription = useState<String>("Hallo,");
+    final greetingDescription = useState<String>("Hallo, ");
 
     return VisibilityDetector(
       key: const ValueKey('HOME_SCREEN_WIDGET_KEY'),
