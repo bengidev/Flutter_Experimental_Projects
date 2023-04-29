@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
 
+/// The [Geometry] object will be a part of the [ForwardGeocodingModel].
+/// This object is not appropriate to be created/used for the
+/// stand-alone object.
 class Geometry extends Equatable {
   final String type;
   final List<double> coordinates;
