@@ -90,6 +90,11 @@ dependencies:
   # A composable, multi-platform, Future-based API for HTTP requests.
   http: ^0.13.5
 
+  # A pure Dart library that checks for internet by opening a socket
+  # to a list of specified addresses, each with individual port and timeout.
+  # Defaults are provided for convenience.
+  internet_connection_checker: ^1.0.0+1
+
   # Flutter plugin for reading and writing simple key-value pairs.
   # Wraps NSUserDefaults on iOS and SharedPreferences on Android.
   shared_preferences: ^2.1.0
