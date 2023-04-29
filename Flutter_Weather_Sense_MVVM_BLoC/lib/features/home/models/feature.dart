@@ -1,8 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/context.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/geometry.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/properties.dart';
 
+/// The [Feature] object will be a part of the [ForwardGeocodingModel].
+/// This object is not appropriate to be created/used for the
+/// stand-alone object.
 class Feature extends Equatable {
   final String id;
   final String type;
