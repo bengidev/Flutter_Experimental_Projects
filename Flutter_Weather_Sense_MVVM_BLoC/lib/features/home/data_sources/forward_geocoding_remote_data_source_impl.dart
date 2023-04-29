@@ -6,6 +6,9 @@ import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/i_for
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
 import 'package:http/http.dart' as http;
 
+/// The implementation of the [IForwardGeocodingRemoteDataSource]
+/// This will require the implementation of all methods from
+/// [IForwardGeocodingRemoteDataSource] through the overridden phase.
 @immutable
 class ForwardGeocodingRemoteDataSourceImpl
     implements IForwardGeocodingRemoteDataSource {
@@ -44,7 +47,7 @@ class ForwardGeocodingRemoteDataSourceImpl
         rethrow;
       }
     } else {
-      throw const ServerException();
+      throw ServerException(message: response.reasonPhrase);
     }
   }
 }
