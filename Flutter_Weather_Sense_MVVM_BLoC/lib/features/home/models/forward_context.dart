@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
 
@@ -19,6 +21,8 @@ class ForwardContext extends Equatable {
     required this.text,
   });
 
+  /// Deserialize the given [json] object into a [ForwardContext]
+  /// by using the [JsonDecoder] functionality.
   factory ForwardContext.fromJson(Map<String, dynamic> json) {
     // The json list value's subtype is [dynamic],
     // so it cannot be explicitly typecast-ed to the subtype that you want.
@@ -60,6 +64,8 @@ class ForwardContext extends Equatable {
     );
   }
 
+  /// Convert this [ForwardContext] into a [json] object
+  /// by using the [JsonEncoder] functionality.
   Map<String, dynamic> toJson() => {
         'id': id,
         'short_code': shortCode,
@@ -68,9 +74,12 @@ class ForwardContext extends Equatable {
         'text': text,
       };
 
+  /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [id, shortCode, wikidata, mapboxId, text];
 
+  /// Implement [toString] method including all the given props
+  /// by changing the [stringify] value into [true]
   @override
   bool? get stringify => true;
 }
