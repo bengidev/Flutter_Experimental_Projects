@@ -1,19 +1,23 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
 
-/// The [ForwardProperties] object will be a part of the [ForwardGeocodingModel].
+/// The [ForwardProperty] object will be a part of the [ForwardGeocodingModel].
 /// This object is not appropriate to be created/used for the
 /// stand-alone object.
-class ForwardProperties extends Equatable {
+class ForwardProperty extends Equatable {
   final String wikidata;
   final String mapboxId;
 
-  const ForwardProperties({
+  const ForwardProperty({
     required this.wikidata,
     required this.mapboxId,
   });
 
-  factory ForwardProperties.fromJson(Map<String, dynamic> json) {
+  /// Deserialize the given [json] object into a [ForwardProperty]
+  /// by using the [JsonDecoder] functionality.
+  factory ForwardProperty.fromJson(Map<String, dynamic> json) {
     // The json list value's subtype is [dynamic],
     // so it cannot be explicitly typecast-ed to the subtype that you want.
     // You must safely typecast the value before you used it,
@@ -30,20 +34,25 @@ class ForwardProperties extends Equatable {
       defaultMapboxId = jsonMapboxId;
     }
 
-    return ForwardProperties(
+    return ForwardProperty(
       wikidata: defaultWikiData,
       mapboxId: defaultMapboxId,
     );
   }
 
+  /// Convert this [ForwardProperty] into a [json] object
+  /// by using the [JsonEncoder] functionality.
   Map<String, dynamic> toJson() => {
         'wikidata': wikidata,
         'mapbox_id': mapboxId,
       };
 
+  /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [wikidata, mapboxId];
 
+  /// Implement [toString] method including all the given props
+  /// by changing the [stringify] value into [true]
   @override
   bool? get stringify => true;
 }
