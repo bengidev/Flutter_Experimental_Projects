@@ -47,6 +47,19 @@ class ForwardProperty extends Equatable {
         'mapbox_id': mapboxId,
       };
 
+  /// Returns a new object of [ForwardProperty]
+  /// with the same properties as the original,
+  /// but with some of the values changed.
+  ForwardProperty copyWith({
+    String? wikidata,
+    String? mapboxId,
+  }) {
+    return ForwardProperty(
+      wikidata: wikidata ?? this.wikidata,
+      mapboxId: mapboxId ?? this.mapboxId,
+    );
+  }
+
   /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [wikidata, mapboxId];
