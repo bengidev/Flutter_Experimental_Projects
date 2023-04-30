@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_context.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geometry.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_properties.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_property.dart';
 
 /// The [ForwardFeature] object will be a part of the [ForwardGeocodingModel].
 /// This object is not appropriate to be created/used for the
@@ -12,7 +14,7 @@ class ForwardFeature extends Equatable {
   final String type;
   final List<String> placeType;
   final int relevance;
-  final ForwardProperties properties;
+  final ForwardProperty properties;
   final String text;
   final String placeName;
   final List<double> bbox;
@@ -34,6 +36,8 @@ class ForwardFeature extends Equatable {
     required this.context,
   });
 
+  /// Deserialize the given [json] object into a [ForwardFeature]
+  /// by using the [JsonDecoder] functionality.
   factory ForwardFeature.fromJson(Map<String, dynamic> json) {
     // The json list value's subtype is [dynamic],
     // so it cannot be explicitly typecast-ed to the subtype that you want.
@@ -44,7 +48,7 @@ class ForwardFeature extends Equatable {
     var defaultType = "";
     var defaultPlaceType = <String>[];
     var defaultRelevance = 0;
-    var defaultProperties = const ForwardProperties(wikidata: '', mapboxId: '');
+    var defaultProperties = const ForwardProperty(wikidata: '', mapboxId: '');
     var defaultText = "";
     var defaultPlaceName = "";
     var defaultBbox = <double>[];
@@ -78,7 +82,7 @@ class ForwardFeature extends Equatable {
       defaultRelevance = jsonRelevance;
 
       final jsonProperties = json['properties'] as Map<String, dynamic>;
-      final properties = ForwardProperties.fromJson(jsonProperties);
+      final properties = ForwardProperty.fromJson(jsonProperties);
       defaultProperties = properties;
 
       final jsonText = json['text'] as String;
@@ -122,6 +126,8 @@ class ForwardFeature extends Equatable {
     );
   }
 
+  /// Convert this [ForwardFeature] into a [json] object
+  /// by using the [JsonEncoder] functionality.
   Map<String, dynamic> toJson() => {
         'id': id,
         'type': type,
@@ -136,6 +142,7 @@ class ForwardFeature extends Equatable {
         'context': context,
       };
 
+  /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [
         id,
@@ -151,6 +158,8 @@ class ForwardFeature extends Equatable {
         context,
       ];
 
+  /// Implement [toString] method including all the given props
+  /// by changing the [stringify] value into [true]
   @override
   bool? get stringify => true;
 }
