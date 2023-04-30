@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_feature.dart';
 
@@ -14,6 +16,8 @@ class ForwardGeocodingModel extends Equatable {
     required this.attribution,
   });
 
+  /// Deserialize the given [json] object into a [ForwardGeocodingModel]
+  /// by using the [JsonDecoder] functionality.
   factory ForwardGeocodingModel.fromJson(Map<String, dynamic> json) {
     // The json list value's subtype is [dynamic],
     // so it cannot be explicitly typecast-ed to the subtype that you want.
@@ -39,7 +43,8 @@ class ForwardGeocodingModel extends Equatable {
       final jsonFeatures = json['features'] as List<dynamic>;
       final features = jsonFeatures
           .map<ForwardFeature>(
-              (e) => ForwardFeature.fromJson(e as Map<String, dynamic>))
+            (e) => ForwardFeature.fromJson(e as Map<String, dynamic>),
+          )
           .toList();
       defaultFeatures = features;
 
@@ -55,6 +60,8 @@ class ForwardGeocodingModel extends Equatable {
     );
   }
 
+  /// Convert this [ForwardGeocodingModel] into a [json] object
+  /// by using the [JsonEncoder] functionality.
   Map<String, dynamic> toJson() => {
         'type': type,
         'query': queries,
@@ -62,9 +69,12 @@ class ForwardGeocodingModel extends Equatable {
         'attribution': attribution,
       };
 
+  /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [type, queries, features, attribution];
 
+  /// Implement [toString] method including all the given props
+  /// by changing the [stringify] value into [true]
   @override
   bool? get stringify => true;
 }
