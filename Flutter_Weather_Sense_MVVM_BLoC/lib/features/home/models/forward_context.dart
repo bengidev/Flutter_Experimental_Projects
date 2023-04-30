@@ -74,6 +74,25 @@ class ForwardContext extends Equatable {
         'text': text,
       };
 
+  /// Returns a new object of [ForwardContext]
+  /// with the same properties as the original,
+  /// but with some of the values changed.
+  ForwardContext copyWith({
+    String? id,
+    String? shortCode,
+    String? wikidata,
+    String? mapboxId,
+    String? text,
+  }) {
+    return ForwardContext(
+      id: id ?? this.id,
+      shortCode: shortCode ?? this.shortCode,
+      wikidata: wikidata ?? this.wikidata,
+      mapboxId: mapboxId ?? this.mapboxId,
+      text: text ?? this.text,
+    );
+  }
+
   /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [id, shortCode, wikidata, mapboxId, text];
