@@ -69,6 +69,23 @@ class ForwardGeocodingModel extends Equatable {
         'attribution': attribution,
       };
 
+  /// Returns a new object of [ForwardGeocodingModel]
+  /// with the same properties as the original,
+  /// but with some of the values changed.
+  ForwardGeocodingModel copyWith({
+    String? type,
+    List<String>? queries,
+    List<ForwardFeature>? features,
+    String? attribution,
+  }) {
+    return ForwardGeocodingModel(
+      type: type ?? this.type,
+      queries: queries ?? this.queries,
+      features: features ?? this.features,
+      attribution: attribution ?? this.attribution,
+    );
+  }
+
   /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [type, queries, features, attribution];
