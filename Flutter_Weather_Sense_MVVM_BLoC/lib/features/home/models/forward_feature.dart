@@ -142,6 +142,37 @@ class ForwardFeature extends Equatable {
         'context': context,
       };
 
+  /// Returns a new object of [ForwardFeature]
+  /// with the same properties as the original,
+  /// but with some of the values changed.
+  ForwardFeature copyWith({
+    String? id,
+    String? type,
+    List<String>? placeType,
+    int? relevance,
+    ForwardProperty? properties,
+    String? text,
+    String? placeName,
+    List<double>? bbox,
+    List<double>? center,
+    ForwardGeometry? geometry,
+    List<ForwardContext>? context,
+  }) {
+    return ForwardFeature(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      placeType: placeType ?? this.placeType,
+      relevance: relevance ?? this.relevance,
+      properties: properties ?? this.properties,
+      text: text ?? this.text,
+      placeName: placeName ?? this.placeName,
+      bbox: bbox ?? this.bbox,
+      center: center ?? this.center,
+      geometry: geometry ?? this.geometry,
+      context: context ?? this.context,
+    );
+  }
+
   /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [
