@@ -45,6 +45,19 @@ class ForwardGeometry extends Equatable {
         'coordinates': coordinates,
       };
 
+  /// Returns a new object of [ForwardGeometry]
+  /// with the same properties as the original,
+  /// but with some of the values changed.
+  ForwardGeometry copyWith({
+    String? type,
+    List<double>? coordinates,
+  }) {
+    return ForwardGeometry(
+      type: type ?? this.type,
+      coordinates: coordinates ?? this.coordinates,
+    );
+  }
+
   /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [type, coordinates];
