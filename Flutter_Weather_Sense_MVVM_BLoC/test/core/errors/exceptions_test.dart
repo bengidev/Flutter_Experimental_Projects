@@ -15,6 +15,7 @@ void main() {
 
       // ASSERT
       expect(instance, isA<ServerException>());
+      expect(instance.stringify, equals(isTrue));
       expect(
         instance,
         equals(const ServerException(message: 'Default Message')),
@@ -33,10 +34,8 @@ void main() {
 
       // ASSERT
       expect(instance, isA<ServerException>());
-      expect(
-        instance.props,
-        equals(<Object?>['message']),
-      );
+      expect(instance.stringify, equals(isTrue));
+      expect(instance.props, equals(<Object?>['message']));
     });
   });
 
@@ -53,6 +52,7 @@ void main() {
 
       // ASSERT
       expect(instance, isA<CacheException>());
+      expect(instance.stringify, equals(isTrue));
       expect(
         instance,
         equals(const CacheException(message: 'Default Message')),
@@ -71,10 +71,8 @@ void main() {
 
       // ASSERT
       expect(instance, isA<CacheException>());
-      expect(
-        instance.props,
-        equals(<Object?>['message']),
-      );
+      expect(instance.stringify, equals(isTrue));
+      expect(instance.props, equals(<Object?>['message']));
     });
   });
 
@@ -91,6 +89,7 @@ void main() {
 
       // ASSERT
       expect(instance, isA<UnexpectedException>());
+      expect(instance.stringify, equals(isTrue));
       expect(
         instance,
         equals(const UnexpectedException(message: 'Default Message')),
@@ -109,10 +108,8 @@ void main() {
 
       // ASSERT
       expect(instance, isA<UnexpectedException>());
-      expect(
-        instance.props,
-        equals(<Object?>['message']),
-      );
+      expect(instance.stringify, equals(isTrue));
+      expect(instance.props, equals(<Object?>['message']));
     });
   });
 }
