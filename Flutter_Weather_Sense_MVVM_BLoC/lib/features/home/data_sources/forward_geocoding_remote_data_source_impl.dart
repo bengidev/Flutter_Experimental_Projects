@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
@@ -18,6 +19,17 @@ class ForwardGeocodingRemoteDataSourceImpl
     required this.httpClient,
   });
 
+  /// Send the [HttpClient]'s GET operation request
+  /// to the MapBox API.
+  ///
+  /// This method requires the provided [location].
+  ///
+  /// It will return the [Future] of [ForwardGeocodingModel]
+  /// when the operation results was succeeded, and it will
+  /// throw the [ServerException] when the operation results
+  /// has error which caused by Internet Connection,
+  /// or it will throw the [UnexpectedException]
+  /// when the operation results has unknown error.
   @override
   Future<ForwardGeocodingModel> getSearchGeocodingLocation({
     required String location,
@@ -31,6 +43,12 @@ class ForwardGeocodingRemoteDataSourceImpl
     return _getLocationFromURL(url: url);
   }
 
+  /// Simplify the [HttpClient] operation request by separating
+  /// the [getSearchGeocodingLocation] method into
+  /// the private method [_getLocationFromURL].
+  ///
+  /// This method requires the same parameters from
+  /// the [getSearchGeocodingLocation] method.
   Future<ForwardGeocodingModel> _getLocationFromURL({
     required String url,
   }) async {
@@ -46,8 +64,13 @@ class ForwardGeocodingRemoteDataSourceImpl
       } catch (e) {
         rethrow;
       }
+    } else if (response.statusCode >= 401 && response.statusCode <= 429) {
+      throw ServerException(
+        message: "code: ${response.statusCode}, "
+            "description: ${response.reasonPhrase}",
+      );
     } else {
-      throw ServerException(message: response.reasonPhrase);
+      throw const UnexpectedException();
     }
   }
 }
