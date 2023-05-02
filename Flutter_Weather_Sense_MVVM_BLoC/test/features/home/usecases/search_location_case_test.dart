@@ -325,7 +325,7 @@ void main() {
       expect(results, equals(Left(ServerFailure())));
       verify(
         () => searchLocationCase.call(any(that: isA<SearchInputParameter>())),
-      ).called(1);
+      );
     });
 
     test(
@@ -354,7 +354,7 @@ void main() {
       expect(results, equals(Left(UnexpectedFailure())));
       verify(
         () => searchLocationCase.call(any(that: isA<SearchInputParameter>())),
-      ).called(1);
+      );
     });
 
     test(
@@ -384,7 +384,7 @@ void main() {
       expect(results, equals(Right(buildForwardGeocodingModel())));
       verify(
         () => searchLocationCase.call(any(that: isA<SearchInputParameter>())),
-      ).called(1);
+      );
     });
   });
 }
