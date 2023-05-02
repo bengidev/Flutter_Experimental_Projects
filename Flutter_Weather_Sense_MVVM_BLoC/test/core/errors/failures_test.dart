@@ -15,7 +15,26 @@ void main() {
 
       // ASSERT
       expect(instance, isA<Failure>());
-      expect(instance.props, equals(<Object?>[]));
+      expect(instance.stringify, equals(isTrue));
+      expect(instance.props, equals(<Object?>[null]));
+    });
+  });
+
+  group("Test server failure's class ", () {
+    test(
+        'Given the instance of ServerFailure, '
+        'When the instance was available, '
+        'Then it should supports value equality of ServerFailure props.',
+        () async {
+      // ARRANGE
+
+      // ACT
+      final instance = ServerFailure();
+
+      // ASSERT
+      expect(instance, isA<Failure>());
+      expect(instance.stringify, equals(isTrue));
+      expect(instance.props, equals(<Object?>[null]));
     });
   });
 
@@ -32,7 +51,8 @@ void main() {
 
       // ASSERT
       expect(instance, isA<Failure>());
-      expect(instance.props, equals(<Object?>[]));
+      expect(instance.stringify, equals(isTrue));
+      expect(instance.props, equals(<Object?>[null]));
     });
   });
 
@@ -49,7 +69,8 @@ void main() {
 
       // ASSERT
       expect(instance, isA<Failure>());
-      expect(instance.props, equals(<Object?>[]));
+      expect(instance.stringify, equals(isTrue));
+      expect(instance.props, equals(<Object?>[null]));
     });
   });
 
@@ -66,7 +87,8 @@ void main() {
 
       // ASSERT
       expect(instance, isA<Failure>());
-      expect(instance.props, equals(<Object?>[]));
+      expect(instance.stringify, equals(isTrue));
+      expect(instance.props, equals(<Object?>[null]));
     });
   });
 }
