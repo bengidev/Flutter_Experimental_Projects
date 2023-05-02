@@ -16,13 +16,18 @@ class ForwardGeocodingRepositoryImpl implements IForwardGeocodingRepository {
     required this.remoteDataSource,
   });
 
+  /// Search the geocoding location based on the given [location].
+  /// This method will return the [Future] of [Failure]
+  /// when something error was happened, and return [ForwardGeocodingModel]
+  /// when the operation results was successful.
   @override
   Future<Either<Failure, ForwardGeocodingModel>> searchGeocodingLocation({
     required String location,
   }) async {
     try {
-      final locationResults =
-          await remoteDataSource.getSearchGeocodingLocation(location: location);
+      final locationResults = await remoteDataSource.getSearchGeocodingLocation(
+        location: location,
+      );
       return Right(locationResults);
     } on ServerException catch (serverException) {
       return Left(ServerFailure(message: serverException.message));
