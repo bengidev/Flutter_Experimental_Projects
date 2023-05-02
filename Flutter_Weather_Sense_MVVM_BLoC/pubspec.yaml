@@ -33,6 +33,9 @@ dependencies:
   # Flutter widget that automatically resizes text to fit perfectly within its bounds.
   auto_size_text: ^3.0.0
 
+  # Coverage data manipulation and formatting.
+  coverage: ^1.6.3
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
@@ -81,7 +84,7 @@ dependencies:
 
   # A declarative router for Flutter based on Navigation 2.
   # Supporting deep linking, data-driven routes and more.
-  go_router: ^6.5.8
+  go_router: ^7.0.0
 
   # A Flutter package to use fonts from fonts.google.com.
   # Supports HTTP fetching, caching, and asset bundling.
