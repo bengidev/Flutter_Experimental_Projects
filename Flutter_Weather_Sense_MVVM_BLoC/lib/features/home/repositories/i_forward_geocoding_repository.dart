@@ -7,6 +7,11 @@ import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forwa
 /// The base class of the [ForwardGeocodingRepositoryImpl].
 @immutable
 abstract class IForwardGeocodingRepository {
+  /// Search the geocoding location based on the given [location].
+  /// This method will return the [Future] of [Failure]
+  /// when something error was happened,
+  /// and return the [Future] of [ForwardGeocodingModel]
+  /// when the operation results was successful.
   Future<Either<Failure, ForwardGeocodingModel>> searchGeocodingLocation({
     required String location,
   });
