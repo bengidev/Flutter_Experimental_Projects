@@ -5,10 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// The base class of all the [Failure] object.
 /// This will be the return value when using [Either]
 /// for the [Left] position when an [Exception] was thrown.
-abstract class Failure extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+abstract class Failure extends Equatable {}
 
 /// The [ServerFailure] will return when the
 /// status of the [Exception] was relevant to
@@ -72,9 +69,12 @@ class UnexpectedFailure extends Failure {
     this.message,
   });
 
+  /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [message];
 
+  /// Implement [toString] method including all the given props
+  /// by changing the [stringify] value into [true]
   @override
   bool get stringify => true;
 }
