@@ -61,6 +61,10 @@ dependencies:
   # Add beautiful animated effects & builders in Flutter, via an easy, customizable, unified API.
   flutter_animate: ^4.1.1+1
 
+  # Flutter Widgets that make it easy to implement the BLoC (Business Logic Component) design pattern.
+  # Built to be used with the bloc state management package.
+  flutter_bloc: ^8.1.2
+
   # A flutter implementation of React hooks. It adds a new kind of widget with enhanced code reuse.
   flutter_hooks: ^0.18.6
 
