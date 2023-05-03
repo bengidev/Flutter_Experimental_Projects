@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/application.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/application_bloc_observer.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 
 void main() async {
@@ -16,6 +18,12 @@ void main() async {
   // Wait the Service Locator which is using get_it package
   // to finished its initialization setup before launch the app.
   await initializeServiceLocator();
+
+  // Observe the transition of all bloc activities
+  // inside the application.
+  // It will show the traces by using the
+  // debugPrint functionality.
+  Bloc.observer = ApplicationBlocObserver();
 
   // Once you've decided on the Google Fonts you want in your published app,
   // you should add the appropriate licenses to your flutter app's LicenseRegistry.
