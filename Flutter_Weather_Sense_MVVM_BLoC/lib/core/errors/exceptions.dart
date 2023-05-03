@@ -38,9 +38,12 @@ class UnexpectedException extends Equatable implements Exception {
     this.message,
   });
 
+  /// The list of properties that will be used to determine whether two instances are equal.
   @override
   List<Object?> get props => [message];
 
+  /// Implement [toString] method including all the given props
+  /// by changing the [stringify] value into [true]
   @override
   bool get stringify => true;
 }
