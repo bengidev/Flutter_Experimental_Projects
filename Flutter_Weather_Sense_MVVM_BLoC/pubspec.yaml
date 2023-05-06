@@ -84,7 +84,7 @@ dependencies:
 
   # Simple direct Service Locator that allows to decouple the interface from a concrete implementation and
   # to access the concrete implementation from everywhere in your App
-  get_it: ^7.3.0
+  get_it: ^7.4.1
 
   # A declarative router for Flutter based on Navigation 2.
   # Supporting deep linking, data-driven routes and more.
@@ -95,7 +95,7 @@ dependencies:
   google_fonts: ^4.0.4
 
   # A composable, multi-platform, Future-based API for HTTP requests.
-  http: ^0.13.5
+  http: ^0.13.6
 
   # A pure Dart library that checks for internet by opening a socket
   # to a list of specified addresses, each with individual port and timeout.
