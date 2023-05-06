@@ -1,14 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/core/utilities/shared_preferences_storage/shared_preferences_storage.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/core/widgets/gradient_container.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_description.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_image.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_logo.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_views_barrel.dart';
 import 'package:go_router/go_router.dart';
 
 class OnboardingScreen extends HookWidget {
@@ -99,14 +94,14 @@ class OnboardingScreen extends HookWidget {
               ),
 
               //Build a couple overlays to hide the content when swiping on very wide screens
-              _buildHorizontalGradientOverlay(left: true),
-              _buildHorizontalGradientOverlay(),
+              const OnboardingHorizontalGradientOverlay(isLeft: true),
+              const OnboardingHorizontalGradientOverlay(),
 
               // Finish Button
               Positioned(
                 right: $styles.insets.lg,
                 bottom: 10,
-                child: _buildFinishButton(
+                child: OnboardingFinishButton(
                   context: context,
                   valueListenable: currentPage,
                   data: _dataExamples,
@@ -123,7 +118,7 @@ class OnboardingScreen extends HookWidget {
               BottomCenter(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: $styles.insets.lg),
-                  child: _buildNavigationText(
+                  child: OnboardingNavigationText(
                     context: context,
                     valueListenable: currentPage,
                     data: _dataExamples,
@@ -139,79 +134,6 @@ class OnboardingScreen extends HookWidget {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildHorizontalGradientOverlay({bool left = false}) {
-    return Align(
-      alignment: Alignment(left ? -1 : 1, 0),
-      child: FractionallySizedBox(
-        widthFactor: 0.5,
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: left ? 0 : 200,
-            right: left ? 200 : 0,
-          ),
-          child: Transform.scale(
-            scaleX: left ? -1 : 1,
-            child: HorizontalGradientContainer(
-              colors: [
-                $styles.colors.tertiary.withOpacity(0),
-                $styles.colors.tertiary,
-              ],
-              stops: const [0, 0.2],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFinishButton({
-    required BuildContext context,
-    required ValueListenable<int> valueListenable,
-    required List<OnboardingData> data,
-    void Function()? onPressed,
-  }) {
-    return ValueListenableBuilder(
-      valueListenable: valueListenable,
-      builder: (_, pageIndex, __) {
-        return AnimatedOpacity(
-          opacity: pageIndex == data.length - 1 ? 1 : 0,
-          duration: $styles.times.fast,
-          child: AppCircleButton(
-            onPressed: onPressed ?? () {},
-            child: const Icon(Icons.arrow_forward_rounded),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildNavigationText({
-    required BuildContext context,
-    required ValueListenable<int> valueListenable,
-    required List<OnboardingData> data,
-    void Function()? onPressed,
-  }) {
-    return ValueListenableBuilder(
-      valueListenable: valueListenable,
-      builder: (_, pageIndex, __) {
-        return AnimatedOpacity(
-          opacity: pageIndex == data.length - 1 ? 0 : 1,
-          duration: $styles.times.fast,
-          child: AppButton(
-            backgroundColor: Colors.transparent,
-            foregroundColor: $styles.colors.primary,
-            onPressed: onPressed ?? () {},
-            child: AppAutoResizeText(
-              text: "Swipe left to continue",
-              textAlign: TextAlign.center,
-              textStyle: $styles.textStyle.bodySmall,
-            ),
-          ),
-        );
-      },
     );
   }
 
