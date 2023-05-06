@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/generated/assets.dart';
-import 'package:gap/gap.dart';
 
-class OnboardingLogo extends HookWidget {
+class OnboardingLogo extends StatelessWidget {
   const OnboardingLogo({super.key});
 
   @override
