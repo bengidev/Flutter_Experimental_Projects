@@ -33,6 +33,10 @@ dependencies:
   # Flutter widget that automatically resizes text to fit perfectly within its bounds.
   auto_size_text: ^3.0.0
 
+  # A testing library which makes it easy to test blocs.
+  # Built to be used with the bloc state management package.
+  bloc_test: ^9.1.1
+
   # Coverage data manipulation and formatting.
   coverage: ^1.6.3
 
