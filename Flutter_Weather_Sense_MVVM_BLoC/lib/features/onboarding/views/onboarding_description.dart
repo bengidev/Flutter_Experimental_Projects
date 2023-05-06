@@ -3,8 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/widgets/app_auto_resize_text.dart';
-import 'package:gap/gap.dart';
-import 'package:sized_context/sized_context.dart';
 
 @immutable
 class OnboardingData extends Equatable {
