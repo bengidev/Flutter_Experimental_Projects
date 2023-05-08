@@ -1,6 +1,7 @@
 export 'errors/exceptions.dart';
 export 'errors/failures.dart';
 export 'utilities/greeting_of_day/greeting_of_day.dart';
+export 'utilities/location_detail_helper/location_detail_helper.dart';
 export 'utilities/network_information/network_information.dart';
 export 'utilities/shared_preferences_storage/shared_preferences_storage.dart';
 export 'widgets/app_auto_resize_text.dart';
