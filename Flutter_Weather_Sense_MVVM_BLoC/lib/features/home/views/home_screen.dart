@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_feature.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/view_models/home_bloc.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_views_barrel.dart';
 
@@ -14,7 +15,13 @@ class HomeScreen extends HookWidget {
     final greetingDescription = useState<String>("Hallo, ");
     final firstFocusNode = useFocusNode();
     final firstTextEditingController = useTextEditingController();
+    final firstTextEditingResult = useState<String>("Empty Location");
+    final forwardFeatureCoordinates = useState<List<double>>(<double>[]);
 
+    /// Useful for side-effects and optionally canceling them.
+    /// useEffect is called synchronously on every build, unless keys is specified.
+    /// In which case useEffect is called again only,
+    /// if any value inside keys as changed.
     useEffect(
       () {
         // Start the following events when the widget is first rendered.
@@ -33,7 +40,13 @@ class HomeScreen extends HookWidget {
       },
       // Tell Flutter to rebuild this widget when
       // the values inside the bracket updates.
-      [greetingDescription, firstTextEditingController],
+      [
+        greetingDescription,
+        firstFocusNode,
+        firstTextEditingController,
+        firstTextEditingResult,
+        forwardFeatureCoordinates,
+      ],
     );
 
     return BlocProvider(
@@ -57,25 +70,38 @@ class HomeScreen extends HookWidget {
                       focusNode: firstFocusNode,
                       textEditingController: firstTextEditingController,
                       objects: _extractAutoCompleteObjects(state: state),
-                      onPressed: (resultText) async {
-                        debugPrint("onPressed Result Text -> $resultText");
+                      onPressed: (resultText, index) async {
                         _dispatchSearchLocationEvent(
                           context: context,
                           location: resultText ?? '',
+                        );
+
+                        firstTextEditingResult.value = resultText ?? "";
+                        forwardFeatureCoordinates.value =
+                            _extractForwardFeatureCoordinates(
+                          state: state,
+                          index: index ?? 0,
                         );
                       },
-                      onResult: (resultText) async {
+                      onResult: (resultText, index) async {
                         _dispatchSearchLocationEvent(
                           context: context,
-                          location: resultText ?? '',
+                          location: resultText ?? "",
                         );
-                        debugPrint("onChanged Result Text -> $resultText");
                       },
                     ),
                     Gap($styles.insets.sm),
 
                     // Body Section
-                    const HomeLocationMap(),
+                    HomeLocationMap(
+                      locationTitle: LocationDetailHelper.buildLocationTitle(
+                        objectString: firstTextEditingResult.value,
+                      ),
+                      locationSubTitle:
+                          LocationDetailHelper.buildLocationSubTitle(
+                        objectString: firstTextEditingResult.value,
+                      ),
+                    ),
                     Gap($styles.insets.sm),
 
                     // Body Section
@@ -131,6 +157,10 @@ class HomeScreen extends HookWidget {
   /// Extract the results from the [HomeBloc]'s state
   /// based on each [HomeState]'s returned values.
   ///
+  /// It will return the [ForwardFeature] when
+  /// the results from [HomeBloc]'s state was
+  /// successful.
+  ///
   /// It will return the empty [List] of [Object]
   /// when the returned [HomeState]'s values are
   /// unknown or undefined.
@@ -148,6 +178,33 @@ class HomeScreen extends HookWidget {
       }
     } else {
       return <Object>[];
+    }
+  }
+
+  /// Extract the results from the [HomeBloc]'s state
+  /// based on each [HomeState]'s returned values.
+  ///
+  /// It will return the [List] of [double] when
+  /// the results from [HomeBloc]'s state was
+  /// successful.
+  ///
+  /// It will return the empty [List] of [double]
+  /// when the returned [HomeState]'s values are
+  /// unknown or undefined.
+  List<double> _extractForwardFeatureCoordinates({
+    required HomeState state,
+    required int index,
+  }) {
+    if (state.status == HomeBlocStatus.success) {
+      final features = state.forwardGeocodingModel?.features;
+      if (features != null) {
+        final coordinates = features.elementAt(index).center;
+        return coordinates;
+      } else {
+        return <double>[];
+      }
+    } else {
+      return <double>[];
     }
   }
 }
