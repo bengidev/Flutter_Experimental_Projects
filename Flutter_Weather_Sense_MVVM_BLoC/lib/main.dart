@@ -17,7 +17,7 @@ void main() async {
 
   // Wait the Service Locator which is using get_it package
   // to finished its initialization setup before launch the app.
-  await initializeServiceLocator();
+  await DependencyInjection.initializeDependencies();
 
   // Observe the transition of all bloc activities
   // inside the application.
