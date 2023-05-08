@@ -1,4 +1,3 @@
-import 'package:extra_alignments/extra_alignments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
@@ -7,6 +6,14 @@ class AppRawAutoCompleteField extends HookWidget {
   /// [Object]s that will be used for displaying options to be selected.
   final List<Object> objects;
 
+  /// Control the focus of [TextFormField]
+  /// when interact with [AppRawAutoCompleteField].
+  final FocusNode? focusNode;
+
+  /// Control the activities of [TextFormField]
+  /// inside the [AppRawAutoCompleteField].
+  final TextEditingController? textEditingController;
+
   /// Decorate [TextFormField] elements from [InputDecoration] parameters.
   final InputDecoration? inputDecoration;
 
@@ -14,31 +21,34 @@ class AppRawAutoCompleteField extends HookWidget {
   final TextStyle? textStyle;
 
   /// Provide the results of [String] type based on
-  /// event while interacting [TextFormField] like
+  /// event when interacting [TextFormField] was done.
+  final Future<void> Function(String? resultText)? onPressed;
+
+  /// Provide the results of [String] type based on
+  /// event while interacting [TextFormField] such as
   /// onChanged, onSaved, onFieldSubmitted,
   /// and onSelected when the options value was selected.
-  final void Function(String? resultText)? onResult;
+  final Future<void> Function(String? resultText)? onResult;
 
   const AppRawAutoCompleteField({
     super.key,
     required this.objects,
+    this.focusNode,
+    this.textEditingController,
     this.inputDecoration,
     this.textStyle,
+    this.onPressed,
     this.onResult,
   });
 
   @override
   Widget build(BuildContext context) {
     return RawAutocomplete<Object>(
-      optionsBuilder: (textEditingValue) {
-        return objects.where((Object object) {
-          return object
-              .toString()
-              .contains(textEditingValue.text.toLowerCase());
-        });
-      },
-      displayStringForOption: (option) =>
-          _displayStringForOptions(object: option),
+      key: key,
+      focusNode: focusNode,
+      textEditingController: textEditingController,
+      optionsBuilder: (textEditingValue) => objects,
+      displayStringForOption: (option) => option.toString(),
       fieldViewBuilder:
           (context, textEditingController, focusNode, onFieldSubmitted) {
         return Padding(
@@ -71,18 +81,19 @@ class AppRawAutoCompleteField extends HookWidget {
                 ),
             style: textStyle ?? $styles.textStyle.body5Bold,
             textInputAction: TextInputAction.search,
-            onChanged: (text) {
-              onResult?.call(text);
+            onChanged: (text) async {
+              await onResult?.call(text);
             },
-            onSaved: (text) {
+            onSaved: (text) async {
               if (text == null) return;
-              onResult?.call(text);
+              await onResult?.call(text);
+              await onPressed?.call(text);
             },
-            onFieldSubmitted: (text) {
-              onResult?.call(text);
-              onFieldSubmitted.call();
+            onFieldSubmitted: (text) async {
+              await onResult?.call(text);
+              await onPressed?.call(text);
             },
-            onEditingComplete: () {
+            onEditingComplete: () async {
               focusNode.unfocus();
             },
             onTapOutside: (event) {
@@ -92,12 +103,10 @@ class AppRawAutoCompleteField extends HookWidget {
         );
       },
       optionsViewBuilder: (context, onSelected, options) {
-        return Padding(
-          padding: EdgeInsets.only(
-            left: $styles.insets.sm,
-            right: $styles.insets.sm,
-          ),
-          child: TopCenter(
+        return TopCenter(
+          child: SizedBox(
+            width: context.widthPct(.9),
+            height: context.heightPct(.2),
             child: Material(
               elevation: 10,
               clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -113,14 +122,25 @@ class AppRawAutoCompleteField extends HookWidget {
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 itemCount: options.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final Object option = options.elementAt(index);
+                  final option = options.elementAt(index);
+                  final optionString = option.toString();
+
+                  if (optionString.isEmpty) {
+                    return null;
+                  }
+
                   return GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       onSelected(option);
-                      onResult?.call(option.toString());
+                      await onResult?.call(optionString);
                     },
                     child: ListTile(
-                      title: Text(_displayStringForOptions(object: option)),
+                      title: Text(
+                        _buildTitleString(objectString: optionString),
+                      ),
+                      subtitle: Text(
+                        _buildSubTitleString(objectString: optionString),
+                      ),
                     ),
                   );
                 },
@@ -132,7 +152,26 @@ class AppRawAutoCompleteField extends HookWidget {
     );
   }
 
-  /// Display the [String] of each [Object] value.
-  String _displayStringForOptions({required Object object}) =>
-      object.toString();
+  /// Build [String] from the given [objectString]
+  /// and return the first index of splitted [objectString].
+  String _buildTitleString({
+    required String objectString,
+  }) {
+    final splittedStrings = objectString.split(',');
+    final firstSplittedString = splittedStrings.first;
+    return firstSplittedString;
+  }
+
+  /// Build [String] from the given [objectString]
+  /// and return the rest of splitted [objectString],
+  /// except the first index of splitted [objectString].
+  String _buildSubTitleString({
+    required String objectString,
+  }) {
+    final splittedStrings = objectString.split(', ');
+    final skippedFirstStringList = splittedStrings.sublist(1);
+    final mappedStringList =
+        skippedFirstStringList.map<String>((e) => e).toString();
+    return mappedStringList;
+  }
 }
