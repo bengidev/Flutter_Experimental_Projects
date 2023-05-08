@@ -5,9 +5,13 @@ import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/generated/assets.dart';
 
 class HomeLocationMap extends StatelessWidget {
-  /// Describe the current location based on
-  /// [TextFormField] input value.
-  final String? locationText;
+  /// Describe the current [locationTitle]
+  /// of [String] based on [TextFormField] input value.
+  final String? locationTitle;
+
+  /// Describe the current [locationSubTitle]
+  /// of [String] based on [TextFormField] input value.
+  final String? locationSubTitle;
 
   /// Show the current location with the form
   /// of a Map. You can change this [Widget]
@@ -16,7 +20,8 @@ class HomeLocationMap extends StatelessWidget {
 
   const HomeLocationMap({
     super.key,
-    this.locationText,
+    this.locationTitle,
+    this.locationSubTitle,
     this.locationMap,
   });
 
@@ -27,24 +32,25 @@ class HomeLocationMap extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: EdgeInsets.only(
-              left: $styles.insets.md,
-              right: $styles.insets.md,
+              left: $styles.insets.lg,
+              right: $styles.insets.xs,
             ),
             child: Column(
               children: [
                 AppAutoResizeText(
                   alignment: Alignment.centerLeft,
-                  text: locationText ?? "LONDON, ",
+                  text: locationTitle ?? "LONDON, ",
                   textAlign: TextAlign.left,
-                  textStyle: $styles.textStyle.body3Bold,
+                  textStyle: $styles.textStyle.body1Bold,
                   maxLines: 2,
                 ),
+                Gap($styles.insets.xs),
                 AppAutoResizeText(
                   alignment: Alignment.centerLeft,
-                  text: "United Kingdom United Kingdom",
+                  text: locationSubTitle ?? "United Kingdom United Kingdom",
                   textAlign: TextAlign.left,
                   textStyle: $styles.textStyle.body5Bold,
-                  maxLines: 2,
+                  maxLines: 3,
                 )
               ],
             ),
