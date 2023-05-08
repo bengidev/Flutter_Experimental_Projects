@@ -11,59 +11,88 @@ class HomeScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final greetingDescription = useState<String>("Hallo, ");
+    final firstFocusNode = useFocusNode();
+    final firstTextEditingController = useTextEditingController();
 
-    return VisibilityDetector(
-      key: const ValueKey('HOME_SCREEN_WIDGET_KEY'),
-      onVisibilityChanged: (visibilityInfo) {
-        final visiblePercentage = visibilityInfo.visibleFraction * 100;
-        if (visiblePercentage > 0) {
+    useEffect(
+      () {
+        // Start the following events when the widget is first rendered.
+        Future.microtask(() {
           greetingDescription.value = _generateGreetingDay(
             time: DateTime.now(),
           );
-        }
+
+          debugPrint("Microtask from UseEffect: $greetingDescription");
+        });
+
+        // We could optionally return some "dispose" logic here.
+        // We can return more than one disposing event by
+        // returning a void Function, like return () {}.
+        return null;
       },
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              // Header Section
-              HomeGreetingDescription(
-                greetingMessage: greetingDescription.value,
+      // Tell Flutter to rebuild this widget when
+      // the values inside the bracket updates.
+      [greetingDescription, firstTextEditingController],
+    );
+
+    return BlocProvider(
+      create: (context) => $serviceLocator.get<HomeBloc>(),
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return Scaffold(
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Header Section
+                    HomeGreetingDescription(
+                      greetingMessage: greetingDescription.value,
+                    ),
+                    Gap($styles.insets.md),
+
+                    // Header Section
+                    AppRawAutoCompleteField(
+                      key: const ValueKey('FIRST_APP_TEXT_FORM_FIELD'),
+                      focusNode: firstFocusNode,
+                      textEditingController: firstTextEditingController,
+                      objects: _extractAutoCompleteObjects(state: state),
+                      onPressed: (resultText) async {
+                        debugPrint("onPressed Result Text -> $resultText");
+                        _dispatchSearchLocationEvent(
+                          context: context,
+                          location: resultText ?? '',
+                        );
+                      },
+                      onResult: (resultText) async {
+                        _dispatchSearchLocationEvent(
+                          context: context,
+                          location: resultText ?? '',
+                        );
+                        debugPrint("onChanged Result Text -> $resultText");
+                      },
+                    ),
+                    Gap($styles.insets.sm),
+
+                    // Body Section
+                    const HomeLocationMap(),
+                    Gap($styles.insets.sm),
+
+                    // Body Section
+                    const HomeWeatherCard(),
+                    Gap($styles.insets.lg),
+
+                    // Body Section
+                    const HomeEarlyWarningDescription(),
+                    Gap($styles.insets.sm),
+
+                    // Footer Section
+                    const HomeEarlyWarningCards(),
+                  ],
+                ),
               ),
-              Gap($styles.insets.md),
-
-              // Header Section
-              AppRawAutoCompleteField(
-                key: const ValueKey('FIRST_APP_TEXT_FORM_FIELD'),
-                objects: const <String>[
-                  "Object String 1",
-                  "Object String 2",
-                  "Object String 3",
-                ],
-                onResult: (resultText) {
-                  if (resultText == null) return;
-                  debugPrint("Result Text -> $resultText");
-                },
-              ),
-              Gap($styles.insets.sm),
-
-              // Body Section
-              const HomeLocationMap(),
-              Gap($styles.insets.sm),
-
-              // Body Section
-              const HomeWeatherCard(),
-              Gap($styles.insets.lg),
-
-              // Body Section
-              const HomeEarlyWarningDescription(),
-              Gap($styles.insets.sm),
-
-              // Footer Section
-              const HomeEarlyWarningCards(),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
