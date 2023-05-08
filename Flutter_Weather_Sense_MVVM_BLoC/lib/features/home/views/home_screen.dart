@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/view_models/home_bloc.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_views_barrel.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 class HomeScreen extends HookWidget {
   const HomeScreen({super.key});
@@ -113,5 +114,40 @@ class HomeScreen extends HookWidget {
       (results) => stringResults = results,
     );
     return stringResults;
+  }
+
+  /// Send the [SearchGeocodingLocationEvent] into the
+  /// [HomeBloc] by providing the [context] and [location]
+  /// parameters.
+  void _dispatchSearchLocationEvent({
+    required BuildContext context,
+    required String location,
+  }) {
+    context
+        .read<HomeBloc>()
+        .add(SearchGeocodingLocationEvent(location: location));
+  }
+
+  /// Extract the results from the [HomeBloc]'s state
+  /// based on each [HomeState]'s returned values.
+  ///
+  /// It will return the empty [List] of [Object]
+  /// when the returned [HomeState]'s values are
+  /// unknown or undefined.
+  List<Object> _extractAutoCompleteObjects({
+    required HomeState state,
+  }) {
+    if (state.status == HomeBlocStatus.success) {
+      final features = state.forwardGeocodingModel?.features;
+      if (features != null) {
+        final placeNames =
+            features.map<String>((feature) => feature.placeName).toList();
+        return placeNames;
+      } else {
+        return <Object>[];
+      }
+    } else {
+      return <Object>[];
+    }
   }
 }
