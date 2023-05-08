@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 
 class AppRawAutoCompleteField extends HookWidget {
   /// [Object]s that will be used for displaying options to be selected.
@@ -20,15 +21,15 @@ class AppRawAutoCompleteField extends HookWidget {
   /// Change the [TextStyle] of [TextFormField].
   final TextStyle? textStyle;
 
-  /// Provide the results of [String] type based on
-  /// event when interacting [TextFormField] was done.
-  final Future<void> Function(String? resultText)? onPressed;
+  /// Provide the results of [resultText] and [index]
+  /// based on event when interacting [TextFormField] was done.
+  final Future<void> Function(String? resultText, int? index)? onPressed;
 
-  /// Provide the results of [String] type based on
-  /// event while interacting [TextFormField] such as
+  /// Provide the results of of [resultText] and [index]
+  /// based on event while interacting [TextFormField] such as
   /// onChanged, onSaved, onFieldSubmitted,
   /// and onSelected when the options value was selected.
-  final Future<void> Function(String? resultText)? onResult;
+  final Future<void> Function(String? resultText, int? index)? onResult;
 
   const AppRawAutoCompleteField({
     super.key,
@@ -82,16 +83,16 @@ class AppRawAutoCompleteField extends HookWidget {
             style: textStyle ?? $styles.textStyle.body5Bold,
             textInputAction: TextInputAction.search,
             onChanged: (text) async {
-              await onResult?.call(text);
+              await onResult?.call(text, 0);
             },
             onSaved: (text) async {
               if (text == null) return;
-              await onResult?.call(text);
-              await onPressed?.call(text);
+              await onResult?.call(text, 0);
+              await onPressed?.call(text, 0);
             },
             onFieldSubmitted: (text) async {
-              await onResult?.call(text);
-              await onPressed?.call(text);
+              await onResult?.call(text, 0);
+              await onPressed?.call(text, 0);
             },
             onEditingComplete: () async {
               focusNode.unfocus();
@@ -132,14 +133,19 @@ class AppRawAutoCompleteField extends HookWidget {
                   return GestureDetector(
                     onTap: () async {
                       onSelected(option);
-                      await onResult?.call(optionString);
+                      await onResult?.call(optionString, index);
+                      await onPressed?.call(optionString, index);
                     },
                     child: ListTile(
                       title: Text(
-                        _buildTitleString(objectString: optionString),
+                        LocationDetailHelper.buildLocationTitle(
+                          objectString: optionString,
+                        ),
                       ),
                       subtitle: Text(
-                        _buildSubTitleString(objectString: optionString),
+                        LocationDetailHelper.buildLocationSubTitle(
+                          objectString: optionString,
+                        ),
                       ),
                     ),
                   );
@@ -150,28 +156,5 @@ class AppRawAutoCompleteField extends HookWidget {
         );
       },
     );
-  }
-
-  /// Build [String] from the given [objectString]
-  /// and return the first index of splitted [objectString].
-  String _buildTitleString({
-    required String objectString,
-  }) {
-    final splittedStrings = objectString.split(',');
-    final firstSplittedString = splittedStrings.first;
-    return firstSplittedString;
-  }
-
-  /// Build [String] from the given [objectString]
-  /// and return the rest of splitted [objectString],
-  /// except the first index of splitted [objectString].
-  String _buildSubTitleString({
-    required String objectString,
-  }) {
-    final splittedStrings = objectString.split(', ');
-    final skippedFirstStringList = splittedStrings.sublist(1);
-    final mappedStringList =
-        skippedFirstStringList.map<String>((e) => e).toString();
-    return mappedStringList;
   }
 }
