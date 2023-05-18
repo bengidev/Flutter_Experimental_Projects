@@ -26,7 +26,7 @@ class OnboardingFinishButton extends StatelessWidget {
           opacity: pageIndex == data.length - 1 ? 1 : 0,
           duration: $styles.times.fast,
           child: AppCircleButton(
-            onPressed: onPressed ?? () {},
+            onPressed: onPressed,
             child: const Icon(Icons.arrow_forward_rounded),
           ),
         );
