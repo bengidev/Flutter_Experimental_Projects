@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.4 <3.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 
 
@@ -73,11 +73,11 @@ dependencies:
   flutter_hooks: ^0.18.6
 
   # A package which simplifies the task of updating your Flutter app's launcher icon.
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.11.0
 
   # Customize Flutter's default white native splash screen with background color and splash image.
   # Supports dark mode, full screen, and more.
-  flutter_native_splash: ^2.2.19
+  flutter_native_splash: ^2.2.16
 
   # An SVG rendering and widget library for Flutter, which allows painting and
   # displaying Scalable Vector Graphics 1.1 files.
@@ -88,11 +88,11 @@ dependencies:
 
   # Simple direct Service Locator that allows to decouple the interface from a concrete implementation and
   # to access the concrete implementation from everywhere in your App
-  get_it: ^7.4.1
+  get_it: ^7.6.0
 
   # A declarative router for Flutter based on Navigation 2.
   # Supporting deep linking, data-driven routes and more.
-  go_router: ^7.0.0
+  go_router: ^7.0.1
 
   # A Flutter package to use fonts from fonts.google.com.
   # Supports HTTP fetching, caching, and asset bundling.
@@ -106,11 +106,20 @@ dependencies:
   # Defaults are provided for convenience.
   internet_connection_checker: ^1.0.0+1
 
+  # A Flutter plugin for integrating Mapbox Maps inside a Flutter application
+  # on Android, iOS and web platforms.
+  mapbox_gl: ^0.16.0
+
+  # Permission plugin for Flutter.
+  # This plugin provides a cross-platform (iOS, Android) API to request and check permissions.
+  permission_handler: ^10.2.0
+
   # Flutter plugin for reading and writing simple key-value pairs.
   # Wraps NSUserDefaults on iOS and SharedPreferences on Android.
-  shared_preferences: ^2.1.0
+  shared_preferences: ^2.1.1
 
-  # Access MediaQuery sizing info directly on the context, also adds some helper methods for sizing and layout.
+  # Access MediaQuery sizing info directly on the context,
+  # also adds some helper methods for sizing and layout.
   sized_context: ^1.0.0+4
 
   # Customizable animated page indicator with a set of built-in effects.
