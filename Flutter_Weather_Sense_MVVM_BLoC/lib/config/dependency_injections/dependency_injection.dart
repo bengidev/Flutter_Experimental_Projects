@@ -11,11 +11,19 @@ import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Global helpers for the ease of Service Locator's readability.
+/// Global helpers for the ease of Service Locator's usage.
 GetIt get $serviceLocator => GetIt.instance;
 
-/// Global helpers for the ease of AppStyles' readability.
+/// Global helpers for the ease of AppStyles' usage.
 AppStyles get $styles => Application.styles;
+
+/// Global helpers for the ease of MapBox Access Token's usage.
+String get $mapBoxAccessToken =>
+    'pk.eyJ1Ijoic3luZGljYXRlMDE3IiwiYSI6ImNsZ2FmYjdodTA4NnMzcnByYjhneHFyd2oifQ.GhpidZgojTsBEGluIkWvTw';
+
+/// Global helpers for the ease of MapBox Access Style URLs' usage.
+String get $mapBoxStyleUrl =>
+    'mapbox://styles/syndicate017/clhpiogvt01vj01pg3uux95fo';
 
 class DependencyInjection {
   /// Create singletons (logic and services) that can be shared across the app.
