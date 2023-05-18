@@ -8,7 +8,7 @@ class AppCircleButton extends HookWidget {
   final Color? backgroundColor;
   final BorderSide? borderSide;
   final Widget? child;
-  final void Function() onPressed;
+  final void Function()? onPressed;
 
   const AppCircleButton({
     super.key,
@@ -16,7 +16,7 @@ class AppCircleButton extends HookWidget {
     this.backgroundColor,
     this.borderSide,
     this.child,
-    required this.onPressed,
+    this.onPressed,
   });
 
   @override
