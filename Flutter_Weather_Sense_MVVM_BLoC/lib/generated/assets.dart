@@ -195,6 +195,7 @@ class Assets {
   static const String imagesPartlyCloudyNightSnow =
       'assets/images/partly-cloudy-night-snow.svg';
   static const String imagesPlanetEarth = 'assets/images/planet_earth.svg';
+  static const String imagesPointMarker = 'assets/images/point-marker.png';
   static const String imagesPollen = 'assets/images/pollen.svg';
   static const String imagesPollenFlower = 'assets/images/pollen-flower.svg';
   static const String imagesPollenGrass = 'assets/images/pollen-grass.svg';
