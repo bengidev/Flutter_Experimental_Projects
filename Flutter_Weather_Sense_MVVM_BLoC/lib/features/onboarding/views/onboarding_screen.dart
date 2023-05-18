@@ -5,6 +5,7 @@ import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_views_barrel.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class OnboardingScreen extends HookWidget {
   static const _imageSize = 250.0;
@@ -175,6 +176,30 @@ class OnboardingScreen extends HookWidget {
     required BuildContext context,
     required PageController pageController,
   }) async {
+    final permissionResults = await _requestDeviceFunctionalityPermissions();
+    debugPrint("Permission Results -> $permissionResults");
+
+    if (context.mounted) {
+      await _saveOnboardingState(
+        context: context,
+        pageController: pageController,
+      );
+    }
+  }
+
+  Future<Map<Permission, PermissionStatus>>
+      _requestDeviceFunctionalityPermissions() async {
+    return PermissionsHandleHelper.requestPermissions(
+      permissions: [
+        Permission.location,
+      ],
+    );
+  }
+
+  Future<void> _saveOnboardingState({
+    required BuildContext context,
+    required PageController pageController,
+  }) async {
     final current = pageController.page?.round() ?? 0;
 
     if (current == _dataExamples.length - 1) {
@@ -183,13 +208,17 @@ class OnboardingScreen extends HookWidget {
         wasCompleted: true,
       );
 
-      if (hasOperationCompleted) {
-        debugPrint("Intro Complete Pressed");
+      if (hasOperationCompleted && context.mounted) {
+        debugPrint("Intro Complete Pressed with saved onboarding state");
 
-        if (context.mounted) {
-          context.goNamed(AppRouter.appNavigationPath);
-        }
+        _navigateToAppNavigation(context: context);
       }
     }
+  }
+
+  void _navigateToAppNavigation({
+    required BuildContext context,
+  }) {
+    context.goNamed(AppRouter.appNavigationPath);
   }
 }
