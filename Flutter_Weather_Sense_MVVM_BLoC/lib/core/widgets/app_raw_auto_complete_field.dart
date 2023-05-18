@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
@@ -21,15 +23,18 @@ class AppRawAutoCompleteField extends HookWidget {
   /// Change the [TextStyle] of [TextFormField].
   final TextStyle? textStyle;
 
+  /// Show the hint text inside the [TextFormField].
+  final String? hintText;
+
   /// Provide the results of [resultText] and [index]
   /// based on event when interacting [TextFormField] was done.
-  final Future<void> Function(String? resultText, int? index)? onPressed;
+  final Future<void> Function(String resultText, int index)? onPressed;
 
   /// Provide the results of of [resultText] and [index]
   /// based on event while interacting [TextFormField] such as
   /// onChanged, onSaved, onFieldSubmitted,
   /// and onSelected when the options value was selected.
-  final Future<void> Function(String? resultText, int? index)? onResult;
+  final Future<void> Function(String resultText, int index)? onTextChanged;
 
   const AppRawAutoCompleteField({
     super.key,
@@ -38,8 +43,9 @@ class AppRawAutoCompleteField extends HookWidget {
     this.textEditingController,
     this.inputDecoration,
     this.textStyle,
+    this.hintText,
     this.onPressed,
-    this.onResult,
+    this.onTextChanged,
   });
 
   @override
@@ -77,25 +83,25 @@ class AppRawAutoCompleteField extends HookWidget {
                   ),
                   prefixIcon: const Icon(Icons.search_rounded),
                   prefixIconColor: $styles.colors.offBlack,
-                  hintText: "Search your location",
+                  hintText: hintText ?? "Search your location",
                   hintStyle: $styles.textStyle.body5,
                 ),
             style: textStyle ?? $styles.textStyle.body5Bold,
             textInputAction: TextInputAction.search,
             onChanged: (text) async {
-              await onResult?.call(text, 0);
+              await onTextChanged?.call(text, 0);
             },
             onSaved: (text) async {
               if (text == null) return;
-              await onResult?.call(text, 0);
               await onPressed?.call(text, 0);
             },
             onFieldSubmitted: (text) async {
-              await onResult?.call(text, 0);
               await onPressed?.call(text, 0);
+              // focusNode.unfocus();
             },
             onEditingComplete: () async {
-              focusNode.unfocus();
+              await onPressed?.call(textEditingController.text, 0);
+              // focusNode.unfocus();
             },
             onTapOutside: (event) {
               focusNode.unfocus();
@@ -121,7 +127,7 @@ class AppRawAutoCompleteField extends HookWidget {
                 padding: EdgeInsets.all($styles.insets.xxs),
                 shrinkWrap: true,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                itemCount: options.length,
+                itemCount: objects.length,
                 itemBuilder: (BuildContext context, int index) {
                   final option = options.elementAt(index);
                   final optionString = option.toString();
@@ -133,7 +139,8 @@ class AppRawAutoCompleteField extends HookWidget {
                   return GestureDetector(
                     onTap: () async {
                       onSelected(option);
-                      await onResult?.call(optionString, index);
+                      focusNode?.unfocus();
+                      await onTextChanged?.call(optionString, index);
                       await onPressed?.call(optionString, index);
                     },
                     child: ListTile(
