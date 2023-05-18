@@ -21,7 +21,13 @@ class LocationDetailHelper {
   }) {
     final splittedStrings = objectString.split(',');
     final firstSplittedString = splittedStrings.first;
-    return firstSplittedString;
+    var formattedString = "";
+
+    if (firstSplittedString.isNotEmpty) {
+      formattedString = firstSplittedString;
+    }
+
+    return formattedString;
   }
 
   /// Test the static [buildLocationSubTitle] method
@@ -45,8 +51,12 @@ class LocationDetailHelper {
   }) {
     final splittedStrings = objectString.split(', ');
     final skippedFirstStringList = splittedStrings.sublist(1);
-    final mappedStringList =
-        skippedFirstStringList.map<String>((e) => e).toString();
-    return mappedStringList;
+    var formattedString = "";
+
+    if (skippedFirstStringList.isNotEmpty) {
+      formattedString = skippedFirstStringList.map<String>((e) => e).toString();
+    }
+
+    return formattedString;
   }
 }
