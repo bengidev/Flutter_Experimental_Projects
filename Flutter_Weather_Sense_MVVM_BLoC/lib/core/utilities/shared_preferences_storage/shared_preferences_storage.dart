@@ -109,7 +109,7 @@ class SharedPreferencesStorage {
   ///
   /// This method only available for testing purpose only.
   @visibleForTesting
-  ForwardFeature testGetLatestModelForwardFeature() {
+  ForwardFeature? testGetLatestModelForwardFeature() {
     return SharedPreferencesStorage.getLatestModelForwardFeature();
   }
 
@@ -118,7 +118,7 @@ class SharedPreferencesStorage {
   ///
   /// The [SharedPreferences]'s instance was obtained from
   /// the implementation of [GetIt].
-  static ForwardFeature getLatestModelForwardFeature() {
+  static ForwardFeature? getLatestModelForwardFeature() {
     final sharedPreferences = $serviceLocator.get<SharedPreferences>();
     final modelForwardFeatureResults = sharedPreferences
         .getString(SharedPreferencesStorage._latestModelForwardFeatureKey);
@@ -130,22 +130,7 @@ class SharedPreferencesStorage {
       );
       return decodedModelForwardFeature;
     } else {
-      return const ForwardFeature(
-        id: '',
-        type: '',
-        placeType: <String>[],
-        relevance: 0,
-        properties: ForwardProperty(wikidata: '', mapboxId: ''),
-        text: '',
-        placeName: '',
-        bbox: <double>[],
-        center: <double>[],
-        geometry: ForwardGeometry(
-          type: '',
-          coordinates: <double>[],
-        ),
-        context: <ForwardContext>[],
-      );
+      return null;
     }
   }
 }
