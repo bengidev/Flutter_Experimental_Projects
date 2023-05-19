@@ -169,14 +169,14 @@ void main() async {
       'Then it should return the empty value of ForwardFeature.', () async {
     // ARRANGE
     when(() => sharedPreferencesStorage.testGetLatestModelForwardFeature())
-        .thenReturn(buildMockModelForwardFeature());
+        .thenReturn(null);
 
     // ACT
     final results = sharedPreferencesStorage.testGetLatestModelForwardFeature();
 
     // ASSERT
-    expect(results, isA<ForwardFeature>());
-    expect(results, equals(buildMockModelForwardFeature()));
+    expect(results, isA<void>());
+    expect(results, equals(null));
     verify(() => sharedPreferencesStorage.testGetLatestModelForwardFeature());
   });
 }
