@@ -15,8 +15,7 @@ class HomeScreen extends HookWidget {
     final greetingDescription = useState<String>("Hallo, ");
     final firstFocusNode = useFocusNode();
     final firstTextEditingController = useTextEditingController();
-    final firstTextEditingResult = useState<String>("Empty Location");
-    final forwardFeatureCoordinates = useState<List<double>>(<double>[]);
+    final cacheModelObjects = useState<List<Object>>(<Object>[]);
 
     /// Useful for side-effects and optionally canceling them.
     /// useEffect is called synchronously on every build, unless keys is specified.
@@ -44,19 +43,18 @@ class HomeScreen extends HookWidget {
         greetingDescription,
         firstFocusNode,
         firstTextEditingController,
-        firstTextEditingResult,
-        forwardFeatureCoordinates,
+        cacheModelObjects,
       ],
     );
 
     return BlocProvider(
       create: (context) => $serviceLocator.get<HomeBloc>(),
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                return Column(
                   children: [
                     // Header Section
                     HomeGreetingDescription(
@@ -69,38 +67,50 @@ class HomeScreen extends HookWidget {
                       key: const ValueKey('FIRST_APP_TEXT_FORM_FIELD'),
                       focusNode: firstFocusNode,
                       textEditingController: firstTextEditingController,
-                      objects: _extractAutoCompleteObjects(state: state),
+                      objects: _extractAutoCompleteObjects(
+                        state: state,
+                        previousObjects: cacheModelObjects.value,
+                      ),
                       onPressed: (resultText, index) async {
+                        // Send the [resultText] into the [HomeBloc]'s event.
                         _dispatchSearchLocationEvent(
                           context: context,
-                          location: resultText ?? '',
+                          location: resultText,
                         );
 
-                        firstTextEditingResult.value = resultText ?? "";
-                        forwardFeatureCoordinates.value =
-                            _extractForwardFeatureCoordinates(
+                        // Change the [cacheModelObjects] value with
+                        // the value of [_extractAutoCompleteObjects]' method.
+                        cacheModelObjects.value = _extractAutoCompleteObjects(
                           state: state,
-                          index: index ?? 0,
+                          previousObjects: ["Not Available"],
                         );
-                      },
-                      onResult: (resultText, index) async {
-                        _dispatchSearchLocationEvent(
-                          context: context,
-                          location: resultText ?? "",
+
+                        // Save the [extractedModelFeature]'s value when
+                        // the value was not empty.
+                        final extractedModelFeature = _extractModelFeature(
+                          state: state,
+                          index: index,
                         );
+                        if (extractedModelFeature != null) {
+                          await _saveModelFeatureIntoSharedPreferences(
+                            modelFeature: extractedModelFeature,
+                          );
+                        }
                       },
                     ),
-                    Gap($styles.insets.sm),
 
+                    Gap($styles.insets.sm),
                     // Body Section
                     HomeLocationMap(
                       locationTitle: LocationDetailHelper.buildLocationTitle(
-                        objectString: firstTextEditingResult.value,
+                        objectString: _loadModelFeaturePlaceName(),
                       ),
                       locationSubTitle:
                           LocationDetailHelper.buildLocationSubTitle(
-                        objectString: firstTextEditingResult.value,
+                        objectString: _loadModelFeaturePlaceName(),
                       ),
+                      latitude: _loadModelFeatureLatitude(),
+                      longitude: _loadModelFeatureLongitude(),
                     ),
                     Gap($styles.insets.sm),
 
@@ -115,11 +125,11 @@ class HomeScreen extends HookWidget {
                     // Footer Section
                     const HomeEarlyWarningCards(),
                   ],
-                ),
-              ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
@@ -157,54 +167,117 @@ class HomeScreen extends HookWidget {
   /// Extract the results from the [HomeBloc]'s state
   /// based on each [HomeState]'s returned values.
   ///
-  /// It will return the [ForwardFeature] when
+  /// This will return the [ForwardFeature] when
   /// the results from [HomeBloc]'s state was
   /// successful.
   ///
-  /// It will return the empty [List] of [Object]
+  /// This will return the empty [List] of [Object]
   /// when the returned [HomeState]'s values are
   /// unknown or undefined.
   List<Object> _extractAutoCompleteObjects({
     required HomeState state,
+    required List<Object> previousObjects,
   }) {
     if (state.status == HomeBlocStatus.success) {
       final features = state.forwardGeocodingModel?.features;
       if (features != null) {
         final placeNames =
             features.map<String>((feature) => feature.placeName).toList();
+        previousObjects = placeNames;
         return placeNames;
-      } else {
-        return <Object>[];
       }
-    } else {
-      return <Object>[];
     }
+
+    return previousObjects;
   }
 
   /// Extract the results from the [HomeBloc]'s state
   /// based on each [HomeState]'s returned values.
   ///
-  /// It will return the [List] of [double] when
+  /// This will return the [ForwardFeature] when
   /// the results from [HomeBloc]'s state was
-  /// successful.
+  /// successful and not null.
   ///
-  /// It will return the empty [List] of [double]
+  /// This will return empty or null
   /// when the returned [HomeState]'s values are
   /// unknown or undefined.
-  List<double> _extractForwardFeatureCoordinates({
+  ForwardFeature? _extractModelFeature({
     required HomeState state,
     required int index,
   }) {
     if (state.status == HomeBlocStatus.success) {
       final features = state.forwardGeocodingModel?.features;
       if (features != null) {
-        final coordinates = features.elementAt(index).center;
-        return coordinates;
-      } else {
-        return <double>[];
+        final modelFeature = features.elementAt(index);
+        return modelFeature;
       }
-    } else {
-      return <double>[];
     }
+
+    return null;
+  }
+
+  /// Save the latest [ForwardFeature] from
+  /// the [HomeBloc]'s state into the [SharedPreferencesStorage].
+  ///
+  /// This will return the [Future] of [bool] when the
+  /// saving process was completed.
+  Future<bool> _saveModelFeatureIntoSharedPreferences({
+    required ForwardFeature modelFeature,
+  }) {
+    return SharedPreferencesStorage.setLatestModelForwardFeature(
+      modelFeature: modelFeature,
+    );
+  }
+
+  /// Load the latest saved place name from [ForwardFeature]
+  /// when the saved place name was available.
+  ///
+  /// This will return the default [String] value when
+  /// the latest saved place name was empty.
+  String _loadModelFeaturePlaceName() {
+    final modelFeature =
+        SharedPreferencesStorage.getLatestModelForwardFeature();
+    var placeName =
+        "Apple Inc., 1 Infinite Loop, Cupertino, California 95014, United States";
+
+    if (modelFeature != null && modelFeature.placeName.isNotEmpty) {
+      placeName = modelFeature.placeName;
+    }
+
+    return placeName;
+  }
+
+  /// Load the latest saved latitude from [ForwardFeature]
+  /// when the saved latitude's coordinate was available.
+  ///
+  /// This will return the default [double] value when
+  /// the latest saved latitude's coordinate was empty.
+  double _loadModelFeatureLatitude() {
+    final modelFeature =
+        SharedPreferencesStorage.getLatestModelForwardFeature();
+    var latitude = 37.334795;
+
+    if (modelFeature != null && modelFeature.center.isNotEmpty) {
+      latitude = modelFeature.center.last;
+    }
+
+    return latitude;
+  }
+
+  /// Load the latest saved longitude from [ForwardFeature]
+  /// when the saved longitude's coordinate was available.
+  ///
+  /// This will return the default [double] value when
+  /// the latest saved longitude's coordinate was empty.
+  double _loadModelFeatureLongitude() {
+    final modelFeature =
+        SharedPreferencesStorage.getLatestModelForwardFeature();
+    var longitude = -122.009007;
+
+    if (modelFeature != null && modelFeature.center.isNotEmpty) {
+      longitude = modelFeature.center.first;
+    }
+
+    return longitude;
   }
 }
