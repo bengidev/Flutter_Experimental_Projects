@@ -103,11 +103,15 @@ class _HomeLocationMapState extends State<HomeLocationMap> {
               right: $styles.insets.sm,
             ),
             child: Container(
-              padding: EdgeInsets.all($styles.insets.xs),
               height: context.heightPx * 0.15,
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               decoration: BoxDecoration(
                 color: $styles.colors.tertiary,
                 borderRadius: BorderRadius.circular($styles.corners.xs),
+                border: Border.all(
+                  color: $styles.colors.tertiary,
+                  width: 2,
+                ),
               ),
               child: MapboxMap(
                 key: widget.key,
