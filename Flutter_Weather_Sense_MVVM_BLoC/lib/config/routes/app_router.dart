@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/core/utilities/shared_preferences_storage/shared_preferences_storage.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/views/daily_weather_forecast_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_screen.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/search_weather/views/search_weather_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
   static const String appNavigationPath = '/appNavigation';
   static const String onboardingPath = '/onboarding';
   static const String homePath = '/home';
-  static const String searchWeatherPath = '/searchWeather';
+  static const String dailyWeatherForecastPath = '/dailyWeatherForecast';
   static GoRouter routerInstance = _buildAppRouter();
 
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
@@ -61,11 +60,11 @@ class AppRouter {
         ),
         GoRoute(
           parentNavigatorKey: _rootNavigatorKey,
-          name: AppRouter.searchWeatherPath,
-          path: AppRouter.searchWeatherPath,
+          name: AppRouter.dailyWeatherForecastPath,
+          path: AppRouter.dailyWeatherForecastPath,
           pageBuilder: (context, state) {
             return const MaterialPage(
-              child: SearchWeatherScreen(),
+              child: DailyWeatherForecastScreen(),
             );
           },
         ),
