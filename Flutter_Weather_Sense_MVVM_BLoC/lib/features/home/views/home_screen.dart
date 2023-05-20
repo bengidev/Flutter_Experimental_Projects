@@ -116,14 +116,14 @@ class HomeScreen extends HookWidget {
 
                     // Body Section
                     const HomeWeatherCard(),
-                    Gap($styles.insets.lg),
+                    Gap($styles.insets.xl),
 
                     // Body Section
-                    const HomeEarlyWarningDescription(),
+                    const HomeHourlyForecastTitle(),
                     Gap($styles.insets.sm),
 
                     // Footer Section
-                    const HomeEarlyWarningCards(),
+                    const HomeHourlyForecastCard(),
                   ],
                 );
               },
