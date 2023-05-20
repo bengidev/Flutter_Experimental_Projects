@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 
-class HomeEarlyWarningDescription extends StatelessWidget {
-  const HomeEarlyWarningDescription({
+class HomeHourlyForecastTitle extends StatelessWidget {
+  const HomeHourlyForecastTitle({
     super.key,
   });
 
@@ -19,15 +19,8 @@ class HomeEarlyWarningDescription extends StatelessWidget {
           AppAutoResizeText(
             width: context.widthPx,
             alignment: Alignment.centerLeft,
-            text: "Early Warning",
+            text: "Hourly Forecast",
             textStyle: $styles.textStyle.h5Bold,
-            maxLines: 1,
-          ),
-          AppAutoResizeText(
-            width: context.widthPx,
-            alignment: Alignment.centerLeft,
-            text: "See the National Weather Service alerts around you",
-            textStyle: $styles.textStyle.body5,
             maxLines: 1,
           ),
         ],

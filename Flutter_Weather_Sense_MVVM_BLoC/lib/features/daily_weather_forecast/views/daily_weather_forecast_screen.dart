@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:go_router/go_router.dart';
 
-class SearchWeatherScreen extends HookWidget {
-  const SearchWeatherScreen({super.key});
+class DailyWeatherForecastScreen extends HookWidget {
+  const DailyWeatherForecastScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
