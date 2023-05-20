@@ -24,6 +24,7 @@ import 'package:flutter_weather_sense_mvvm_bloc/core/widgets/app_raw_auto_comple
 import 'package:flutter_weather_sense_mvvm_bloc/core/widgets/gradient_container.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/widgets/scaffold_with_navigation_bar.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/widgets/static_text_scale.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/views/daily_weather_forecast_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/forward_geocoding_remote_data_source_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/forward_geocoding_remote_data_source_impl.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/i_forward_geocoding_remote_data_source.dart';
@@ -39,9 +40,9 @@ import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/i_for
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_input_parameter.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_location_case.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_location_case_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_early_warning_cards.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_early_warning_description.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_greeting_description.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_hourly_forecast_card.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_hourly_forecast_title.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_location_map.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_weather_card.dart';
@@ -49,7 +50,6 @@ import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboar
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_image.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_logo.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_screen.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/search_weather/views/search_weather_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/generated/assets.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/main.dart';
 
