@@ -37,7 +37,6 @@ import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_pro
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repositories_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repository_impl.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/i_forward_geocoding_repository.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_input_parameter.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_location_case.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_location_case_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_greeting_description.dart';

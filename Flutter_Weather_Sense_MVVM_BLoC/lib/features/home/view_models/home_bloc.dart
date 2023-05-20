@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_input_parameter.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_location_case.dart';
 
 part 'home_event.dart';

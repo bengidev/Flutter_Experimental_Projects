@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_input_parameter.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_location_case.dart';
 import 'package:mocktail/mocktail.dart';
 
