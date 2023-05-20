@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_feature.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/view_models/home_bloc.dart';
 
 void main() async {

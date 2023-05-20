@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_feature.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model/forward_feature.dart';
 
 class ForwardGeocodingModel extends Equatable {
   final String type;

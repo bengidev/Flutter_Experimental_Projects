@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_feature.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/view_models/home_bloc.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_views_barrel.dart';
 

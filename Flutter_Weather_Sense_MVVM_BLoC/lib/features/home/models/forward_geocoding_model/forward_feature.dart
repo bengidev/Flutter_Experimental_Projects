@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_context.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geometry.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_property.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model/forward_context.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model/forward_geometry.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model/forward_property.dart';
 
 /// The [ForwardFeature] object will be a part of the [ForwardGeocodingModel].
 /// This object is not appropriate to be created/used for the

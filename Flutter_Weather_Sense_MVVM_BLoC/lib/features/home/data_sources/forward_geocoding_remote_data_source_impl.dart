@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/i_forward_geocoding_remote_data_source.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
 import 'package:http/http.dart' as http;
 
 /// The implementation of the [IForwardGeocodingRemoteDataSource]

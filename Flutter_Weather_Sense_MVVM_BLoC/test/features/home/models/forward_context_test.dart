@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_context.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model/forward_context.dart';
 
 void main() async {
   String buildRawJsonResults() {

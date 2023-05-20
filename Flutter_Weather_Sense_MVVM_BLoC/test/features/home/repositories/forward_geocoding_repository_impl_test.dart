@@ -2,8 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/forward_geocoding_remote_data_source_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_feature.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 

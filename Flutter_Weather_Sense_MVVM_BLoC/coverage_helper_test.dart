@@ -28,12 +28,8 @@ import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/forward_geocoding_remote_data_source_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/forward_geocoding_remote_data_source_impl.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/i_forward_geocoding_remote_data_source.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_context.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_feature.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model/forward_context.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geometry.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_property.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repositories_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repository_impl.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/i_forward_geocoding_repository.dart';
