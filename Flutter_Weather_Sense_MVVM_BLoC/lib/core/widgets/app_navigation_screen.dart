@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/views/daily_weather_forecast_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_screen.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/search_weather/views/search_weather_screen.dart';
 
 class AppNavigationScreen extends HookWidget {
   const AppNavigationScreen({super.key});
@@ -55,7 +55,7 @@ class AppNavigationScreen extends HookWidget {
   List<Widget> _buildNavigationScreens() {
     const screens = <Widget>[
       HomeScreen(),
-      SearchWeatherScreen(),
+      DailyWeatherForecastScreen(),
     ];
 
     return screens;
