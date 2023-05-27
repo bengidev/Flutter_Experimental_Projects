@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 /// Builds the "shell" for the app by building a Scaffold with a
 /// BottomNavigationBar, where [child] is placed in the body of the Scaffold.
-class ScaffoldWithNavigationBar extends HookWidget {
+class ScaffoldWithNavigationBar extends StatelessWidget {
   /// The [child] widget to display in the body of the Scaffold.
   /// In this sample, it is a Navigator.
   final Widget child;
