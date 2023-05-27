@@ -37,7 +37,7 @@ class HomeLocationMap extends StatefulHookWidget {
 }
 
 class _HomeLocationMapState extends State<HomeLocationMap> {
-  late final MapboxMapController mapController;
+  MapboxMapController? mapController;
 
   @override
   void didUpdateWidget(covariant HomeLocationMap oldWidget) {
@@ -49,17 +49,21 @@ class _HomeLocationMapState extends State<HomeLocationMap> {
       debugPrint("Latitude -> ${widget.latitude}");
       debugPrint("Longitude -> ${widget.longitude}");
 
-      _moveCameraPosition(
-        controller: mapController,
-        latitude: widget.latitude,
-        longitude: widget.longitude,
-      );
+      if (mapController != null) {
+        Future.microtask(() async {
+          await _moveCameraPosition(
+            controller: mapController!,
+            latitude: widget.latitude,
+            longitude: widget.longitude,
+          );
 
-      _addPositionMarker(
-        controller: mapController,
-        latitude: widget.latitude,
-        longitude: widget.longitude,
-      );
+          await _addPositionMarker(
+            controller: mapController!,
+            latitude: widget.latitude,
+            longitude: widget.longitude,
+          );
+        });
+      }
     }
   }
 
@@ -152,17 +156,19 @@ class _HomeLocationMapState extends State<HomeLocationMap> {
   Future<void> _onMapCreated(MapboxMapController controller) async {
     mapController = controller;
 
-    await _moveCameraPosition(
-      controller: mapController,
-      latitude: widget.latitude,
-      longitude: widget.longitude,
-    );
+    if (mapController != null) {
+      await _moveCameraPosition(
+        controller: mapController!,
+        latitude: widget.latitude,
+        longitude: widget.longitude,
+      );
 
-    await _addPositionMarker(
-      controller: mapController,
-      latitude: widget.latitude,
-      longitude: widget.longitude,
-    );
+      await _addPositionMarker(
+        controller: mapController!,
+        latitude: widget.latitude,
+        longitude: widget.longitude,
+      );
+    }
   }
 
   /// Move camera position into the provided
@@ -203,25 +209,27 @@ class _HomeLocationMapState extends State<HomeLocationMap> {
     final byteData = await rootBundle.load('assets/images/point-marker.png');
     final pointMarkerImage = byteData.buffer.asUint8List();
 
-    await mapController.addImage('pointMarkerImage', pointMarkerImage);
+    if (mapController != null) {
+      await mapController!.addImage('pointMarkerImage', pointMarkerImage);
 
-    await mapController.addSymbol(
-      SymbolOptions(
-        iconSize: 0.3,
-        iconImage: 'pointMarkerImage',
-        textField: widget.locationTitle ?? "Default Location",
-        textSize: 12.5,
-        textOffset: const Offset(0, 0.8),
-        textAnchor: 'top',
-        textColor: '#000000',
-        textHaloBlur: 1,
-        textHaloColor: '#ffffff',
-        textHaloWidth: 0.8,
-        geometry: LatLng(
-          latitude ?? -0.02269,
-          longitude ?? 109.344749,
+      await mapController!.addSymbol(
+        SymbolOptions(
+          iconSize: 0.3,
+          iconImage: 'pointMarkerImage',
+          textField: widget.locationTitle ?? "Default Location",
+          textSize: 12.5,
+          textOffset: const Offset(0, 0.8),
+          textAnchor: 'top',
+          textColor: '#000000',
+          textHaloBlur: 1,
+          textHaloColor: '#ffffff',
+          textHaloWidth: 0.8,
+          geometry: LatLng(
+            latitude ?? -0.02269,
+            longitude ?? 109.344749,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
