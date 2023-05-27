@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/views/daily_weather_forecast_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/onboarding/views/onboarding_screen.dart';
 import 'package:go_router/go_router.dart';
 
-class AppRouter {
+class AppGoRouter {
   static const String appNavigationPath = '/appNavigation';
   static const String onboardingPath = '/onboarding';
   static const String homePath = '/home';
   static const String dailyWeatherForecastPath = '/dailyWeatherForecast';
-  static GoRouter routerInstance = _buildAppRouter();
+  static GoRouter routerInstance = _buildAppGoRouter();
 
   static final GlobalKey<NavigatorState> _rootNavigatorKey =
       GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -19,54 +20,42 @@ class AppRouter {
 
   /// The instance builder for initializing [GoRouter]'s settings
   /// such as [initialLocation], [routes], [redirect], etc.
-  static GoRouter _buildAppRouter() {
+  static GoRouter _buildAppGoRouter() {
     final appRouter = GoRouter(
       navigatorKey: _rootNavigatorKey,
       debugLogDiagnostics: true,
       initialLocation: _hasOnboardingCompleted()
-          ? AppRouter.appNavigationPath
-          : AppRouter.onboardingPath,
+          ? AppGoRouter.appNavigationPath
+          : AppGoRouter.onboardingPath,
       redirect: (context, state) => _handleRedirect(state: state),
       routes: [
-        GoRoute(
+        AppRoute(
           parentNavigatorKey: _rootNavigatorKey,
-          name: AppRouter.appNavigationPath,
-          path: AppRouter.appNavigationPath,
-          pageBuilder: (context, state) {
-            return const MaterialPage(
-              child: AppNavigationScreen(),
-            );
-          },
+          name: AppGoRouter.appNavigationPath,
+          path: AppGoRouter.appNavigationPath,
+          builder: (_, __) => const AppNavigationScreen(),
+          useFade: true,
         ),
-        GoRoute(
+        AppRoute(
           parentNavigatorKey: _rootNavigatorKey,
-          name: AppRouter.onboardingPath,
-          path: AppRouter.onboardingPath,
-          pageBuilder: (context, state) {
-            return const MaterialPage(
-              child: OnboardingScreen(),
-            );
-          },
+          name: AppGoRouter.onboardingPath,
+          path: AppGoRouter.onboardingPath,
+          builder: (_, __) => const OnboardingScreen(),
+          useFade: true,
         ),
-        GoRoute(
+        AppRoute(
           parentNavigatorKey: _rootNavigatorKey,
-          name: AppRouter.homePath,
-          path: AppRouter.homePath,
-          pageBuilder: (context, state) {
-            return const MaterialPage(
-              child: HomeScreen(),
-            );
-          },
+          name: AppGoRouter.homePath,
+          path: AppGoRouter.homePath,
+          builder: (_, __) => const HomeScreen(),
+          useFade: true,
         ),
-        GoRoute(
+        AppRoute(
           parentNavigatorKey: _rootNavigatorKey,
-          name: AppRouter.dailyWeatherForecastPath,
-          path: AppRouter.dailyWeatherForecastPath,
-          pageBuilder: (context, state) {
-            return const MaterialPage(
-              child: DailyWeatherForecastScreen(),
-            );
-          },
+          name: AppGoRouter.dailyWeatherForecastPath,
+          path: AppGoRouter.dailyWeatherForecastPath,
+          builder: (_, __) => const DailyWeatherForecastScreen(),
+          useFade: true,
         ),
       ],
     );
@@ -88,8 +77,9 @@ class AppRouter {
     final hasCompletedOnboarding =
         SharedPreferencesStorage.getHasOnboardingCompleted();
 
-    if (!hasCompletedOnboarding && state.location != AppRouter.onboardingPath) {
-      return AppRouter.onboardingPath;
+    if (!hasCompletedOnboarding &&
+        state.location != AppGoRouter.onboardingPath) {
+      return AppGoRouter.onboardingPath;
     }
 
     debugPrint('Navigate to: ${state.location}');
