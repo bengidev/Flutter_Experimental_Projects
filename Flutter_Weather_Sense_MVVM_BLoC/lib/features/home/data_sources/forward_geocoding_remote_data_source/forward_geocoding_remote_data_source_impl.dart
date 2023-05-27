@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/config/dependency_injections/dependency_injection.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/i_forward_geocoding_remote_data_source.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/forward_geocoding_remote_data_source/i_forward_geocoding_remote_data_source.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
 import 'package:http/http.dart' as http;
 
@@ -34,9 +35,7 @@ class ForwardGeocodingRemoteDataSourceImpl
   Future<ForwardGeocodingModel> getSearchGeocodingLocation({
     required String location,
   }) {
-    const accessToken =
-        'pk.eyJ1Ijoic3luZGljYXRlMDE3IiwiYSI6ImNsZ2FmYjdodTA4NnMzcnByYjhneHFyd2oifQ.'
-        'GhpidZgojTsBEGluIkWvTw';
+    final accessToken = $mapBoxAccessToken;
     final url =
         'https://api.mapbox.com/geocoding/v5/mapbox.places/$location.json?'
         'access_token=$accessToken';
