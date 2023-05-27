@@ -21,11 +21,13 @@ extension HomeBlocStatusX on HomeBlocStatus {
 class HomeState extends Equatable {
   final HomeBlocStatus status;
   final ForwardGeocodingModel? forwardGeocodingModel;
+  final HourlyWeatherForecastModel? hourlyWeatherForecastModel;
   final String? failureMessage;
 
   const HomeState({
     this.status = HomeBlocStatus.initial,
     this.forwardGeocodingModel,
+    this.hourlyWeatherForecastModel,
     this.failureMessage,
   });
 
@@ -35,19 +37,27 @@ class HomeState extends Equatable {
   HomeState copyWith({
     HomeBlocStatus? status,
     ForwardGeocodingModel? forwardGeocodingModel,
+    HourlyWeatherForecastModel? hourlyWeatherForecastModel,
     String? failureMessage,
   }) {
     return HomeState(
       status: status ?? this.status,
       forwardGeocodingModel:
           forwardGeocodingModel ?? this.forwardGeocodingModel,
+      hourlyWeatherForecastModel:
+          hourlyWeatherForecastModel ?? this.hourlyWeatherForecastModel,
       failureMessage: failureMessage ?? this.failureMessage,
     );
   }
 
   /// The list of properties that will be used to determine whether two instances are equal.
   @override
-  List<Object?> get props => [status, forwardGeocodingModel, failureMessage];
+  List<Object?> get props => [
+        status,
+        forwardGeocodingModel,
+        hourlyWeatherForecastModel,
+        failureMessage,
+      ];
 
   /// Implement [toString] method including all the given props
   /// by changing the [stringify] value into [true]

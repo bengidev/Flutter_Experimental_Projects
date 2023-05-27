@@ -29,3 +29,33 @@ class SearchGeocodingLocationEvent extends HomeEvent {
   @override
   bool? get stringify => true;
 }
+
+/// The implementation of [HomeEvent] which will
+/// execute the [FindHourlyWeatherForecastEvent]
+/// inside the [HomeBloc].
+///
+/// This event requires [latitude] and [longitude] which will
+/// be used to send the request for
+/// finding the latest hourly weather forecast based on
+/// [latitude] and [longitude] coordinates.
+class FindHourlyWeatherForecastEvent extends HomeEvent {
+  final double latitude;
+  final double longitude;
+
+  const FindHourlyWeatherForecastEvent({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  /// The list of properties that will be used to determine whether two instances are equal.
+  @override
+  List<Object?> get props => [
+        latitude,
+        longitude,
+      ];
+
+  /// Implement [toString] method including all the given props
+  /// by changing the [stringify] value into [true]
+  @override
+  bool? get stringify => true;
+}
