@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/hourly_weather_forecast_model_barrel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +11,10 @@ class SharedPreferencesStorage {
   static const _onboardingCompletedKey = "ONBOARDING_COMPLETED_KEY";
   static const _latestModelForwardFeatureKey =
       "LATEST_FORWARD_GEOCODING_MODEL_KEY";
+  static const _latestHourlyWeatherForecastModelKey =
+      "LATEST_HOURLY_WEATHER_FORECAST_MODEL_KEY";
+  static const _latestHourlyCurrentWeatherKey =
+      "LATEST_HOURLY_CURRENT_WEATHER_KEY";
 
   /// Test the static [setHasOnboardingCompleted] method
   /// of the [SharedPreferencesStorage]'s class.
@@ -129,6 +134,165 @@ class SharedPreferencesStorage {
         json.decode(modelForwardFeatureResults) as Map<String, dynamic>,
       );
       return decodedModelForwardFeature;
+    } else {
+      return null;
+    }
+  }
+
+  /// Test the static [setLatestHourlyWeatherForecastModel] method
+  /// of the [SharedPreferencesStorage]'s class.
+  ///
+  /// It will return the results from [setLatestHourlyWeatherForecastModel].
+  ///
+  /// This method only available for testing purpose only.
+  @visibleForTesting
+  Future<bool> testSetLatestHourlyWeatherForecastModel({
+    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  }) {
+    return SharedPreferencesStorage.setLatestHourlyWeatherForecastModel(
+      hourlyWeatherForecastModel: hourlyWeatherForecastModel,
+    );
+  }
+
+  /// Store the encoded [String] value of [HourlyWeatherForecastModel]
+  /// into [SharedPreferences]'s instance.
+  ///
+  /// The [SharedPreferences]'s instance was obtained from
+  /// the implementation of [GetIt].
+  static Future<bool> setLatestHourlyWeatherForecastModel({
+    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  }) {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final encodedHourlyWeatherForecastModel =
+        json.encode(hourlyWeatherForecastModel.toJson());
+    final modelResults = sharedPreferences.setString(
+      SharedPreferencesStorage._latestHourlyWeatherForecastModelKey,
+      encodedHourlyWeatherForecastModel,
+    );
+
+    debugPrint(
+      "encodedHourlyWeatherForecastModel -> $encodedHourlyWeatherForecastModel",
+    );
+
+    return modelResults;
+  }
+
+  /// Test the static [getLatestHourlyWeatherForecastModel] method
+  /// of the [SharedPreferencesStorage]'s class.
+  ///
+  /// It will return the results from [getLatestHourlyWeatherForecastModel].
+  ///
+  /// This method only available for testing purpose only.
+  @visibleForTesting
+  HourlyWeatherForecastModel? testGetLatestHourlyWeatherForecastModel() {
+    return SharedPreferencesStorage.getLatestHourlyWeatherForecastModel();
+  }
+
+  /// Retrieve the latest value of [HourlyWeatherForecastModel] from
+  /// [SharedPreferences]'s instance.
+  ///
+  /// The [SharedPreferences]'s instance was obtained from
+  /// the implementation of [GetIt].
+  static HourlyWeatherForecastModel? getLatestHourlyWeatherForecastModel() {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final hourlyWeatherForecastModelResults = sharedPreferences.getString(
+      SharedPreferencesStorage._latestHourlyWeatherForecastModelKey,
+    );
+
+    if (hourlyWeatherForecastModelResults != null &&
+        hourlyWeatherForecastModelResults.isNotEmpty) {
+      debugPrint(
+        "hourlyWeatherForecastModelResults -> $hourlyWeatherForecastModelResults",
+      );
+
+      final decodedHourlyWeatherForecastModel =
+          HourlyWeatherForecastModel.fromJson(
+        json.decode(hourlyWeatherForecastModelResults) as Map<String, dynamic>,
+      );
+
+      debugPrint(
+        "decodedHourlyWeatherForecastModel -> $decodedHourlyWeatherForecastModel",
+      );
+      return decodedHourlyWeatherForecastModel;
+    } else {
+      return null;
+    }
+  }
+
+  /// Test the static [setLatestHourlyCurrentWeather] method
+  /// of the [SharedPreferencesStorage]'s class.
+  ///
+  /// It will return the results from [setLatestHourlyCurrentWeather].
+  ///
+  /// This method only available for testing purpose only.
+  @visibleForTesting
+  Future<bool> testSetLatestHourlyCurrentWeather({
+    required HourlyCurrentWeather hourlyCurrentWeather,
+  }) {
+    return SharedPreferencesStorage.setLatestHourlyCurrentWeather(
+      hourlyCurrentWeather: hourlyCurrentWeather,
+    );
+  }
+
+  /// Store the encoded [String] value of [HourlyCurrentWeather]
+  /// into [SharedPreferences]'s instance.
+  ///
+  /// The [SharedPreferences]'s instance was obtained from
+  /// the implementation of [GetIt].
+  static Future<bool> setLatestHourlyCurrentWeather({
+    required HourlyCurrentWeather hourlyCurrentWeather,
+  }) {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final encodedHourlyCurrentWeather =
+        json.encode(hourlyCurrentWeather.toJson());
+    final modelResults = sharedPreferences.setString(
+      SharedPreferencesStorage._latestHourlyCurrentWeatherKey,
+      encodedHourlyCurrentWeather,
+    );
+
+    debugPrint(
+      "encodedHourlyCurrentWeather -> $encodedHourlyCurrentWeather",
+    );
+
+    return modelResults;
+  }
+
+  /// Test the static [getLatestHourlyCurrentWeather] method
+  /// of the [SharedPreferencesStorage]'s class.
+  ///
+  /// It will return the results from [getLatestHourlyCurrentWeather].
+  ///
+  /// This method only available for testing purpose only.
+  @visibleForTesting
+  HourlyCurrentWeather? testGetLatestHourlyCurrentWeather() {
+    return SharedPreferencesStorage.getLatestHourlyCurrentWeather();
+  }
+
+  /// Retrieve the latest value of [HourlyCurrentWeather] from
+  /// [SharedPreferences]'s instance.
+  ///
+  /// The [SharedPreferences]'s instance was obtained from
+  /// the implementation of [GetIt].
+  static HourlyCurrentWeather? getLatestHourlyCurrentWeather() {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final hourlyCurrentWeatherResults = sharedPreferences.getString(
+      SharedPreferencesStorage._latestHourlyCurrentWeatherKey,
+    );
+
+    if (hourlyCurrentWeatherResults != null &&
+        hourlyCurrentWeatherResults.isNotEmpty) {
+      debugPrint(
+        "hourlyCurrentWeatherResults -> $hourlyCurrentWeatherResults",
+      );
+
+      final decodedHourlyCurrentWeather = HourlyCurrentWeather.fromJson(
+        json.decode(hourlyCurrentWeatherResults) as Map<String, dynamic>,
+      );
+
+      debugPrint(
+        "decodedHourlyCurrentWeather -> $decodedHourlyCurrentWeather",
+      );
+      return decodedHourlyCurrentWeather;
     } else {
       return null;
     }
