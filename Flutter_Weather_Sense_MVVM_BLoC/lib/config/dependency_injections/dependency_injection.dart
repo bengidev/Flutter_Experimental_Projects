@@ -2,8 +2,10 @@ import 'package:flutter_weather_sense_mvvm_bloc/application.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/forward_geocoding_remote_data_source_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repositories_barrel.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repository_impl.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/hourly_weather_forecast_remote_data_source_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repository_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/hourly_weather_forecast_repository_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/find_hourly_weather_forecast_case.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/usecases/search_location_case.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/view_models/home_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -48,7 +50,10 @@ class DependencyInjection {
     // Home
     // View Models - Bloc
     $serviceLocator.registerFactory<HomeBloc>(
-      () => HomeBloc(searchLocationCase: $serviceLocator()),
+      () => HomeBloc(
+        searchLocationCase: $serviceLocator(),
+        findHourlyWeatherForecastCase: $serviceLocator(),
+      ),
     );
 
     // Use Cases
@@ -56,14 +61,33 @@ class DependencyInjection {
       () => SearchLocationCase(forwardGeocodingRepository: $serviceLocator()),
     );
 
+    $serviceLocator.registerLazySingleton<FindHourlyWeatherForecastCase>(
+      () => FindHourlyWeatherForecastCase(
+        hourlyWeatherForecastRepository: $serviceLocator(),
+      ),
+    );
+
     // Repositories
     $serviceLocator.registerLazySingleton<IForwardGeocodingRepository>(
       () => ForwardGeocodingRepositoryImpl(remoteDataSource: $serviceLocator()),
     );
 
+    $serviceLocator.registerLazySingleton<IHourlyWeatherForecastRepository>(
+      () => HourlyWeatherForecastRepositoryImpl(
+        remoteDataSource: $serviceLocator(),
+      ),
+    );
+
     // Data Sources
     $serviceLocator.registerLazySingleton<IForwardGeocodingRemoteDataSource>(
       () => ForwardGeocodingRemoteDataSourceImpl(
+        httpClient: $serviceLocator(),
+      ),
+    );
+
+    $serviceLocator
+        .registerLazySingleton<IHourlyWeatherForecastRemoteDataSource>(
+      () => HourlyWeatherForecastRemoteDataSourceImpl(
         httpClient: $serviceLocator(),
       ),
     );
