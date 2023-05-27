@@ -17,7 +17,7 @@ class DailyWeatherForecastScreen extends HookWidget {
               const Text("Search Weather Screen"),
               ElevatedButton(
                 onPressed: () {
-                  context.pushNamed(AppRouter.homePath);
+                  context.pushNamed(AppGoRouter.homePath);
                 },
                 child: const Text("Go To Home Screen"),
               ),
