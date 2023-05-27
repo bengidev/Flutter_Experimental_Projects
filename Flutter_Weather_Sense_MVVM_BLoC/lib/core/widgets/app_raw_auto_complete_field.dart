@@ -28,13 +28,17 @@ class AppRawAutoCompleteField extends HookWidget {
 
   /// Provide the results of [resultText] and [index]
   /// based on event when interacting [TextFormField] was done.
-  final Future<void> Function(String resultText, int index)? onPressed;
+  final Future<void> Function(String resultText, int index)? onButtonPressed;
 
   /// Provide the results of of [resultText] and [index]
   /// based on event while interacting [TextFormField] such as
   /// onChanged, onSaved, onFieldSubmitted,
   /// and onSelected when the options value was selected.
   final Future<void> Function(String resultText, int index)? onTextChanged;
+
+  /// Provide the results' [index]
+  /// based on event when interacting [TextFormField] was done.
+  final Future<void> Function(int index)? onOptionPressed;
 
   const AppRawAutoCompleteField({
     super.key,
@@ -44,8 +48,9 @@ class AppRawAutoCompleteField extends HookWidget {
     this.inputDecoration,
     this.textStyle,
     this.hintText,
-    this.onPressed,
+    this.onButtonPressed,
     this.onTextChanged,
+    this.onOptionPressed,
   });
 
   @override
@@ -93,14 +98,14 @@ class AppRawAutoCompleteField extends HookWidget {
             },
             onSaved: (text) async {
               if (text == null) return;
-              await onPressed?.call(text, 0);
+              await onButtonPressed?.call(text, 0);
             },
             onFieldSubmitted: (text) async {
-              await onPressed?.call(text, 0);
+              await onButtonPressed?.call(text, 0);
               // focusNode.unfocus();
             },
             onEditingComplete: () async {
-              await onPressed?.call(textEditingController.text, 0);
+              await onButtonPressed?.call(textEditingController.text, 0);
               // focusNode.unfocus();
             },
             onTapOutside: (event) {
@@ -138,10 +143,9 @@ class AppRawAutoCompleteField extends HookWidget {
 
                   return GestureDetector(
                     onTap: () async {
+                      await onOptionPressed?.call(index);
                       onSelected(option);
                       focusNode?.unfocus();
-                      await onTextChanged?.call(optionString, index);
-                      await onPressed?.call(optionString, index);
                     },
                     child: ListTile(
                       title: Text(
