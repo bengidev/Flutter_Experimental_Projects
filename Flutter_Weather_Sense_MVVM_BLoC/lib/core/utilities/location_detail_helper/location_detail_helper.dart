@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+@immutable
 class LocationDetailHelper {
   /// Test the static [buildLocationTitle] method
   /// of the [LocationDetailHelper]'s class.

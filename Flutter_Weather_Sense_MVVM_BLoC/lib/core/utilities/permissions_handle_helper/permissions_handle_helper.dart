@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+@immutable
 class PermissionsHandleHelper {
   /// Test the static [requestPermissions] method
   /// of the [PermissionsHandleHelper]'s class.
