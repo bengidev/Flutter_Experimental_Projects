@@ -40,7 +40,7 @@ class AppNavigationScreen extends HookWidget {
             : const Icon(Icons.home_outlined),
       ),
       BottomNavigationBarItem(
-        label: "Search Weather",
+        label: "Daily Weather Forecast",
         icon: index == 1
             ? const Icon(Icons.explore_rounded)
             : const Icon(Icons.explore_outlined),
@@ -54,8 +54,14 @@ class AppNavigationScreen extends HookWidget {
   /// to be able to interchange each other.
   List<Widget> _buildNavigationScreens() {
     const screens = <Widget>[
-      HomeScreen(),
-      DailyWeatherForecastScreen(),
+      FadeInWrapper(
+        key: ValueKey<String>("FIRST_FADE_IN_KEY"),
+        child: HomeScreen(),
+      ),
+      FadeInWrapper(
+        key: ValueKey<String>("SECOND_FADE_IN_KEY"),
+        child: DailyWeatherForecastScreen(),
+      ),
     ];
 
     return screens;
