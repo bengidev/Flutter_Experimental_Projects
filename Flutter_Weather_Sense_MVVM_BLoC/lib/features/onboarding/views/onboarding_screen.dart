@@ -219,6 +219,6 @@ class OnboardingScreen extends HookWidget {
   void _navigateToAppNavigation({
     required BuildContext context,
   }) {
-    context.goNamed(AppRouter.appNavigationPath);
+    context.goNamed(AppGoRouter.appNavigationPath);
   }
 }
