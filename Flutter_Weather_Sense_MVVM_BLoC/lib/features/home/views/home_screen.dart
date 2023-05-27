@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/forward_geocoding_model_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/hourly_weather_forecast_model_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/view_models/home_bloc.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_views_barrel.dart';
 
@@ -12,10 +13,19 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final greetingDescription = useState<String>("Hallo, ");
+    final dayDescription = useState<String>("Hallo, ");
     final firstFocusNode = useFocusNode();
     final firstTextEditingController = useTextEditingController();
-    final cacheModelObjects = useState<List<Object>>(<Object>[]);
+    final cacheSelectedIndexState = useState<int>(0);
+    final cacheLatitudeCoordinate = useState<double>(0.0);
+    final cacheLongitudeCoordinate = useState<double>(0.0);
+    final cacheHourlyWeatherForecastModel =
+        useState<HourlyWeatherForecastModel>(
+      HourlyWeatherForecastModel.defaultValue(),
+    );
+    final cacheHourlyCurrentWeather = useState<HourlyCurrentWeather>(
+      HourlyCurrentWeather.defaultValue(),
+    );
 
     /// Useful for side-effects and optionally canceling them.
     /// useEffect is called synchronously on every build, unless keys is specified.
@@ -25,11 +35,23 @@ class HomeScreen extends HookWidget {
       () {
         // Start the following events when the widget is first rendered.
         Future.microtask(() {
-          greetingDescription.value = _generateGreetingDay(
+          dayDescription.value = _generateGreetingDay(
             time: DateTime.now(),
           );
 
-          debugPrint("Microtask from UseEffect: $greetingDescription");
+          cacheLatitudeCoordinate.value = _loadModelFeatureLatitude();
+          cacheLongitudeCoordinate.value = _loadModelFeatureLongitude();
+
+          cacheHourlyWeatherForecastModel.value =
+              _loadHourlyWeatherForecastModel();
+
+          cacheHourlyCurrentWeather.value = _loadHourlyCurrentWeather();
+
+          debugPrint(
+            "cacheHourlyWeatherForecastModel.value -> ${cacheHourlyWeatherForecastModel.value}",
+          );
+
+          debugPrint("Microtask from UseEffect: $dayDescription");
         });
 
         // We could optionally return some "dispose" logic here.
@@ -40,10 +62,13 @@ class HomeScreen extends HookWidget {
       // Tell Flutter to rebuild this widget when
       // the values inside the bracket updates.
       [
-        greetingDescription,
+        dayDescription,
         firstFocusNode,
         firstTextEditingController,
-        cacheModelObjects,
+        cacheLatitudeCoordinate,
+        cacheLongitudeCoordinate,
+        cacheHourlyWeatherForecastModel,
+        cacheHourlyCurrentWeather,
       ],
     );
 
@@ -52,13 +77,62 @@ class HomeScreen extends HookWidget {
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: BlocBuilder<HomeBloc, HomeState>(
+            child: BlocConsumer<HomeBloc, HomeState>(
+              listener: (context, state) async {
+                debugPrint("Home State -> $state");
+
+                if (state.status == HomeBlocStatus.success) {
+                  // Save the [extractedModelFeature]'s value when
+                  // the value was not empty.
+                  final extractedModelFeature = _extractModelFeature(
+                    state: state,
+                    index: cacheSelectedIndexState.value,
+                  );
+                  if (extractedModelFeature != null) {
+                    cacheLatitudeCoordinate.value =
+                        extractedModelFeature.center.last;
+                    cacheLongitudeCoordinate.value =
+                        extractedModelFeature.center.first;
+
+                    await _saveModelFeatureIntoSharedPreferences(
+                      modelFeature: extractedModelFeature,
+                    );
+                  }
+
+                  // Save the [extractedHourlyWeatherForecastModel]'s value
+                  // when the value was not empty.
+                  final extractedHourlyWeatherForecastModel =
+                      _extractHourlyWeatherForecastModel(state: state);
+
+                  if (extractedHourlyWeatherForecastModel != null) {
+                    cacheHourlyWeatherForecastModel.value =
+                        extractedHourlyWeatherForecastModel;
+
+                    await _saveHourlyWeatherForecastModelIntoSharedPreferences(
+                      hourlyWeatherForecastModel:
+                          extractedHourlyWeatherForecastModel,
+                    );
+                  }
+
+                  final extractedCurrentWeatherForecast =
+                      _extractCurrentWeatherForecast(state: state);
+
+                  if (extractedCurrentWeatherForecast != null) {
+                    cacheHourlyCurrentWeather.value =
+                        extractedCurrentWeatherForecast;
+
+                    await _saveHourlyCurrentWeatherIntoSharedPreferences(
+                      hourlyCurrentWeather: extractedCurrentWeatherForecast,
+                    );
+                  }
+                }
+              },
               builder: (context, state) {
                 return Column(
                   children: [
                     // Header Section
                     HomeGreetingDescription(
-                      greetingMessage: greetingDescription.value,
+                      greetingMessage: dayDescription.value,
                     ),
                     Gap($styles.insets.md),
 
@@ -67,35 +141,29 @@ class HomeScreen extends HookWidget {
                       key: const ValueKey('FIRST_APP_TEXT_FORM_FIELD'),
                       focusNode: firstFocusNode,
                       textEditingController: firstTextEditingController,
-                      objects: _extractAutoCompleteObjects(
-                        state: state,
-                        previousObjects: cacheModelObjects.value,
-                      ),
-                      onPressed: (resultText, index) async {
+                      objects: _extractAutoCompleteObjects(state: state),
+                      onButtonPressed: (resultText, index) async {
                         // Send the [resultText] into the [HomeBloc]'s event.
                         _dispatchSearchLocationEvent(
                           context: context,
                           location: resultText,
                         );
+                      },
+                      onOptionPressed: (index) async {
+                        debugPrint("onOptionPressed: Pressed");
 
-                        // Change the [cacheModelObjects] value with
-                        // the value of [_extractAutoCompleteObjects]' method.
-                        cacheModelObjects.value = _extractAutoCompleteObjects(
-                          state: state,
-                          previousObjects: ["Not Available"],
+                        cacheSelectedIndexState.value = index;
+                        debugPrint(
+                          "cacheSelectedIndexState -> ${cacheSelectedIndexState.value}",
                         );
 
-                        // Save the [extractedModelFeature]'s value when
-                        // the value was not empty.
-                        final extractedModelFeature = _extractModelFeature(
-                          state: state,
-                          index: index,
+                        // Send the FindHourlyWeatherForecastEvent into
+                        // the HomeBLoc.
+                        _dispatchFindHourlyWeatherForecastEvent(
+                          context: context,
+                          latitude: cacheLatitudeCoordinate.value,
+                          longitude: cacheLongitudeCoordinate.value,
                         );
-                        if (extractedModelFeature != null) {
-                          await _saveModelFeatureIntoSharedPreferences(
-                            modelFeature: extractedModelFeature,
-                          );
-                        }
                       },
                     ),
 
@@ -109,21 +177,48 @@ class HomeScreen extends HookWidget {
                           LocationDetailHelper.buildLocationSubTitle(
                         objectString: _loadModelFeaturePlaceName(),
                       ),
-                      latitude: _loadModelFeatureLatitude(),
-                      longitude: _loadModelFeatureLongitude(),
+                      latitude: cacheLatitudeCoordinate.value,
+                      longitude: cacheLongitudeCoordinate.value,
                     ),
                     Gap($styles.insets.sm),
 
                     // Body Section
-                    const HomeWeatherCard(),
+                    HomeCurrentWeatherForecastCard(
+                      temperatureInCelsius: _extractWeatherTemperatureInCelsius(
+                        hourlyCurrentWeather: cacheHourlyCurrentWeather.value,
+                      ),
+                      weatherImage: _extractWeatherImage(
+                        hourlyCurrentWeather: cacheHourlyCurrentWeather.value,
+                        dayDescription: dayDescription.value,
+                      ),
+                      humidity: _extractWeatherHumidity(
+                        hourlyWeatherForecastModel:
+                            cacheHourlyWeatherForecastModel.value,
+                      ),
+                      precipitation: _extractWeatherPrecipitationPercentage(
+                        hourlyWeatherForecastModel:
+                            cacheHourlyWeatherForecastModel.value,
+                      ),
+                      pressure: _extractWeatherPressure(
+                        hourlyWeatherForecastModel:
+                            cacheHourlyWeatherForecastModel.value,
+                      ),
+                      windSpeed: _extractWeatherWindSpeed(
+                        hourlyCurrentWeather: cacheHourlyCurrentWeather.value,
+                      ),
+                    ),
                     Gap($styles.insets.xl),
 
                     // Body Section
-                    const HomeHourlyForecastTitle(),
+                    const HomeHourlyWeatherForecastTitle(),
                     Gap($styles.insets.sm),
 
                     // Footer Section
-                    const HomeHourlyForecastCard(),
+                    HomeHourlyWeatherForecastCard(
+                      hourlyWeatherForecastModel:
+                          cacheHourlyWeatherForecastModel.value,
+                      dayDescription: dayDescription.value,
+                    ),
                   ],
                 );
               },
@@ -176,19 +271,17 @@ class HomeScreen extends HookWidget {
   /// unknown or undefined.
   List<Object> _extractAutoCompleteObjects({
     required HomeState state,
-    required List<Object> previousObjects,
   }) {
     if (state.status == HomeBlocStatus.success) {
       final features = state.forwardGeocodingModel?.features;
       if (features != null) {
         final placeNames =
             features.map<String>((feature) => feature.placeName).toList();
-        previousObjects = placeNames;
         return placeNames;
       }
     }
 
-    return previousObjects;
+    return <Object>[];
   }
 
   /// Extract the results from the [HomeBloc]'s state
@@ -229,8 +322,8 @@ class HomeScreen extends HookWidget {
     );
   }
 
-  /// Load the latest saved place name from [ForwardFeature]
-  /// when the saved place name was available.
+  /// Load the [ForwardFeature]'s latest saved place name from
+  /// [SharedPreferencesStorage] when the saved place name was available.
   ///
   /// This will return the default [String] value when
   /// the latest saved place name was empty.
@@ -247,8 +340,9 @@ class HomeScreen extends HookWidget {
     return placeName;
   }
 
-  /// Load the latest saved latitude from [ForwardFeature]
-  /// when the saved latitude's coordinate was available.
+  /// Load the [ForwardFeature]'s latest saved latitude from
+  /// [SharedPreferencesStorage] when the saved latitude's
+  /// coordinate was available.
   ///
   /// This will return the default [double] value when
   /// the latest saved latitude's coordinate was empty.
@@ -264,8 +358,9 @@ class HomeScreen extends HookWidget {
     return latitude;
   }
 
-  /// Load the latest saved longitude from [ForwardFeature]
-  /// when the saved longitude's coordinate was available.
+  /// Load the [ForwardFeature]'s latest saved longitude from
+  /// [SharedPreferencesStorage] when the saved longitude's
+  /// coordinate was available.
   ///
   /// This will return the default [double] value when
   /// the latest saved longitude's coordinate was empty.
@@ -279,5 +374,216 @@ class HomeScreen extends HookWidget {
     }
 
     return longitude;
+  }
+
+  /// Send the [FindHourlyWeatherForecastEvent] into the
+  /// [HomeBloc] by providing the [context] with
+  /// [latitude] and [longitude] coordinates
+  /// parameters.
+  void _dispatchFindHourlyWeatherForecastEvent({
+    required BuildContext context,
+    required double latitude,
+    required double longitude,
+  }) {
+    context.read<HomeBloc>().add(
+          FindHourlyWeatherForecastEvent(
+            latitude: latitude,
+            longitude: longitude,
+          ),
+        );
+  }
+
+  /// Extract the results from the [HomeBloc]'s state
+  /// based on each [HomeState]'s returned values.
+  ///
+  /// This will return the [HourlyWeatherForecastModel] when
+  /// the results from [HomeBloc]'s state was
+  /// successful and not null.
+  ///
+  /// This will return empty or null
+  /// when the returned [HomeState]'s values are
+  /// unknown or undefined.
+  HourlyWeatherForecastModel? _extractHourlyWeatherForecastModel({
+    required HomeState state,
+  }) {
+    if (state.status == HomeBlocStatus.success) {
+      final hourlyWeatherForecast = state.hourlyWeatherForecastModel;
+
+      if (hourlyWeatherForecast != null) {
+        return hourlyWeatherForecast;
+      }
+    }
+
+    return null;
+  }
+
+  /// Save the latest [HourlyWeatherForecastModel] from
+  /// the [HomeBloc]'s state into the [SharedPreferencesStorage].
+  ///
+  /// This will return the [Future] of [bool] when the
+  /// saving process was completed.
+  Future<bool> _saveHourlyWeatherForecastModelIntoSharedPreferences({
+    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  }) {
+    return SharedPreferencesStorage.setLatestHourlyWeatherForecastModel(
+      hourlyWeatherForecastModel: hourlyWeatherForecastModel,
+    );
+  }
+
+  /// Load the [HourlyWeatherForecastModel]'s latest saved longitude from
+  /// [SharedPreferencesStorage] when the saved longitude's
+  /// coordinate was available.
+  ///
+  /// This will return the default [HourlyWeatherForecastModel] value when
+  /// the latest saved [HourlyWeatherForecastModel]'s value was empty.
+  HourlyWeatherForecastModel _loadHourlyWeatherForecastModel() {
+    final loadedHourlyWeatherForecastModel =
+        SharedPreferencesStorage.getLatestHourlyWeatherForecastModel();
+    debugPrint(
+      "loadHourlyWeatherForecastModel -> $loadedHourlyWeatherForecastModel",
+    );
+
+    var hourlyWeatherForecastModel = HourlyWeatherForecastModel.defaultValue();
+
+    if (loadedHourlyWeatherForecastModel != null) {
+      hourlyWeatherForecastModel = loadedHourlyWeatherForecastModel;
+    }
+
+    return hourlyWeatherForecastModel;
+  }
+
+  /// Extract the results from the [HomeBloc]'s state
+  /// based on each [HomeState]'s returned values.
+  ///
+  /// This will return the [HourlyCurrentWeather] when
+  /// the results from [HomeBloc]'s state was
+  /// successful and not null.
+  ///
+  /// This will return empty or null
+  /// when the returned [HomeState]'s values are
+  /// unknown or undefined.
+  HourlyCurrentWeather? _extractCurrentWeatherForecast({
+    required HomeState state,
+  }) {
+    if (state.status == HomeBlocStatus.success) {
+      final hourlyWeatherForecast = state.hourlyWeatherForecastModel;
+      if (hourlyWeatherForecast != null) {
+        final currentWeatherForecast =
+            hourlyWeatherForecast.hourlyCurrentWeather;
+        return currentWeatherForecast;
+      }
+    }
+
+    return null;
+  }
+
+  /// Save the latest [HourlyCurrentWeather] from
+  /// the [HomeBloc]'s state into the [SharedPreferencesStorage].
+  ///
+  /// This will return the [Future] of [bool] when the
+  /// saving process was completed.
+  Future<bool> _saveHourlyCurrentWeatherIntoSharedPreferences({
+    required HourlyCurrentWeather hourlyCurrentWeather,
+  }) {
+    return SharedPreferencesStorage.setLatestHourlyCurrentWeather(
+      hourlyCurrentWeather: hourlyCurrentWeather,
+    );
+  }
+
+  /// Load the [HourlyCurrentWeather]'s latest saved longitude from
+  /// [SharedPreferencesStorage] when the saved longitude's
+  /// coordinate was available.
+  ///
+  /// This will return the default [HourlyCurrentWeather] value when
+  /// the latest saved [HourlyCurrentWeather]'s value was empty.
+  HourlyCurrentWeather _loadHourlyCurrentWeather() {
+    final loadedHourlyCurrentWeather =
+        SharedPreferencesStorage.getLatestHourlyCurrentWeather();
+    debugPrint("loadHourlyCurrentWeather -> $loadedHourlyCurrentWeather");
+
+    var hourlyCurrentWeather = HourlyCurrentWeather.defaultValue();
+
+    if (loadedHourlyCurrentWeather != null) {
+      hourlyCurrentWeather = loadedHourlyCurrentWeather;
+    }
+
+    return hourlyCurrentWeather;
+  }
+
+  /// Extract the weather temperature in celsius value
+  /// based on the [HourlyCurrentWeather]'s object.
+  String _extractWeatherTemperatureInCelsius({
+    required HourlyCurrentWeather hourlyCurrentWeather,
+  }) {
+    final currentTemperature = hourlyCurrentWeather.temperature;
+    final formattedCurrentTemperature = currentTemperature.toString();
+    return formattedCurrentTemperature;
+  }
+
+  /// Extract the weather code value
+  /// based on the [HourlyCurrentWeather]'s object
+  /// for convert it into an image inside the assets folder.
+  String _extractWeatherImage({
+    required HourlyCurrentWeather hourlyCurrentWeather,
+    required String dayDescription,
+  }) {
+    final currentWeatherCode = hourlyCurrentWeather.weatherCode;
+    final convertedWeatherCodeIntoImage =
+        WeatherForecastHelper.generateWeatherImage(
+      weatherCode: currentWeatherCode,
+      dayDescription: dayDescription,
+    );
+    return convertedWeatherCodeIntoImage;
+  }
+
+  /// Extract the first weather relative humidity's value
+  /// based on the [HourlyWeatherForecastModel]'s object.
+  String _extractWeatherHumidity({
+    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  }) {
+    final currentHourlyNextWeather =
+        hourlyWeatherForecastModel.hourlyNextWeather;
+    final nextWeatherHumidities = currentHourlyNextWeather.relativeHumidity2M;
+    final firstWeatherHumidity = nextWeatherHumidities.first;
+    final formattedFirstWeatherHumidity = firstWeatherHumidity.toString();
+    return formattedFirstWeatherHumidity;
+  }
+
+  /// Extract the weather precipitation percentage's value
+  /// based on the [HourlyWeatherForecastModel]'s object.
+  String _extractWeatherPrecipitationPercentage({
+    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  }) {
+    final currentHourlyNextWeather =
+        hourlyWeatherForecastModel.hourlyNextWeather;
+    final nextWeatherPrecipitations =
+        currentHourlyNextWeather.precipitationProbability;
+    final firstWeatherPrecipitation = nextWeatherPrecipitations.first;
+    final formattedFirstWeatherPrecipitation =
+        firstWeatherPrecipitation.toString();
+    return formattedFirstWeatherPrecipitation;
+  }
+
+  /// Extract the weather pressure's value
+  /// based on the [HourlyWeatherForecastModel]'s object.
+  String _extractWeatherPressure({
+    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  }) {
+    final currentHourlyNextWeather =
+        hourlyWeatherForecastModel.hourlyNextWeather;
+    final nextWeatherPressures = currentHourlyNextWeather.surfacePressure;
+    final firstWeatherPressure = nextWeatherPressures.first;
+    final formattedFirstWeatherPressure = firstWeatherPressure.toString();
+    return formattedFirstWeatherPressure;
+  }
+
+  /// Extract the weather wind speed's value
+  /// based on the [HourlyCurrentWeather]'s object.
+  String _extractWeatherWindSpeed({
+    required HourlyCurrentWeather hourlyCurrentWeather,
+  }) {
+    final currentWindSpeed = hourlyCurrentWeather.windSpeed;
+    final formattedCurrentWindSpeed = currentWindSpeed.toString();
+    return formattedCurrentWindSpeed;
   }
 }
