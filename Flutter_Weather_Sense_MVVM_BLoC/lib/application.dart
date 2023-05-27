@@ -14,10 +14,10 @@ class Application extends HookWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routeInformationProvider:
-          AppRouter.routerInstance.routeInformationProvider,
-      routeInformationParser: AppRouter.routerInstance.routeInformationParser,
+          AppGoRouter.routerInstance.routeInformationProvider,
+      routeInformationParser: AppGoRouter.routerInstance.routeInformationParser,
       debugShowCheckedModeBanner: false,
-      routerDelegate: AppRouter.routerInstance.routerDelegate,
+      routerDelegate: AppGoRouter.routerInstance.routerDelegate,
       builder: (context, child) {
         // Initializing the AppStyles inside the Application
         // before the application start.
