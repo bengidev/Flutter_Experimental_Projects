@@ -3,21 +3,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 
-class HomeWeatherCard extends StatelessWidget {
-  /// Function will triggered when the [HomeWeatherCard]
+class HomeCurrentWeatherForecastCard extends StatelessWidget {
+  /// Function will triggered when the [HomeCurrentWeatherForecastCard]
   /// was pressed.
   final void Function()? onTap;
 
   /// Describe the weather temperature in Celsius degree.
   final String? temperatureInCelsius;
 
-  /// Describe the current highest weather temperature
-  /// in Celsius degree.
-  final String? highestTemperature;
-
-  /// Describe the current lowest weather temperature
-  /// in Celsius degree.
-  final String? lowestTemperature;
+  /// Show the current weather condition using image.
+  final String? weatherImage;
 
   /// Describe the humidity unit in percentage
   /// based on the current weather status.
@@ -35,12 +30,11 @@ class HomeWeatherCard extends StatelessWidget {
   /// based on the current weather status.
   final String? windSpeed;
 
-  const HomeWeatherCard({
+  const HomeCurrentWeatherForecastCard({
     super.key,
     this.onTap,
     this.temperatureInCelsius,
-    this.highestTemperature,
-    this.lowestTemperature,
+    this.weatherImage,
     this.humidity,
     this.precipitation,
     this.pressure,
@@ -98,35 +92,15 @@ class HomeWeatherCard extends StatelessWidget {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Gap($styles.insets.sm),
+                                Gap($styles.insets.lg),
                                 AppAutoResizeText(
                                   width: context.widthPx * 0.3,
                                   height: context.heightPx * 0.06,
                                   alignment: Alignment.center,
-                                  text: temperatureInCelsius ?? "0 °C",
+                                  text: "${temperatureInCelsius ?? 0} °C",
                                   textStyle: $styles.textStyle.h1,
                                   textAlign: TextAlign.center,
                                   maxLines: 1,
-                                ),
-                                Column(
-                                  children: [
-                                    AppAutoResizeText(
-                                      width: context.widthPx * 0.2,
-                                      alignment: Alignment.centerLeft,
-                                      text: "High: ${highestTemperature ?? 0}",
-                                      textStyle: $styles.textStyle.body5,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                    ),
-                                    AppAutoResizeText(
-                                      width: context.widthPx * 0.2,
-                                      alignment: Alignment.centerLeft,
-                                      text: "Low: ${lowestTemperature ?? 0}",
-                                      textStyle: $styles.textStyle.body5,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                    ),
-                                  ],
                                 ),
                               ],
                             ),
@@ -134,11 +108,12 @@ class HomeWeatherCard extends StatelessWidget {
                         ),
                       ),
                       Expanded(
-                        child: SizedBox(
+                        child: Container(
                           width: context.widthPx,
                           height: context.heightPx * 0.1,
+                          margin: EdgeInsets.only(right: $styles.insets.xl),
                           child: SvgPicture.asset(
-                            'assets/images/tornado.svg',
+                            weatherImage ?? "",
                             width: context.widthPx,
                             height: context.heightPx,
                             fit: BoxFit.contain,
@@ -183,7 +158,7 @@ class HomeWeatherCard extends StatelessWidget {
                               maxLines: 1,
                             ),
                             AppAutoResizeText(
-                              text: "${precipitation ?? 0} ml",
+                              text: "${precipitation ?? 0} %",
                               textStyle: $styles.textStyle.body5Bold,
                               textAlign: TextAlign.center,
                               maxLines: 1,
@@ -219,7 +194,7 @@ class HomeWeatherCard extends StatelessWidget {
                               maxLines: 1,
                             ),
                             AppAutoResizeText(
-                              text: "${windSpeed ?? 0} m/s",
+                              text: "${windSpeed ?? 0} km/h",
                               textStyle: $styles.textStyle.body5Bold,
                               textAlign: TextAlign.center,
                               maxLines: 1,
