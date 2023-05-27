@@ -1,0 +1,2 @@
+export 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repository/forward_geocoding_repository_impl.dart';
+export 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repository/i_forward_geocoding_repository.dart';
