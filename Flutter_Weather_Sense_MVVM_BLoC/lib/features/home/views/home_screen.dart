@@ -76,59 +76,59 @@ class HomeScreen extends HookWidget {
       create: (context) => $serviceLocator.get<HomeBloc>(),
       child: Scaffold(
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: BlocConsumer<HomeBloc, HomeState>(
-              listener: (context, state) async {
-                debugPrint("Home State -> $state");
+          child: BlocConsumer<HomeBloc, HomeState>(
+            listener: (context, state) async {
+              debugPrint("Home State -> $state");
 
-                if (state.status == HomeBlocStatus.success) {
-                  // Save the [extractedModelFeature]'s value when
-                  // the value was not empty.
-                  final extractedModelFeature = _extractModelFeature(
-                    state: state,
-                    index: cacheSelectedIndexState.value,
+              if (state.status == HomeBlocStatus.success) {
+                // Save the [extractedModelFeature]'s value when
+                // the value was not empty.
+                final extractedModelFeature = _extractModelFeature(
+                  state: state,
+                  index: cacheSelectedIndexState.value,
+                );
+                if (extractedModelFeature != null) {
+                  cacheLatitudeCoordinate.value =
+                      extractedModelFeature.center.last;
+                  cacheLongitudeCoordinate.value =
+                      extractedModelFeature.center.first;
+
+                  await _saveModelFeatureIntoSharedPreferences(
+                    modelFeature: extractedModelFeature,
                   );
-                  if (extractedModelFeature != null) {
-                    cacheLatitudeCoordinate.value =
-                        extractedModelFeature.center.last;
-                    cacheLongitudeCoordinate.value =
-                        extractedModelFeature.center.first;
-
-                    await _saveModelFeatureIntoSharedPreferences(
-                      modelFeature: extractedModelFeature,
-                    );
-                  }
-
-                  // Save the [extractedHourlyWeatherForecastModel]'s value
-                  // when the value was not empty.
-                  final extractedHourlyWeatherForecastModel =
-                      _extractHourlyWeatherForecastModel(state: state);
-
-                  if (extractedHourlyWeatherForecastModel != null) {
-                    cacheHourlyWeatherForecastModel.value =
-                        extractedHourlyWeatherForecastModel;
-
-                    await _saveHourlyWeatherForecastModelIntoSharedPreferences(
-                      hourlyWeatherForecastModel:
-                          extractedHourlyWeatherForecastModel,
-                    );
-                  }
-
-                  final extractedCurrentWeatherForecast =
-                      _extractCurrentWeatherForecast(state: state);
-
-                  if (extractedCurrentWeatherForecast != null) {
-                    cacheHourlyCurrentWeather.value =
-                        extractedCurrentWeatherForecast;
-
-                    await _saveHourlyCurrentWeatherIntoSharedPreferences(
-                      hourlyCurrentWeather: extractedCurrentWeatherForecast,
-                    );
-                  }
                 }
-              },
-              builder: (context, state) {
-                return Column(
+
+                // Save the [extractedHourlyWeatherForecastModel]'s value
+                // when the value was not empty.
+                final extractedHourlyWeatherForecastModel =
+                    _extractHourlyWeatherForecastModel(state: state);
+
+                if (extractedHourlyWeatherForecastModel != null) {
+                  cacheHourlyWeatherForecastModel.value =
+                      extractedHourlyWeatherForecastModel;
+
+                  await _saveHourlyWeatherForecastModelIntoSharedPreferences(
+                    hourlyWeatherForecastModel:
+                        extractedHourlyWeatherForecastModel,
+                  );
+                }
+
+                final extractedCurrentWeatherForecast =
+                    _extractCurrentWeatherForecast(state: state);
+
+                if (extractedCurrentWeatherForecast != null) {
+                  cacheHourlyCurrentWeather.value =
+                      extractedCurrentWeatherForecast;
+
+                  await _saveHourlyCurrentWeatherIntoSharedPreferences(
+                    hourlyCurrentWeather: extractedCurrentWeatherForecast,
+                  );
+                }
+              }
+            },
+            builder: (context, state) {
+              return SingleChildScrollView(
+                child: Column(
                   children: [
                     // Header Section
                     HomeGreetingDescription(
@@ -220,9 +220,9 @@ class HomeScreen extends HookWidget {
                       dayDescription: dayDescription.value,
                     ),
                   ],
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),
