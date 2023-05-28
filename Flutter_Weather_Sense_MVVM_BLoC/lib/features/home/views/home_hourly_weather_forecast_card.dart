@@ -32,7 +32,7 @@ class HomeHourlyWeatherForecastCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: $styles.colors.tertiary,
           borderRadius: BorderRadius.circular($styles.corners.xs),
-          boxShadow: kElevationToShadow[6],
+          boxShadow: kElevationToShadow[3],
         ),
         child: ListView.builder(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

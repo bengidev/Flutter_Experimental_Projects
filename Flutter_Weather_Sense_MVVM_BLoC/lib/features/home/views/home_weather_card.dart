@@ -54,7 +54,7 @@ class HomeCurrentWeatherForecastCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: $styles.colors.tertiary,
           borderRadius: BorderRadius.circular($styles.corners.xs),
-          boxShadow: kElevationToShadow[6],
+          boxShadow: kElevationToShadow[3],
         ),
         child: Material(
           color: $styles.colors.tertiary,
