@@ -35,7 +35,7 @@ dependencies:
 
   # A testing library which makes it easy to test blocs.
   # Built to be used with the bloc state management package.
-  bloc_test: ^9.1.1
+  bloc_test: ^9.1.2
 
   # Coverage data manipulation and formatting.
   coverage: ^1.6.3
@@ -55,9 +55,6 @@ dependencies:
   # Additional alignments to help make your layouts more readable (TopLeft, TopRight, etc).
   extra_alignments: ^1.0.0+1
 
-  # A collection of Flex widgets (Columns and Rows) with additional functionality.
-  flextras: ^1.0.0
-
   # Core dependencies for using Flutter.
   flutter:
     sdk: flutter
@@ -67,7 +64,7 @@ dependencies:
 
   # Flutter Widgets that make it easy to implement the BLoC (Business Logic Component) design pattern.
   # Built to be used with the bloc state management package.
-  flutter_bloc: ^8.1.2
+  flutter_bloc: ^8.1.3
 
   # A flutter implementation of React hooks. It adds a new kind of widget with enhanced code reuse.
   flutter_hooks: ^0.18.6
@@ -92,7 +89,7 @@ dependencies:
 
   # A declarative router for Flutter based on Navigation 2.
   # Supporting deep linking, data-driven routes and more.
-  go_router: ^7.0.1
+  go_router: ^7.1.1
 
   # A Flutter package to use fonts from fonts.google.com.
   # Supports HTTP fetching, caching, and asset bundling.
