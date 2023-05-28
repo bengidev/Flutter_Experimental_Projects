@@ -42,8 +42,8 @@ class AppNavigationScreen extends HookWidget {
       BottomNavigationBarItem(
         label: "Daily Weather Forecast",
         icon: index == 1
-            ? const Icon(Icons.explore_rounded)
-            : const Icon(Icons.explore_outlined),
+            ? const Icon(Icons.calendar_month_rounded)
+            : const Icon(Icons.calendar_month_outlined),
       )
     ];
     return navigationBarItems;
