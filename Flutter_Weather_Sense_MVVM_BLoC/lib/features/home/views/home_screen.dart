@@ -512,78 +512,129 @@ class HomeScreen extends HookWidget {
 
   /// Extract the weather temperature in celsius value
   /// based on the [HourlyCurrentWeather]'s object.
-  String _extractWeatherTemperatureInCelsius({
-    required HourlyCurrentWeather hourlyCurrentWeather,
+  ///
+  /// This will return null when the weather temperature
+  /// was not available.
+  String? _extractWeatherTemperatureInCelsius({
+    required HourlyCurrentWeather? hourlyCurrentWeather,
   }) {
-    final currentTemperature = hourlyCurrentWeather.temperature;
-    final formattedCurrentTemperature = currentTemperature.toString();
-    return formattedCurrentTemperature;
+    if (hourlyCurrentWeather != null) {
+      final currentTemperature = hourlyCurrentWeather.temperature;
+      final formattedCurrentTemperature = currentTemperature.toString();
+      return formattedCurrentTemperature;
+    }
+
+    return null;
   }
 
   /// Extract the weather code value
   /// based on the [HourlyCurrentWeather]'s object
   /// for convert it into an image inside the assets folder.
-  String _extractWeatherImage({
-    required HourlyCurrentWeather hourlyCurrentWeather,
-    required String dayDescription,
+  ///
+  /// This will return null when the weather code
+  /// was not available.
+  String? _extractWeatherImage({
+    required HourlyCurrentWeather? hourlyCurrentWeather,
+    required String? dayDescription,
   }) {
-    final currentWeatherCode = hourlyCurrentWeather.weatherCode;
-    final convertedWeatherCodeIntoImage =
-        WeatherForecastHelper.generateWeatherImage(
-      weatherCode: currentWeatherCode,
-      dayDescription: dayDescription,
-    );
-    return convertedWeatherCodeIntoImage;
+    if (hourlyCurrentWeather != null && dayDescription != null) {
+      final currentWeatherCode = hourlyCurrentWeather.weatherCode;
+      final convertedWeatherCodeIntoImage =
+          WeatherForecastHelper.generateWeatherImage(
+        weatherCode: currentWeatherCode,
+        dayDescription: dayDescription,
+      );
+      return convertedWeatherCodeIntoImage;
+    }
+
+    return null;
   }
 
   /// Extract the first weather relative humidity's value
   /// based on the [HourlyWeatherForecastModel]'s object.
-  String _extractWeatherHumidity({
-    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  ///
+  /// This will return null when the first weather relative humidity
+  /// was not available.
+  String? _extractWeatherHumidity({
+    required HourlyWeatherForecastModel? hourlyWeatherForecastModel,
   }) {
-    final currentHourlyNextWeather =
-        hourlyWeatherForecastModel.hourlyNextWeather;
-    final nextWeatherHumidities = currentHourlyNextWeather.relativeHumidity2M;
-    final firstWeatherHumidity = nextWeatherHumidities.first;
-    final formattedFirstWeatherHumidity = firstWeatherHumidity.toString();
-    return formattedFirstWeatherHumidity;
+    if (hourlyWeatherForecastModel != null) {
+      final currentHourlyNextWeather =
+          hourlyWeatherForecastModel.hourlyNextWeather;
+      final nextWeatherHumidities = currentHourlyNextWeather.relativeHumidity2M;
+
+      if (nextWeatherHumidities.isNotEmpty) {
+        final firstWeatherHumidity = nextWeatherHumidities.first;
+        final formattedFirstWeatherHumidity = firstWeatherHumidity.toString();
+        return formattedFirstWeatherHumidity;
+      }
+    }
+
+    return null;
   }
 
   /// Extract the weather precipitation percentage's value
   /// based on the [HourlyWeatherForecastModel]'s object.
-  String _extractWeatherPrecipitationPercentage({
-    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  ///
+  /// This will return null when the precipitation percentage
+  /// was not available.
+  String? _extractWeatherPrecipitationPercentage({
+    required HourlyWeatherForecastModel? hourlyWeatherForecastModel,
   }) {
-    final currentHourlyNextWeather =
-        hourlyWeatherForecastModel.hourlyNextWeather;
-    final nextWeatherPrecipitations =
-        currentHourlyNextWeather.precipitationProbability;
-    final firstWeatherPrecipitation = nextWeatherPrecipitations.first;
-    final formattedFirstWeatherPrecipitation =
-        firstWeatherPrecipitation.toString();
-    return formattedFirstWeatherPrecipitation;
+    if (hourlyWeatherForecastModel != null) {
+      final currentHourlyNextWeather =
+          hourlyWeatherForecastModel.hourlyNextWeather;
+      final nextWeatherPrecipitations =
+          currentHourlyNextWeather.precipitationProbability;
+
+      if (nextWeatherPrecipitations.isNotEmpty) {
+        final firstWeatherPrecipitation = nextWeatherPrecipitations.first;
+        final formattedFirstWeatherPrecipitation =
+            firstWeatherPrecipitation.toString();
+        return formattedFirstWeatherPrecipitation;
+      }
+    }
+
+    return null;
   }
 
   /// Extract the weather pressure's value
   /// based on the [HourlyWeatherForecastModel]'s object.
-  String _extractWeatherPressure({
-    required HourlyWeatherForecastModel hourlyWeatherForecastModel,
+  ///
+  /// This will return null when the weather pressure
+  /// was not available.
+  String? _extractWeatherPressure({
+    required HourlyWeatherForecastModel? hourlyWeatherForecastModel,
   }) {
-    final currentHourlyNextWeather =
-        hourlyWeatherForecastModel.hourlyNextWeather;
-    final nextWeatherPressures = currentHourlyNextWeather.surfacePressure;
-    final firstWeatherPressure = nextWeatherPressures.first;
-    final formattedFirstWeatherPressure = firstWeatherPressure.toString();
-    return formattedFirstWeatherPressure;
+    if (hourlyWeatherForecastModel != null) {
+      final currentHourlyNextWeather =
+          hourlyWeatherForecastModel.hourlyNextWeather;
+      final nextWeatherPressures = currentHourlyNextWeather.surfacePressure;
+
+      if (nextWeatherPressures.isNotEmpty) {
+        final firstWeatherPressure = nextWeatherPressures.first;
+        final formattedFirstWeatherPressure = firstWeatherPressure.toString();
+        return formattedFirstWeatherPressure;
+      }
+    }
+
+    return null;
   }
 
   /// Extract the weather wind speed's value
   /// based on the [HourlyCurrentWeather]'s object.
-  String _extractWeatherWindSpeed({
-    required HourlyCurrentWeather hourlyCurrentWeather,
+  ///
+  /// This will return null when the weather wind speed
+  /// was not available.
+  String? _extractWeatherWindSpeed({
+    required HourlyCurrentWeather? hourlyCurrentWeather,
   }) {
-    final currentWindSpeed = hourlyCurrentWeather.windSpeed;
-    final formattedCurrentWindSpeed = currentWindSpeed.toString();
-    return formattedCurrentWindSpeed;
+    if (hourlyCurrentWeather != null) {
+      final currentWindSpeed = hourlyCurrentWeather.windSpeed;
+      final formattedCurrentWindSpeed = currentWindSpeed.toString();
+      return formattedCurrentWindSpeed;
+    }
+
+    return null;
   }
 }
