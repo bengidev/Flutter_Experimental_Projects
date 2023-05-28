@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/config/dependency_injections/dependency_injection.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/views/daily_weather_forecast_screen.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/views/home_screen.dart';
@@ -36,14 +37,26 @@ class AppNavigationScreen extends HookWidget {
       BottomNavigationBarItem(
         label: "Home",
         icon: index == 0
-            ? const Icon(Icons.home_rounded)
-            : const Icon(Icons.home_outlined),
+            ? Icon(
+                Icons.home_rounded,
+                color: $styles.colors.secondary,
+              )
+            : Icon(
+                Icons.home_outlined,
+                color: $styles.colors.secondary,
+              ),
       ),
       BottomNavigationBarItem(
         label: "Daily Weather Forecast",
         icon: index == 1
-            ? const Icon(Icons.calendar_month_rounded)
-            : const Icon(Icons.calendar_month_outlined),
+            ? Icon(
+                Icons.calendar_month_rounded,
+                color: $styles.colors.secondary,
+              )
+            : Icon(
+                Icons.calendar_month_outlined,
+                color: $styles.colors.secondary,
+              ),
       )
     ];
     return navigationBarItems;
