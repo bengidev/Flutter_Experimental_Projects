@@ -48,7 +48,7 @@ class OnboardingScreen extends HookWidget {
               Column(
                 children: [
                   // Logo and Text Logo
-                  const Gap(50),
+                  Gap($styles.insets.sm),
                   Container(
                     alignment: Alignment.center,
                     height: _logoHeight,
@@ -56,7 +56,7 @@ class OnboardingScreen extends HookWidget {
                   ),
 
                   // Image and Masked Image
-                  const Gap(30),
+                  Gap($styles.insets.sm),
                   SizedBox(
                     width: _imageSize,
                     height: _imageSize,
@@ -77,7 +77,7 @@ class OnboardingScreen extends HookWidget {
                   ),
 
                   // Page Indicator
-                  const Gap(130),
+                  Gap(context.heightPct(0.2)),
                   AppPageIndicator(
                     width: context.widthPx * 0.9,
                     height: context.heightPx * 0.03,
@@ -101,7 +101,7 @@ class OnboardingScreen extends HookWidget {
               // Finish Button
               Positioned(
                 right: $styles.insets.lg,
-                bottom: 10,
+                bottom: context.heightPct(0.03),
                 child: OnboardingFinishButton(
                   context: context,
                   valueListenable: currentPage,

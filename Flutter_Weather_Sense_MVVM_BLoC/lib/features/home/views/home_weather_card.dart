@@ -50,7 +50,7 @@ class HomeCurrentWeatherForecastCard extends StatelessWidget {
       ),
       child: Container(
         width: context.widthPx,
-        height: context.heightPx * 0.2,
+        height: context.heightPct(0.25),
         decoration: BoxDecoration(
           color: $styles.colors.tertiary,
           borderRadius: BorderRadius.circular($styles.corners.xs),
