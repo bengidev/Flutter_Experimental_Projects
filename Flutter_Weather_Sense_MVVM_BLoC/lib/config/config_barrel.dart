@@ -1,4 +1,7 @@
 export 'package:extra_alignments/extra_alignments.dart';
+export 'package:flutter_svg/flutter_svg.dart';
+export 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
+export 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 export 'package:gap/gap.dart';
 export 'package:sized_context/sized_context.dart';
 
