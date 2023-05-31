@@ -134,7 +134,7 @@ class HomeScreen extends HookWidget {
                     HomeGreetingDescription(
                       greetingMessage: dayDescription.value,
                     ),
-                    Gap($styles.insets.md),
+                    Gap($styles.insets.xs),
 
                     // Header Section
                     AppRawAutoCompleteField(
@@ -219,6 +219,7 @@ class HomeScreen extends HookWidget {
                           cacheHourlyWeatherForecastModel.value,
                       dayDescription: dayDescription.value,
                     ),
+                    Gap($styles.insets.sm),
                   ],
                 ),
               );
