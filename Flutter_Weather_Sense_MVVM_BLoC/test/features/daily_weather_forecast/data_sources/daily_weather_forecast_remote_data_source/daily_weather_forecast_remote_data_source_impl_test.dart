@@ -110,7 +110,7 @@ void main() async {
           any(that: isA<Uri>()),
           headers: any(named: 'headers'),
         ),
-      ).thenThrow(const ServerException());
+      ).thenAnswer((_) async => http.Response("Error 400", 400));
 
       // ACT
       final results =
@@ -145,7 +145,7 @@ void main() async {
           any(that: isA<Uri>()),
           headers: any(named: 'headers'),
         ),
-      ).thenThrow(const UnexpectedException());
+      ).thenAnswer((_) async => http.Response("Error 500", 500));
 
       // ACT
       final results =

@@ -63,7 +63,7 @@ class ForwardGeocodingRemoteDataSourceImpl
       } catch (e) {
         rethrow;
       }
-    } else if (response.statusCode >= 401 && response.statusCode <= 429) {
+    } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw ServerException(
         message: "code: ${response.statusCode}, "
             "description: ${response.reasonPhrase}",

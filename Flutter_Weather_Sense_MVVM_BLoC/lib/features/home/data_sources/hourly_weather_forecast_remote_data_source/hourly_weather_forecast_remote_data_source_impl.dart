@@ -67,7 +67,7 @@ class HourlyWeatherForecastRemoteDataSourceImpl
       } catch (e) {
         rethrow;
       }
-    } else if (response.statusCode >= 400) {
+    } else if (response.statusCode >= 400 && response.statusCode < 500) {
       throw ServerException(
         message: "code: ${response.statusCode}, "
             "description: ${response.reasonPhrase}",
