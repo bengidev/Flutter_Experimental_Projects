@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 
 class DailyWeatherCard extends StatelessWidget {
   /// Show the weather image from inside assets folder.

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 
 class DailySunCard extends StatelessWidget {
   /// Show the forecast time of sunrise.
