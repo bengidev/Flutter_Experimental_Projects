@@ -51,7 +51,7 @@ class DailyAvailableDays extends StatelessWidget {
                 child: selectedDayIndex == index
                     ? ElevatedButton(
                         key: ValueKey(availableDays.elementAt(index)),
-                        onPressed: () async => onDayPressed(index),
+                        onPressed: () => onDayPressed(index),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius:
@@ -67,7 +67,7 @@ class DailyAvailableDays extends StatelessWidget {
                       )
                     : ElevatedButton(
                         key: ValueKey(availableDays.elementAt(index) * 2),
-                        onPressed: () async => onDayPressed(index),
+                        onPressed: () => onDayPressed(index),
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius:
