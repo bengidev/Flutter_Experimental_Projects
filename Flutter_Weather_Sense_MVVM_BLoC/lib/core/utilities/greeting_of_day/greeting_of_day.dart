@@ -1,6 +1,4 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 
 /// Private [Enum] for the ease of use
 /// each description of [_GreetingType].
@@ -20,46 +18,58 @@ class GreetingOfDay {
   /// [getFromTime] with the same properties.
   /// This only available for testing purpose only.
   @visibleForTesting
-  Either<Failure, String> testGetFromTime({
+  String testGetFromTime({
     required DateTime time,
   }) {
-    return GreetingOfDay.getFromTime(
-      time: time,
-    );
+    return GreetingOfDay.getFromTime(time: time);
   }
 
   /// Generate [String] of [TimeOfDay] status from [DateTime].
-  /// [getFromTime] will return [UnexpectedFailure]
-  /// when error was occurred.
-  static Either<Failure, String> getFromTime({
+  ///
+  /// This method will return the default value of "Good Morning"
+  /// when the [hasClockTime] is set to be false.
+  ///
+  static String getFromTime({
     required DateTime time,
+    bool hasClockTime = true,
   }) {
-    try {
-      final currentTime = TimeOfDay.fromDateTime(time);
-      final greetingResults = _decideGreetingWithinClockRange(
-        clockTime: currentTime.hour,
-      );
-
-      if (greetingResults.isEmpty) {
-        return Left(UnexpectedFailure());
-      } else {
-        return Right(greetingResults);
-      }
-    } catch (exception) {
-      return Left(UnexpectedFailure());
-    }
+    final currentTime = TimeOfDay.fromDateTime(time);
+    final greetingResults = _decideGreetingWithinClockRange(
+      currentTime.hour,
+      hasClockTime: hasClockTime,
+    );
+    return greetingResults;
   }
 
   /// Test the [GreetingOfDay]'s private static method
   /// [_decideGreetingWithinClockRange] with the same properties.
   /// This only available for testing purpose only.
+  ///
   @visibleForTesting
-  String testDecideGreetingWithinClockRange({required int clockTime}) {
-    return GreetingOfDay._decideGreetingWithinClockRange(clockTime: clockTime);
+  String testDecideGreetingWithinClockRange(
+    int clockTime, {
+    bool hasClockTime = true,
+  }) {
+    return GreetingOfDay._decideGreetingWithinClockRange(
+      clockTime,
+      hasClockTime: hasClockTime,
+    );
   }
 
   /// Decide the [_GreetingType]'s description from [clockTime] range.
-  static String _decideGreetingWithinClockRange({required int clockTime}) {
+  ///
+  /// This method will return the default value of "Good Morning"
+  /// when the [hasClockTime] is set to be false.
+  ///
+  static String _decideGreetingWithinClockRange(
+    int clockTime, {
+    bool hasClockTime = true,
+  }) {
+    // Default value when [hasClockTime] is set to be false.
+    if (!hasClockTime) {
+      return _GreetingType.morning.description;
+    }
+
     if (clockTime >= 5 && clockTime < 12) {
       return _GreetingType.morning.description;
     } else if (clockTime >= 12 && clockTime < 17) {
