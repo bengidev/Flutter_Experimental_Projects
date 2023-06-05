@@ -15,6 +15,9 @@ class SharedPreferencesStorage {
       "LATEST_HOURLY_WEATHER_FORECAST_MODEL_KEY";
   static const _latestHourlyCurrentWeatherKey =
       "LATEST_HOURLY_CURRENT_WEATHER_KEY";
+  static const _latestLatitudeCoordinateKey = "LATEST_LATITUDE_COORDINATE_KEY";
+  static const _latestLongitudeCoordinateKey =
+      "LATEST_LONGITUDE_COORDINATE_KEY";
 
   /// Test the static [setHasOnboardingCompleted] method
   /// of the [SharedPreferencesStorage]'s class.
@@ -295,6 +298,130 @@ class SharedPreferencesStorage {
       return decodedHourlyCurrentWeather;
     } else {
       return null;
+    }
+  }
+
+  /// Test the static [setLatestLatitudeCoordinate] method
+  /// of the [SharedPreferencesStorage]'s class.
+  ///
+  /// It will return the results from [setLatestLatitudeCoordinate].
+  ///
+  /// This method only available for testing purpose only.
+  ///
+  @visibleForTesting
+  Future<bool> testSetLatestLatitudeCoordinate({
+    required double latitude,
+  }) {
+    return SharedPreferencesStorage.setLatestLatitudeCoordinate(
+      latitude: latitude,
+    );
+  }
+
+  /// Store the value of [double] into [SharedPreferences]'s instance.
+  ///
+  /// The [SharedPreferences]'s instance was obtained from
+  /// the implementation of [GetIt].
+  ///
+  static Future<bool> setLatestLatitudeCoordinate({
+    required double latitude,
+  }) {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final latestLatitudeResults = sharedPreferences.setDouble(
+      SharedPreferencesStorage._latestLatitudeCoordinateKey,
+      latitude,
+    );
+    return latestLatitudeResults;
+  }
+
+  /// Test the static [getLatestLatitudeCoordinate] method
+  /// of the [SharedPreferencesStorage]'s class.
+  ///
+  /// It will return the results from [getLatestLatitudeCoordinate].
+  ///
+  /// This method only available for testing purpose only.
+  ///
+  @visibleForTesting
+  double testGetLatestLatitudeCoordinate() {
+    return SharedPreferencesStorage.getLatestLatitudeCoordinate();
+  }
+
+  /// Retrieve the value of [double] from [SharedPreferences]'s instance.
+  ///
+  /// The [SharedPreferences]'s instance was obtained from
+  /// the implementation of [GetIt].
+  ///
+  static double getLatestLatitudeCoordinate() {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final latestLatitudeResults = sharedPreferences.getDouble(
+      SharedPreferencesStorage._latestLatitudeCoordinateKey,
+    );
+
+    if (latestLatitudeResults != null) {
+      return latestLatitudeResults;
+    } else {
+      return 0.0;
+    }
+  }
+
+  /// Test the static [setLatestLongitudeCoordinate] method
+  /// of the [SharedPreferencesStorage]'s class.
+  ///
+  /// It will return the results from [setLatestLongitudeCoordinate].
+  ///
+  /// This method only available for testing purpose only.
+  ///
+  @visibleForTesting
+  Future<bool> testSetLatestLongitudeCoordinate({
+    required double latitude,
+  }) {
+    return SharedPreferencesStorage.setLatestLongitudeCoordinate(
+      longitude: latitude,
+    );
+  }
+
+  /// Store the value of [double] into [SharedPreferences]'s instance.
+  ///
+  /// The [SharedPreferences]'s instance was obtained from
+  /// the implementation of [GetIt].
+  ///
+  static Future<bool> setLatestLongitudeCoordinate({
+    required double longitude,
+  }) {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final latestLongitudeResults = sharedPreferences.setDouble(
+      SharedPreferencesStorage._latestLongitudeCoordinateKey,
+      longitude,
+    );
+    return latestLongitudeResults;
+  }
+
+  /// Test the static [getLatestLongitudeCoordinate] method
+  /// of the [SharedPreferencesStorage]'s class.
+  ///
+  /// It will return the results from [getLatestLongitudeCoordinate].
+  ///
+  /// This method only available for testing purpose only.
+  ///
+  @visibleForTesting
+  double testGetLatestLongitudeCoordinate() {
+    return SharedPreferencesStorage.getLatestLongitudeCoordinate();
+  }
+
+  /// Retrieve the value of [double] from [SharedPreferences]'s instance.
+  ///
+  /// The [SharedPreferences]'s instance was obtained from
+  /// the implementation of [GetIt].
+  ///
+  static double getLatestLongitudeCoordinate() {
+    final sharedPreferences = $serviceLocator.get<SharedPreferences>();
+    final latestLongitudeResults = sharedPreferences.getDouble(
+      SharedPreferencesStorage._latestLongitudeCoordinateKey,
+    );
+
+    if (latestLongitudeResults != null) {
+      return latestLongitudeResults;
+    } else {
+      return 0.0;
     }
   }
 }
