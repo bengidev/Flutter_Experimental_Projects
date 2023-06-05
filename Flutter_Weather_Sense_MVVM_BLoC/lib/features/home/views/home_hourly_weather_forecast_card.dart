@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/models/hourly_weather_forecast_model_barrel.dart';
@@ -65,7 +64,7 @@ class HomeHourlyWeatherForecastCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: SvgPicture.asset(
-                            _extractWeatherForecastIcon(
+                            _extractWeatherForecastImage(
                               dayDescription: dayDescription,
                               hourlyWeatherForecastModel:
                                   hourlyWeatherForecastModel,
@@ -117,18 +116,23 @@ class HomeHourlyWeatherForecastCard extends StatelessWidget {
     return formattedSingleForecastTime.last;
   }
 
-  String _extractWeatherForecastIcon({
+  String _extractWeatherForecastImage({
     required String dayDescription,
     required HourlyWeatherForecastModel hourlyWeatherForecastModel,
     required int index,
   }) {
     final hourlyNextWeather = hourlyWeatherForecastModel.hourlyNextWeather;
     final forecastWeatherCodes = hourlyNextWeather.weatherCode;
-    final forecastConditions = forecastWeatherCodes.elementAt(index);
-    return WeatherForecastHelper.generateWeatherImage(
-      weatherCode: forecastConditions,
-      dayDescription: dayDescription,
+    final forecastWeatherTimes = hourlyNextWeather.time;
+    final singleWeatherCode = forecastWeatherCodes.elementAt(index);
+    final singleWeatherTime = forecastWeatherTimes.elementAt(index);
+    final generatedWeatherImage = WeatherForecastHelper.generateWeatherImage(
+      weatherCode: singleWeatherCode,
+      dayDescription: GreetingOfDay.getFromTime(
+        time: DateTime.parse(singleWeatherTime),
+      ),
     );
+    return generatedWeatherImage;
   }
 
   String _extractWeatherForecastTemperature({
