@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/core/use_cases/use_cases_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/models/daily_weather_forecast_model_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/usecases/find_daily_weather_forecast_case.dart';
 
@@ -16,7 +17,9 @@ part 'daily_weather_forecast_state.dart';
 /// the results by tracking the latest [DailyWeatherForecastState].
 class DailyWeatherForecastBloc
     extends Bloc<DailyWeatherForecastEvent, DailyWeatherForecastState> {
-  final FindDailyWeatherForecastCase? findDailyWeatherForecastCase;
+  final IUseCase<DailyWeatherForecastParameter,
+          Future<Either<Failure, DailyWeatherForecastModel>>>?
+      findDailyWeatherForecastCase;
 
   DailyWeatherForecastBloc({this.findDailyWeatherForecastCase})
       : super(const DailyWeatherForecastState()) {
