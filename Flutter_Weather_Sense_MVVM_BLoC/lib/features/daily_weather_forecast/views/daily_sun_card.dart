@@ -31,7 +31,7 @@ class DailySunCard extends StatelessWidget {
           boxShadow: kElevationToShadow[3],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
               width: context.widthPct(0.4),
@@ -49,12 +49,14 @@ class DailySunCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppAutoResizeText(
+                        width: context.widthPct(0.2),
                         alignment: Alignment.center,
                         text: "Sunrise",
                         textStyle: $styles.textStyle.title1Bold,
                         minFontSize: 16,
                       ),
                       AppAutoResizeText(
+                        width: context.widthPct(0.2),
                         alignment: Alignment.center,
                         text: sunriseTime,
                         textStyle: $styles.textStyle.body5,
@@ -80,12 +82,14 @@ class DailySunCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppAutoResizeText(
+                        width: context.widthPct(0.2),
                         alignment: Alignment.center,
                         text: "Sunset",
                         textStyle: $styles.textStyle.title1Bold,
                         minFontSize: 16,
                       ),
                       AppAutoResizeText(
+                        width: context.widthPct(0.2),
                         alignment: Alignment.center,
                         text: sunsetTime,
                         textStyle: $styles.textStyle.body5,
