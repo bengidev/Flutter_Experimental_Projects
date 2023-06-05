@@ -1,6 +1,13 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/application.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/config/config_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/core/core_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/core/use_cases/use_cases_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/data_sources/daily_weather_forecast_remote_data_source_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/models/daily_weather_forecast_model_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/repositories/daily_weather_forecast_repository_barrel.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/usecases/find_daily_weather_forecast_case.dart';
+import 'package:flutter_weather_sense_mvvm_bloc/features/daily_weather_forecast/view_models/daily_weather_forecast_bloc.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/forward_geocoding_remote_data_source_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/data_sources/hourly_weather_forecast_remote_data_source_barrel.dart';
 import 'package:flutter_weather_sense_mvvm_bloc/features/home/repositories/forward_geocoding_repository_barrel.dart';
@@ -88,6 +95,39 @@ class DependencyInjection {
     $serviceLocator
         .registerLazySingleton<IHourlyWeatherForecastRemoteDataSource>(
       () => HourlyWeatherForecastRemoteDataSourceImpl(
+        httpClient: $serviceLocator(),
+      ),
+    );
+
+    //Features
+    // Daily Weather Forecast
+    // View Models - Bloc
+    $serviceLocator.registerFactory<DailyWeatherForecastBloc>(
+      () => DailyWeatherForecastBloc(
+        findDailyWeatherForecastCase: $serviceLocator(),
+      ),
+    );
+
+    // Use Cases
+    $serviceLocator.registerLazySingleton<
+        IUseCase<DailyWeatherForecastParameter,
+            Future<Either<Failure, DailyWeatherForecastModel>>>>(
+      () => FindDailyWeatherForecastCase(
+        dailyWeatherForecastRepository: $serviceLocator(),
+      ),
+    );
+
+    // Repositories
+    $serviceLocator.registerLazySingleton<IDailyWeatherForecastRepository>(
+      () => DailyWeatherForecastRepositoryImpl(
+        remoteDataSource: $serviceLocator(),
+      ),
+    );
+
+    // Data Sources
+    $serviceLocator
+        .registerLazySingleton<IDailyWeatherForecastRemoteDataSource>(
+      () => DailyWeatherForecastRemoteDataSourceImpl(
         httpClient: $serviceLocator(),
       ),
     );
