@@ -34,7 +34,7 @@ class HomeScreen extends HookWidget {
     useEffect(
       () {
         // Start the following events when the widget is first rendered.
-        Future.microtask(() {
+        Future.microtask(() async {
           dayDescription.value = _generateGreetingDay(
             time: DateTime.now(),
           );
@@ -42,14 +42,17 @@ class HomeScreen extends HookWidget {
           cacheLatitudeCoordinate.value = _loadModelFeatureLatitude();
           cacheLongitudeCoordinate.value = _loadModelFeatureLongitude();
 
+          await _saveLatestLatitudeCoordinate(
+            latitude: cacheLatitudeCoordinate.value,
+          );
+          await _saveLatestLongitudeCoordinate(
+            longitude: cacheLongitudeCoordinate.value,
+          );
+
           cacheHourlyWeatherForecastModel.value =
               _loadHourlyWeatherForecastModel();
 
           cacheHourlyCurrentWeather.value = _loadHourlyCurrentWeather();
-
-          debugPrint(
-            "cacheHourlyWeatherForecastModel.value -> ${cacheHourlyWeatherForecastModel.value}",
-          );
 
           debugPrint("Microtask from UseEffect: $dayDescription");
         });
@@ -237,15 +240,8 @@ class HomeScreen extends HookWidget {
   String _generateGreetingDay({
     required DateTime time,
   }) {
-    var stringResults = "";
-    final greetingResults = GreetingOfDay.getFromTime(
-      time: time,
-    );
-    greetingResults.fold(
-      (failure) => stringResults = failure.toString(),
-      (results) => stringResults = results,
-    );
-    return stringResults;
+    final greetingResults = GreetingOfDay.getFromTime(time: time);
+    return greetingResults;
   }
 
   /// Send the [SearchGeocodingLocationEvent] into the
@@ -375,6 +371,36 @@ class HomeScreen extends HookWidget {
     }
 
     return longitude;
+  }
+
+  /// Save the latest [latitude] coordinate's value into
+  /// [SharedPreferencesStorage] when
+  /// the [latitude] coordinate's value was available.
+  ///
+  /// This will return [bool] when the operation inside
+  /// [SharedPreferencesStorage] was successful or fail.
+  ///
+  Future<bool> _saveLatestLatitudeCoordinate({required double latitude}) {
+    final operationResults =
+        SharedPreferencesStorage.setLatestLatitudeCoordinate(
+      latitude: latitude,
+    );
+    return operationResults;
+  }
+
+  /// Save the latest [longitude] coordinate's value into
+  /// [SharedPreferencesStorage] when
+  /// the [longitude] coordinate's value was available.
+  ///
+  /// This will return [bool] when the operation inside
+  /// [SharedPreferencesStorage] was successful or fail.
+  ///
+  Future<bool> _saveLatestLongitudeCoordinate({required double longitude}) {
+    final operationResults =
+        SharedPreferencesStorage.setLatestLongitudeCoordinate(
+      longitude: longitude,
+    );
+    return operationResults;
   }
 
   /// Send the [FindHourlyWeatherForecastEvent] into the
