@@ -21,7 +21,7 @@ class DailyWeatherCard extends StatelessWidget {
 
   /// Show the percentage precipitation probability
   /// of the current weather.
-  final double precipitationProbability;
+  final int precipitationProbability;
 
   const DailyWeatherCard({
     super.key,
@@ -55,7 +55,7 @@ class DailyWeatherCard extends StatelessWidget {
                 $styles.insets.xs,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
                     children: [
@@ -66,12 +66,13 @@ class DailyWeatherCard extends StatelessWidget {
                       ),
                       Gap($styles.insets.xxs),
                       AppAutoResizeText(
+                        width: context.widthPct(0.3),
                         alignment: Alignment.center,
                         text: "Current Weather",
                         textStyle: $styles.textStyle.body5Bold,
                         textAlign: TextAlign.center,
                       ),
-                      Gap($styles.insets.xxl),
+                      Gap($styles.insets.lg),
                       Column(
                         children: [
                           SvgPicture.asset(
@@ -80,6 +81,7 @@ class DailyWeatherCard extends StatelessWidget {
                             height: context.heightPct(0.05),
                           ),
                           AppAutoResizeText(
+                            width: context.widthPct(0.4),
                             alignment: Alignment.center,
                             text: weatherDescription,
                             textStyle: $styles.textStyle.body5,
@@ -124,17 +126,19 @@ class DailyWeatherCard extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
                   children: [
                     AppAutoResizeText(
+                      width: context.widthPct(0.3),
                       alignment: Alignment.center,
                       text: "Maximum",
                       textStyle: $styles.textStyle.body5,
                       textAlign: TextAlign.center,
                     ),
                     AppAutoResizeText(
+                      width: context.widthPct(0.3),
                       alignment: Alignment.center,
                       text: "$temperatureMax °C",
                       textStyle: $styles.textStyle.body5Bold,
@@ -145,12 +149,14 @@ class DailyWeatherCard extends StatelessWidget {
                 Column(
                   children: [
                     AppAutoResizeText(
+                      width: context.widthPct(0.3),
                       alignment: Alignment.center,
                       text: "Minimum",
                       textStyle: $styles.textStyle.body5,
                       textAlign: TextAlign.center,
                     ),
                     AppAutoResizeText(
+                      width: context.widthPct(0.3),
                       alignment: Alignment.center,
                       text: "$temperatureMin °C",
                       textStyle: $styles.textStyle.body5Bold,
@@ -170,7 +176,7 @@ class DailyWeatherCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all($styles.insets.xs),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
                     children: [
@@ -186,10 +192,11 @@ class DailyWeatherCard extends StatelessWidget {
                         textStyle: $styles.textStyle.body5Bold,
                         textAlign: TextAlign.center,
                       ),
-                      Gap($styles.insets.xxl),
+                      Gap($styles.insets.xl),
                       Column(
                         children: [
                           AppAutoResizeText(
+                            width: context.widthPct(0.3),
                             alignment: Alignment.center,
                             text: windSpeed.toString(),
                             textStyle: $styles.textStyle.body5Bold,
@@ -219,7 +226,7 @@ class DailyWeatherCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all($styles.insets.xs),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Row(
                     children: [
@@ -235,10 +242,11 @@ class DailyWeatherCard extends StatelessWidget {
                         textStyle: $styles.textStyle.body5Bold,
                         textAlign: TextAlign.center,
                       ),
-                      Gap($styles.insets.xxl),
+                      Gap($styles.insets.xl),
                       Column(
                         children: [
                           AppAutoResizeText(
+                            width: context.widthPct(0.3),
                             alignment: Alignment.center,
                             text: precipitationProbability.toString(),
                             textStyle: $styles.textStyle.body5Bold,
