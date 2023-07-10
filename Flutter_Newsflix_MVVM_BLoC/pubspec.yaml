@@ -28,12 +28,18 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  flutter:
-    sdk: flutter
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.5
+
+  # Approximate how your Flutter app looks and performs on another device.
+  device_preview: ^1.1.0
+
+  flutter:
+    sdk: flutter
+
+  # A flutter implementation of React hooks. It adds a new kind of widget with enhanced code reuse.
+  flutter_hooks: ^0.18.6
 
   # A package which simplifies the task of updating your Flutter app's launcher icon.
   flutter_launcher_icons: ^0.13.1
@@ -41,6 +47,14 @@ dependencies:
   # Customize Flutter's default white native splash screen with background color and splash image.
   # Supports dark mode, full screen, and more.
   flutter_native_splash: ^2.3.1
+
+  # A declarative router for Flutter based on Navigation 2 supporting deep linking,
+  # data-driven routes and more.
+  go_router: ^9.0.3
+
+  # Access MediaQuery sizing info directly on the context,
+  # also adds some helper methods for sizing and layout.
+  sized_context: ^1.0.0+4
 
 dev_dependencies:
   flutter_test:
