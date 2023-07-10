@@ -6,6 +6,23 @@ class IntroScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 2,
+        title: const Text("Material Theme Builder"),
+      ),
+      body: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Update with your UI',
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () => {}, tooltip: 'Increment'),
+    );
   }
 }
