@@ -13,7 +13,9 @@ void main() async {
 
   //Start running the application.
   //
-  // Wrap the
+  // Wrap the whole application screen with [DevicePreview]
+  // to be able to view the application running inside
+  // the different [Platform].
   runApp(
     DevicePreview(
       builder: (context) => const Application(),
