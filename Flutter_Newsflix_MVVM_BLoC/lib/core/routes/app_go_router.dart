@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:newsflix/core/core_barrel.dart';
-import 'package:newsflix/features/intro/views/intro_view.dart';
+import 'package:newsflix/features/intro/views/intro_screen.dart';
 
 class AppGoRouter {
   static GoRouter builder = _buildRouter();
