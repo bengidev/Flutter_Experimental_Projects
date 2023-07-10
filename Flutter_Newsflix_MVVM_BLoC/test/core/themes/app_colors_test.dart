@@ -21,14 +21,27 @@ void main() async {
     test(
         'Given the instance of AppColors, '
         'When secondary was accessed, '
-        'Then it should return the Color of hex 0xFF120E00.', () async {
+        'Then it should return the Color of hex 0xFFFFCF00.', () async {
       // ARRANGE
       const secondary = AppColors.secondary;
 
       // ACT
 
       // ASSERT
-      expect(const Color(0xFF120E00), secondary);
+      expect(const Color(0xFFFFCF00), secondary);
+    });
+
+    test(
+        'Given the instance of AppColors, '
+        'When tertiary was accessed, '
+        'Then it should return the Color of hex 0xFF120E00.', () async {
+      // ARRANGE
+      const tertiary = AppColors.tertiary;
+
+      // ACT
+
+      // ASSERT
+      expect(const Color(0xFF120E00), tertiary);
     });
 
     test(
@@ -55,19 +68,6 @@ void main() async {
 
       // ASSERT
       expect(const Color(0xFF38493F), customGreen);
-    });
-
-    test(
-        'Given the instance of AppColors, '
-        'When customYellow was accessed, '
-        'Then it should return the Color of hex 0xFFFFCF00.', () async {
-      // ARRANGE
-      const customYellow = AppColors.customYellow;
-
-      // ACT
-
-      // ASSERT
-      expect(const Color(0xFFFFCF00), customYellow);
     });
 
     test(
