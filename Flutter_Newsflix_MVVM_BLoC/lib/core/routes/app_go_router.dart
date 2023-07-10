@@ -26,7 +26,7 @@ class AppGoRouter {
           parentNavigatorKey: _rootNavigatorKey,
           name: AppGoRouter.introPath,
           path: AppGoRouter.introPath,
-          builder: (_, __) => const IntroView(),
+          builder: (_, __) => const IntroScreen(),
           useFade: true,
         ),
       ],
