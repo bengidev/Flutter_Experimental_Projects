@@ -25,8 +25,8 @@ class Application extends HookWidget {
         // Return an empty Container when child Widget was empty.
         return DevicePreview.appBuilder(context, child);
       },
-      theme: ThemeData.light(useMaterial3: true),
-      darkTheme: ThemeData.dark(useMaterial3: true),
+      theme: ThemeData(colorScheme: AppColors.lightColorScheme),
+      darkTheme: ThemeData(colorScheme: AppColors.darkColorScheme),
     );
   }
 
