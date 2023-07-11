@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 
 final class AppColors {
-  static const primary = Color(0xFFF7BF4F);
-  static const secondary = Color(0xFFFFCF00);
-  static const tertiary = Color(0xFF120E00);
-  static const accentGray = Color(0xFFF5F5F5);
-  static const customGreen = Color(0xFF38493F);
-  static const cream = Color(0xFFFCF8E8);
+  final _primary = const Color(0xFFF7BF4F);
 
-  static const lightColorScheme = ColorScheme(
+  Color get primary => _primary;
+
+  final _secondary = const Color(0xFFFFCF00);
+
+  Color get secondary => _secondary;
+
+  final _tertiary = const Color(0xFF120E00);
+
+  Color get tertiary => _tertiary;
+
+  final _accentGray = const Color(0xFFF5F5F5);
+
+  Color get accentGray => _accentGray;
+
+  final _customGreen = const Color(0xFF38493F);
+
+  Color get customGreen => _customGreen;
+
+  final _cream = const Color(0xFFFCF8E8);
+
+  Color get cream => _cream;
+
+  final _lightColorScheme = const ColorScheme(
     brightness: Brightness.light,
     primary: Color(0xFF7C5800),
     onPrimary: Color(0xFFFFFFFF),
@@ -42,7 +59,9 @@ final class AppColors {
     scrim: Color(0xFF000000),
   );
 
-  static const darkColorScheme = ColorScheme(
+  ColorScheme get lightColorScheme => _lightColorScheme;
+
+  final _darkColorScheme = const ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xFFF7BD48),
     onPrimary: Color(0xFF412D00),
@@ -75,4 +94,6 @@ final class AppColors {
     outlineVariant: Color(0xFF4E4639),
     scrim: Color(0xFF000000),
   );
+
+  ColorScheme get darkColorScheme => _darkColorScheme;
 }
