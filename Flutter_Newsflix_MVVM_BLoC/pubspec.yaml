@@ -48,6 +48,9 @@ dependencies:
   # Supports dark mode, full screen, and more.
   flutter_native_splash: ^2.3.1
 
+  # Flutter widgets for easily adding gaps inside Flex widgets such as Columns and Rows or scrolling views.
+  gap: ^3.0.1
+
   # A declarative router for Flutter based on Navigation 2 supporting deep linking,
   # data-driven routes and more.
   go_router: ^9.0.3
