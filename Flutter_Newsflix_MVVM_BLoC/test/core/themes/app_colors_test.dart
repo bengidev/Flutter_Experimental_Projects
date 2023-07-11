@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:newsflix/core/core_barrel.dart';
+import 'package:newsflix/dependency_injection.dart';
 
 void main() async {
   group('App Colors test', () {
@@ -10,7 +10,7 @@ void main() async {
         'When primary was accessed, '
         'Then it should return the Color of hex 0xFFF7BF4F.', () async {
       // ARRANGE
-      const primary = AppColors.primary;
+      final primary = $appStyles.colors.primary;
 
       // ACT
 
@@ -23,7 +23,7 @@ void main() async {
         'When secondary was accessed, '
         'Then it should return the Color of hex 0xFFFFCF00.', () async {
       // ARRANGE
-      const secondary = AppColors.secondary;
+      final secondary = $appStyles.colors.secondary;
 
       // ACT
 
@@ -36,7 +36,7 @@ void main() async {
         'When tertiary was accessed, '
         'Then it should return the Color of hex 0xFF120E00.', () async {
       // ARRANGE
-      const tertiary = AppColors.tertiary;
+      final tertiary = $appStyles.colors.tertiary;
 
       // ACT
 
@@ -49,7 +49,7 @@ void main() async {
         'When accentGray was accessed, '
         'Then it should return the Color of hex 0xFFF5F5F5.', () async {
       // ARRANGE
-      const accentGray = AppColors.accentGray;
+      final accentGray = $appStyles.colors.accentGray;
 
       // ACT
 
@@ -62,7 +62,7 @@ void main() async {
         'When customGreen was accessed, '
         'Then it should return the Color of hex 0xFF38493F.', () async {
       // ARRANGE
-      const customGreen = AppColors.customGreen;
+      final customGreen = $appStyles.colors.customGreen;
 
       // ACT
 
@@ -75,7 +75,7 @@ void main() async {
         'When cream was accessed, '
         'Then it should return the Color of hex 0xFFFCF8E8.', () async {
       // ARRANGE
-      const cream = AppColors.cream;
+      final cream = $appStyles.colors.cream;
 
       // ACT
 
