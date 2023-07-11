@@ -2,6 +2,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:newsflix/core/core_barrel.dart';
+import 'package:newsflix/dependency_injection.dart';
 import 'package:sized_context/sized_context.dart';
 
 class Application extends HookWidget {
@@ -25,8 +26,8 @@ class Application extends HookWidget {
         // Return an empty Container when child Widget was empty.
         return DevicePreview.appBuilder(context, child);
       },
-      theme: ThemeData(colorScheme: AppColors.lightColorScheme),
-      darkTheme: ThemeData(colorScheme: AppColors.darkColorScheme),
+      theme: ThemeData(colorScheme: $appStyles.colors.lightColorScheme),
+      darkTheme: ThemeData(colorScheme: $appStyles.colors.darkColorScheme),
     );
   }
 
